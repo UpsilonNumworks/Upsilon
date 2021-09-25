@@ -32,11 +32,11 @@ namespace Flasher {
             currentHeight = (uint16_t)((Ion::Display::Height*2)/3);
 
             /* Logo */
-            for (int i = 0; i < IMAGE_SIZE; ++i) {
-                for (int j = 0; j < IMAGE_SIZE; ++j) {
-                    ctx->setPixel(KDPoint(i+(uint16_t)((Ion::Display::Width-IMAGE_SIZE)/2),
+            for (int i = 0; i < IMAGE_WIDTH; ++i) {
+                for (int j = 0; j < IMAGE_HEIGHT; ++j) {
+                    ctx->setPixel(KDPoint(i+(uint16_t)((Ion::Display::Width-IMAGE_WIDTH)/2),
                                           j+(titleSize.height()+margin+15)),
-                                  KDColor::RGB16(image[i+(j*IMAGE_SIZE)]));
+                                  KDColor::RGB16(image[i+(j*IMAGE_WIDTH)]));
                 }
             }
 
