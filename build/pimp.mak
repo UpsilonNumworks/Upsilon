@@ -2,8 +2,8 @@
 
 ifndef NO_PIMP
 PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m         __  __      ______ ____   ____   _____\n")
-PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m        / / / /_____/ ,____/_/ /  / __ \/`_   /\n")
-PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m       / / / / __ `/ /____/ / /  / / / / / / / \n")
+PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m        / / / /_____/ ,____/_/ /  / __ \/'_   /\n")
+PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m       / / / / __ '/ /____/ / /  / / / / / / / \n")
 PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m      / /_/ / /_/ /___,  / / /__/ /_/ / / / /  \n")
 PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m      \____/ ____/______/_/____/\____/_/ /_/   \n")
 PLS_IGNORE := $(shell >&2 printf "\e[91m\e[1m          / /                                  \n")
