@@ -711,6 +711,32 @@ const ToolboxMessageTree Electromagnetism[] = {
 
 };
 
+const ToolboxMessageTree Resistivity[] = {
+  ToolboxMessageTree::Leaf(I18n::Message::Silver, I18n::Message::Rstvt_Silver, false, I18n::Message::Rstvt_Silver),
+  ToolboxMessageTree::Leaf(I18n::Message::Copper, I18n::Message::Rstvt_Copper, false, I18n::Message::Rstvt_Copper),
+  ToolboxMessageTree::Leaf(I18n::Message::Gold, I18n::Message::Rstvt_Gold, false, I18n::Message::Rstvt_Gold),
+  ToolboxMessageTree::Leaf(I18n::Message::Aluminium, I18n::Message::Rstvt_Aluminium, false, I18n::Message::Rstvt_Aluminium),
+  ToolboxMessageTree::Leaf(I18n::Message::Calcium, I18n::Message::Rstvt_Calcium, false, I18n::Message::Rstvt_Calcium),
+  ToolboxMessageTree::Leaf(I18n::Message::Tungsten, I18n::Message::Rstvt_Tungsten, false, I18n::Message::Rstvt_Tungsten),
+  ToolboxMessageTree::Leaf(I18n::Message::Zinc, I18n::Message::Rstvt_Zinc, false, I18n::Message::Rstvt_Zinc),
+  ToolboxMessageTree::Leaf(I18n::Message::Cobalt, I18n::Message::Rstvt_Cobalt, false, I18n::Message::Rstvt_Cobalt),
+  ToolboxMessageTree::Leaf(I18n::Message::Nickel, I18n::Message::Rstvt_Nickel, false, I18n::Message::Rstvt_Nickel),
+  ToolboxMessageTree::Leaf(I18n::Message::Lithium, I18n::Message::Rstvt_Lithium, false, I18n::Message::Rstvt_Lithium),
+  ToolboxMessageTree::Leaf(I18n::Message::Iron, I18n::Message::Rstvt_Iron, false, I18n::Message::Rstvt_Iron),
+  ToolboxMessageTree::Leaf(I18n::Message::Platinum, I18n::Message::Rstvt_Platinum, false, I18n::Message::Rstvt_Platinum),
+  ToolboxMessageTree::Leaf(I18n::Message::Tin, I18n::Message::Rstvt_Tin, false, I18n::Message::Rstvt_Tin),
+  ToolboxMessageTree::Leaf(I18n::Message::Sea_water, I18n::Message::Rstvt_Sea_water, false, I18n::Message::Rstvt_Sea_water),
+  ToolboxMessageTree::Leaf(I18n::Message::Water, I18n::Message::Rstvt_Water, false, I18n::Message::Rstvt_Water),
+  ToolboxMessageTree::Leaf(I18n::Message::Air, I18n::Message::Rstvt_Air, false, I18n::Message::Rstvt_Air),
+  ToolboxMessageTree::Leaf(I18n::Message::Wood, I18n::Message::Rstvt_Wood, false, I18n::Message::Rstvt_Wood),
+  ToolboxMessageTree::Leaf(I18n::Message::Glass, I18n::Message::Rstvt_Glass, false, I18n::Message::Rstvt_Glass)
+};
+
+const ToolboxMessageTree Electricity[] = {
+  ToolboxMessageTree::Leaf(I18n::Message::ElementalChargeTag, I18n::Message::ElementalCharge, false, I18n::Message::ElementalCharge),
+  ToolboxMessageTree::Node(I18n::Message::ResistivityConstants, Resistivity)
+};
+
 const ToolboxMessageTree ParticleMass[] = {
   ToolboxMessageTree::Leaf(I18n::Message::ElectronMassTag, I18n::Message::ElectronMass, false, I18n::Message::ElectronMass),
   ToolboxMessageTree::Leaf(I18n::Message::MuonMassTag, I18n::Message::MuonMass, false, I18n::Message::MuonMass),
@@ -788,6 +814,7 @@ const ToolboxMessageTree PlanckUnits[] = {
 const ToolboxMessageTree Physics[] = {
   ToolboxMessageTree::Node(I18n::Message::FundamentalConstants, FundamentalConstants),
   ToolboxMessageTree::Node(I18n::Message::Electromagnetism, Electromagnetism),
+  ToolboxMessageTree::Node(I18n::Message::Electricity, Electricity),
   ToolboxMessageTree::Node(I18n::Message::NuclearConstants, Nuclear),
   ToolboxMessageTree::Node(I18n::Message::Thermodynamics, Thermodynamics),
   ToolboxMessageTree::Node(I18n::Message::Gravitation, Gravitation),
