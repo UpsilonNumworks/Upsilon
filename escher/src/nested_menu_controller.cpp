@@ -156,7 +156,7 @@ bool NestedMenuController::handleEventForRow(Ion::Events::Event event, int rowIn
   if ((event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) && typeAtLocation(0, selectedRow()) == NodeCellType) {
     return selectSubMenu(rowIndex);
   }
-  if ((event == Ion::Events::OK || event == Ion::Events::EXE) && typeAtLocation(0, selectedRow()) == LeafCellType) {
+  if ((event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) && typeAtLocation(0, selectedRow()) == LeafCellType) {
     return selectLeaf(rowIndex);
   }
   return false;

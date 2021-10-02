@@ -99,7 +99,7 @@ bool TabViewController::handleEvent(Ion::Events::Event event) {
     setActiveTab(m_dataSource->activeTab());
     return true;
   }
-  if (event == Ion::Events::OK || event == Ion::Events::EXE) {
+  if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
     setActiveTab(m_dataSource->selectedTab());
     return true;
   }

@@ -74,7 +74,8 @@ bool WarningController::handleEvent(Ion::Events::Event event) {
   if (m_exitOnOKBackEXE) {
     if (event != Ion::Events::OK
         && event != Ion::Events::EXE
-        && event != Ion::Events::Back)
+        && event != Ion::Events::Back
+        && event != Ion::Events::Right)
     {
       return false;
     }

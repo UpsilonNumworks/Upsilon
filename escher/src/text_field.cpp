@@ -428,7 +428,7 @@ bool TextField::handleEvent(Ion::Events::Event event) {
     return handleEventWithText(event.text());
   } else if (event == Ion::Events::Paste) {
     return handleEventWithText(Clipboard::sharedClipboard()->storedText(), false, true);
-  } else if ((event == Ion::Events::OK || event == Ion::Events::EXE) && !isEditing()) {
+  } else if ((event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) && !isEditing()) {
     const char * previousText = m_contentView.text();
     setEditing(true);
     setText(previousText);

@@ -205,7 +205,7 @@ bool ButtonRowController::handleEvent(Ion::Events::Event event) {
     }
     return true;
   }
-  if (event == Ion::Events::OK || event == Ion::Events::EXE) {
+  if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
     return true;
   }
   return false;
