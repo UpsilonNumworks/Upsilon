@@ -536,7 +536,7 @@ bool LayoutField::privateHandleEvent(Ion::Events::Event event) {
   if (IsMoveEvent(event) && isEditing()) {
     return true;
   }
-  if ((event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) && !isEditing()) {
+  if ((event == Ion::Events::OK || event == Ion::Events::EXE) && !isEditing()) {
     setEditing(true);
     m_contentView.cursor()->setLayout(layout());
     m_contentView.cursor()->setPosition(LayoutCursor::Position::Right);

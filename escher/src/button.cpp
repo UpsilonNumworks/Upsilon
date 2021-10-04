@@ -29,7 +29,7 @@ void Button::layoutSubviews(bool force) {
 }
 
 bool Button::handleEvent(Ion::Events::Event event) {
-  if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
+  if (event == Ion::Events::OK || event == Ion::Events::EXE) {
     m_invocation.perform(this);
     return true;
   }
