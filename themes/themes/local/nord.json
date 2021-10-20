@@ -1,6 +1,6 @@
 {
     "name": "Nord",
-    "icons": "epsilon_light",
+    "icons": "nord",
     "colors": {
         "PrimaryText": "D8DEE9",
         "SecondaryText": "81A1C1",
