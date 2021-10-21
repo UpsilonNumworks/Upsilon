@@ -8,9 +8,10 @@ bool ScriptStore::ScriptNameIsFree(const char * baseName) {
   return ScriptBaseNamed(baseName).isNull();
 }
 
-ScriptStore::ScriptStore() {
-  addScriptFromTemplate(ScriptTemplate::Mathsup());
-}
+// Here we add "base" script
+// ScriptStore::ScriptStore() {
+  
+// }
 
 void ScriptStore::deleteAllScripts() {
   for (int i = numberOfScripts() - 1; i >= 0; i--) {

@@ -7,6 +7,7 @@ QUIZ_CASE(python_basics) {
   deinit_environment();
 }
 
-QUIZ_CASE(python_template) {
-  assert_script_execution_succeeds(Code::ScriptTemplate::Mathsup()->content());
-}
+// No "base" scripts to test.
+// QUIZ_CASE(python_template) {
+
+// }
