@@ -7,7 +7,7 @@ QUIZ_CASE(python_basics) {
   deinit_environment();
 }
 
-// No "base" scripts to test.
-// QUIZ_CASE(python_template) {
+// "base" scripts to test.
+QUIZ_CASE(python_template) {
 
-// }
+}
