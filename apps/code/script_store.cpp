@@ -9,9 +9,9 @@ bool ScriptStore::ScriptNameIsFree(const char * baseName) {
 }
 
 // Here we add "base" script
-// ScriptStore::ScriptStore() {
+ScriptStore::ScriptStore() {
   
-// }
+}
 
 void ScriptStore::deleteAllScripts() {
   for (int i = numberOfScripts() - 1; i >= 0; i--) {
