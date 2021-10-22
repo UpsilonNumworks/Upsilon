@@ -633,6 +633,10 @@ void CurveView::drawCurve(KDContext * ctx, KDRect rect, float tStart, float tEnd
   int i = 0;
   bool isLastSegment = false;
   do {
+    Ion::Keyboard::State state = Ion::Keyboard::scan();
+    if (state.keyDown(Ion::Keyboard::Key::Back)){
+      return;
+    }
     previousT = t;
     t = tStart + (i++) * tStep;
     if (t <= tStart) {
