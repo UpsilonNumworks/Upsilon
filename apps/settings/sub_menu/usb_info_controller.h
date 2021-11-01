@@ -31,6 +31,6 @@ class UsbInfoController : public GenericSubController {
     SelectableViewWithMessages m_contentView;
 };
 
-}  // namespace Settings
+}
 
 #endif
