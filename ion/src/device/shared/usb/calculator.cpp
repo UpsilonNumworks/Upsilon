@@ -21,7 +21,7 @@ void Calculator::PollAndReset(bool exitWithKeyboard, bool unlock, int level) {
 
   Ion::Device::Keyboard::activateRow(exitKeyRow);
   c.m_dfuInterface.setLevel(level);
-  if(unlock){
+  if (unlock) {
     c.m_dfuInterface.unlockDfu();
   }
 
