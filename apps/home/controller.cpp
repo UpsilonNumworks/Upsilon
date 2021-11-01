@@ -108,10 +108,9 @@ bool Controller::handleEvent(Ion::Events::Event event) {
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
     AppsContainer * container = AppsContainer::sharedAppsContainer();
 
-    if(!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()){
+    if (!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) {
         Ion::LED::setColor(KDColorBlack);
-        // Ion::LED::setBlinking(1000, 0.1f);
-      }
+    }
     GlobalPreferences::sharedGlobalPreferences()->dfuResetStep();
     GlobalPreferences::sharedGlobalPreferences()->setDfuStatus(false);
 
