@@ -20,7 +20,6 @@ UsbProtectionLevelController::UsbProtectionLevelController(Responder *parentResp
 bool UsbProtectionLevelController::handleEvent(Ion::Events::Event event) {
     if (event == Ion::Events::OK || event == Ion::Events::EXE) {
         for (int i = 0; i < k_maxNumberOfCells; i++) {
-            // m_cell[i].setTextColor(Palette::Orange);
             m_cell[i].setAccessoryText("");
         }
         if (m_messageTreeModel->childAtIndex(selectedRow())->label() == I18n::Message::USBLowLevel) {
