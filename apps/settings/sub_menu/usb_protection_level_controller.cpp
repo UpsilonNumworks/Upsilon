@@ -33,8 +33,6 @@ bool UsbProtectionLevelController::handleEvent(Ion::Events::Event event) {
             GlobalPreferences::sharedGlobalPreferences()->setDfuLevel(3);
         }
 
-        // m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
-        // AppsContainer::sharedAppsContainer()->redrawWindow(true);
         StackViewController * stack = stackController();
         stack->pop();
         return true;
