@@ -25,7 +25,6 @@ class UsbInfoController : public GenericSubController {
     static constexpr int k_numberOfInfoE16MessageLines = 3;
     int numberOfInfoLines() const { return k_numberOfInfoE16MessageLines; };
     static constexpr int k_maxSwitchCells = 1;
-    // MessageTableCellWithBuffer m_cell[k_maxNumberOfCells];
     MessageTableCellWithSwitch m_switchCells[k_maxSwitchCells];
     UsbProtectionLevelController m_usbprotectlevel;
     MessageTableCellWithChevronAndMessage m_dfuLevel;
