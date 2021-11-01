@@ -30,15 +30,15 @@ public:
   void setTempExamMode(ExamMode examMode);
   bool showPopUp() const { return m_showPopUp; }
   void setShowPopUp(bool showPopUp) { m_showPopUp = showPopUp; }
-  bool dfuStatus() const {return m_dfuUnlocked;}
-  void setDfuStatus(bool status) {m_dfuUnlocked=status;}
-  int dfuCurrentStep() const {return m_dfuStep;}
-  void dfuIncreaseStep() {m_dfuStep++;}
-  void dfuResetStep() {m_dfuStep = 0;}
-  int getDfuLevel() const {return m_dfuProtectLevel;}
-  void setDfuLevel(int level) {m_dfuProtectLevel = level;}
-  bool showDfuDeacAlert() const {return m_showDeacAlert;}
-  void setDfuDeacAlert(bool value)  {m_showDeacAlert = value;}
+  bool dfuStatus() const { return m_dfuUnlocked; }
+  void setDfuStatus(bool status) { m_dfuUnlocked=status; }
+  int dfuCurrentStep() const { return m_dfuStep; }
+  void dfuIncreaseStep() { m_dfuStep++; }
+  void dfuResetStep() { m_dfuStep = 0; }
+  int getDfuLevel() const { return m_dfuProtectLevel; }
+  void setDfuLevel(int level) { m_dfuProtectLevel = level; }
+  bool showDfuDeacAlert() const { return m_showDeacAlert; }
+  void setDfuDeacAlert(bool value)  { m_showDeacAlert = value; }
   bool autocomplete() const { return m_autoComplete; }
   void setAutocomplete(bool autocomple) { m_autoComplete = autocomple; }
   int brightnessLevel() const { return m_brightnessLevel; }
