@@ -87,26 +87,23 @@ Controller::Controller(Responder * parentResponder, SelectableTableViewDataSourc
 }
 
 bool Controller::handleEvent(Ion::Events::Event event) {
-  if(event == Ion::Events::Six){
+  if (event == Ion::Events::Six) {
     GlobalPreferences::sharedGlobalPreferences()->dfuIncreaseStep();
-    if(GlobalPreferences::sharedGlobalPreferences()->dfuCurrentStep() >= GlobalPreferences::DfuUnlockStep && !GlobalPreferences::sharedGlobalPreferences()->dfuStatus()){
-      if(!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()){
+    if (GlobalPreferences::sharedGlobalPreferences()->dfuCurrentStep() >= GlobalPreferences::DfuUnlockStep && !GlobalPreferences::sharedGlobalPreferences()->dfuStatus()) {
+      if (!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) {
         Ion::LED::setColor(KDColorPurple);
         Ion::LED::setBlinking(500, 0.5f);
       }
       GlobalPreferences::sharedGlobalPreferences()->setDfuStatus(true);
       App::app()->displayWarning(I18n::Message::DfuWarning1, I18n::Message::DfuWarning2);
       return true;
-    }else if(GlobalPreferences::sharedGlobalPreferences()->dfuStatus()){
-      if(!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()){
+    } else if (GlobalPreferences::sharedGlobalPreferences()->dfuStatus()) {
+      if (!GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) {
         Ion::LED::setColor(KDColorBlack);
-        // Ion::LED::setBlinking(1000, 0.1f);
       }
       GlobalPreferences::sharedGlobalPreferences()->dfuResetStep();
       GlobalPreferences::sharedGlobalPreferences()->setDfuStatus(false);
     }
-  }else{
-    
   }
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
     AppsContainer * container = AppsContainer::sharedAppsContainer();
