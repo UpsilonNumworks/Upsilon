@@ -11,7 +11,7 @@ public:
   USBConnectedController();
   View * view() override { return &m_messageView; }
   USBView * getMessageView() {return &m_messageView; }
-  bool handleEvent(Ion::Events::Event event) override {return false;};
+  bool handleEvent(Ion::Events::Event event) override { return false; };
 private:
   int step;
   bool already_init;
