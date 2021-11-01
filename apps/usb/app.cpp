@@ -28,7 +28,6 @@ App::App(Snapshot * snapshot) :
 
 bool App::processEvent(Ion::Events::Event e) {
   // Impossible de gérer mes events ici lorsqu'on active le DFU
-  //bool handled = m_usbConnectedController.handleEvent(e);
   return false;
 }
 
