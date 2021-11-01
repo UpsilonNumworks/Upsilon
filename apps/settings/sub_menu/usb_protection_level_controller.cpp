@@ -14,7 +14,6 @@ UsbProtectionLevelController::UsbProtectionLevelController(Responder *parentResp
     for (int i = 0; i < k_maxNumberOfCells; i++) {
         m_cell[i].setMessageFont(KDFont::LargeFont);
         m_cell[i].setAccessoryFont(KDFont::SmallFont);
-        // m_cell[i].setTextColor(Palette::Orange);
     }
 }
 
