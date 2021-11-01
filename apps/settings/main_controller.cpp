@@ -114,7 +114,7 @@ bool MainController::handleEvent(Ion::Events::Event event) {
       subController = &m_dateTimeController;
     } else if (title == I18n::Message::MathOptions) {
       subController = &m_mathOptionsController;
-    }else if (title == I18n::Message::UsbSetting){
+    } else if (title == I18n::Message::UsbSetting) {
       subController = &m_usbInfoController;
     } else if (title == I18n::Message::CodeApp) {
       subController = &m_codeOptionsController;
