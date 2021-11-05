@@ -439,6 +439,7 @@ void DFUInterface::writeOnMemory() {
                     }
                 } else {
                     m_isFirstExternalFlash = false;
+                    m_isInternalLocked = false;
                 }
             }
         }
