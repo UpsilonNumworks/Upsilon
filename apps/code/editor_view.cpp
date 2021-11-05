@@ -71,16 +71,18 @@ void EditorView::GutterView::drawRect(KDContext * ctx, KDRect rect) const {
   int numberOfLines = bounds().height() / glyphSize.height() + 1;
   for (int i=0; i<numberOfLines; i++) {
     // Only the first two digits are displayed
-    int lineNumberValue = (i + firstLine + 1) % 100;
+    int lineNumberValue = (i + firstLine + 1) % 1000;
     Poincare::Integer line(lineNumberValue);
     if (firstLine < 10 || lineNumberValue >= 10) {
       line.serialize(lineNumber, k_lineNumberCharLength);
-    } else {
+    } else if(firstLine < 100) {
       // Add a leading "0"
       lineNumber[0] = '0';
       line.serialize(lineNumber + 1, k_lineNumberCharLength - 1);
+    } else {
+      line.serialize(lineNumber, k_lineNumberCharLength);
     }
-    KDCoordinate leftPadding = (2 - strlen(lineNumber)) * glyphSize.width();
+    KDCoordinate leftPadding = (3 - strlen(lineNumber)) * glyphSize.width();
     ctx->drawString(
       lineNumber,
       KDPoint(k_margin + leftPadding, i*glyphSize.height() - firstLinePixelOffset),
@@ -101,7 +103,7 @@ void EditorView::GutterView::setOffset(KDCoordinate offset) {
 
 
 KDSize EditorView::GutterView::minimalSizeForOptimalDisplay() const {
-  int numberOfChars = 2; // TODO: Could be computed
+  int numberOfChars = 3; // TODO: Could be computed
   return KDSize(2 * k_margin + numberOfChars * Poincare::Preferences::sharedPreferences()->KDPythonFont()->glyphSize().width(), 0);
 }
 
