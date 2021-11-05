@@ -104,7 +104,7 @@ void EditorView::GutterView::setOffset(KDCoordinate offset) {
 
 KDSize EditorView::GutterView::minimalSizeForOptimalDisplay() const {
   int numberOfChars = 3; // TODO: Could be computed
-  return KDSize(2 * k_margin + numberOfChars * Poincare::Preferences::sharedPreferences()->KDPythonFont()->glyphSize().width(), 0);
+  return KDSize(2 * k_margin + numberOfChars * m_font->glyphSize().width(), 0);
 }
 
 }

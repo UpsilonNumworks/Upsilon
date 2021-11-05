@@ -1,6 +1,6 @@
 ---
 name: Bug report
-about: Omega is not working like it should? Let us know!
+about: Upsilon is not working like it should? Let us know!
 title: ''
 labels: 'Status: Triage, Type: Bug'
 assignees: ''
@@ -24,4 +24,4 @@ A clear and concise description of what you expected to happen.
 If applicable, add screenshots to help explain your problem.
 
 **Desktop (please complete the following information):**
- - Omega Version: [go to settings > about > Omega Version and type the version here]
+ - Upsilon Version: [go to settings > about > Upsilon Version and type the version here]
