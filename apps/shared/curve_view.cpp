@@ -10,6 +10,7 @@
 #include <escher/palette.h>
 #include <complex>
 #include <poincare/trigonometry.h>
+#include <apps/i18n.h>
 
 using namespace Poincare;
 
@@ -635,6 +636,7 @@ void CurveView::drawCurve(KDContext * ctx, KDRect rect, float tStart, float tEnd
   do {
     Ion::Keyboard::State state = Ion::Keyboard::scan();
     if (state.keyDown(Ion::Keyboard::Key::Back)){
+      Container::activeApp()->displayWarning(I18n::Message::GraphingAborted);
       return;
     }
     previousT = t;
