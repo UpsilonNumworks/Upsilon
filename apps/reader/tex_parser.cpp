@@ -135,10 +135,28 @@ Layout TexParser::popCommand() {
       return popFracCommand();
     } 
   }
+  if (strncmp(k_leftCommand, m_text, strlen(k_leftCommand)) == 0) {
+    m_text += strlen(k_leftCommand);
+    if (*m_text == '(') {
+      return popLeftCommand();
+    } 
+  }
+  if (strncmp(k_rightCommand, m_text, strlen(k_rightCommand)) == 0) {
+    m_text += strlen(k_rightCommand);
+    if (*m_text == ')') {
+      return popRightCommand();
+    } 
+  }
   else if (strncmp(k_sqrtCommand, m_text, strlen(k_sqrtCommand)) == 0) {
     m_text += strlen(k_sqrtCommand);
     if (*m_text == ' ' || *m_text == '{' || *m_text == '[') {
       return popSqrtCommand();
+    }
+  }
+  else if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
+    m_text += strlen(k_spaceCommand);
+    if (*m_text == ' ' || *m_text == '\\') {
+      return popSpaceCommand();
     }
   }
 
@@ -154,7 +172,7 @@ Layout TexParser::popCommand() {
   for (int i = 0; i < k_NumberOfFunctionCommands; i++) {
     if (strncmp(k_FunctionCommands[i], m_text, strlen(k_FunctionCommands[i])) == 0) {
       m_text += strlen(k_FunctionCommands[i]);
-      if (*m_text == ' ' || *m_text == '(' || *m_text == '{') {
+      if (*m_text == ' ' || *m_text == '_' || *m_text == '^' || *m_text == '(' || *m_text == '{' || *m_text == '\\' || *m_text == '$') {
         return LayoutHelper::String(k_FunctionCommands[i], strlen(k_FunctionCommands[i]));
       }
     }
@@ -172,6 +190,16 @@ Layout TexParser::popFracCommand() {
   return l;
 }
 
+Layout TexParser::popLeftCommand() {
+  m_text++;
+  return LeftParenthesisLayout::Builder();
+}
+
+Layout TexParser::popRightCommand() {
+  m_text++;
+  return RightParenthesisLayout::Builder();
+}
+
 Layout TexParser::popSqrtCommand() {
   while (*m_text == ' ') {
     m_text ++;
@@ -185,6 +213,10 @@ Layout TexParser::popSqrtCommand() {
   else {
     return NthRootLayout::Builder(popBlock());
   }
+}
+
+Layout TexParser::popSpaceCommand() {
+  return LayoutHelper::String(" ", 1);
 }
 
 Layout TexParser::popSymbolCommand(int SymbolIndex) {

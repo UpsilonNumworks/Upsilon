@@ -21,7 +21,10 @@ private:
 
   // Expressions
   Layout popFracCommand();
+  Layout popLeftCommand();
+  Layout popRightCommand();
   Layout popSqrtCommand();
+  Layout popSpaceCommand();
 
   //Symbols
   Layout popSymbolCommand(int SymbolIndex);
@@ -32,7 +35,10 @@ private:
 
   // Expressions that require specific handling
   static constexpr char const * k_fracCommand = "frac";
+  static constexpr char const * k_leftCommand = "left";
+  static constexpr char const * k_rightCommand = "right";
   static constexpr char const * k_sqrtCommand = "sqrt";
+  static constexpr char const * k_spaceCommand = "space";
 
   static constexpr int const k_NumberOfSymbols = 70;
   static constexpr int const k_NumberOfFunctionCommands = 32;
