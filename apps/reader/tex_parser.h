@@ -22,6 +22,7 @@ private:
   // Expressions
   Layout popFracCommand();
   Layout popSqrtCommand();
+  Layout popOverrightarrowCommand();
 
   //Symbols
   Layout popSymbolCommand(int SymbolIndex);
@@ -30,9 +31,12 @@ private:
   const char * m_endOfText;
   bool m_hasError;
 
+  inline bool isCommandEnded(char c) const;
+
   // Expressions that require specific handling
   static constexpr char const * k_fracCommand = "frac";
   static constexpr char const * k_sqrtCommand = "sqrt";
+  static constexpr char const * k_overrightArrowCommand = "overrightarrow";
 
   static constexpr int const k_NumberOfSymbols = 70;
   static constexpr int const k_NumberOfFunctionCommands = 32;
