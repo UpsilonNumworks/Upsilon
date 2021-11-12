@@ -40,7 +40,7 @@ void WordWrapTextView::previousPage() {
   const int charHeight = m_font->glyphSize().height();
 
   const char * endOfFile = text() + m_length;
-  const char * endOfWord = text() + m_pageOffset - 1;
+  const char * endOfWord = text() + m_pageOffset;
   const char * startOfWord = StartOfPrintableWord(endOfWord, text());
 
   KDSize textSize = KDSizeZero;
@@ -48,8 +48,8 @@ void WordWrapTextView::previousPage() {
   KDPoint textEndPosition(m_frame.width() - k_margin, m_frame.height() - k_margin);
 
   while(startOfWord>=text()) {
-    startOfWord = StartOfPrintableWord(endOfWord, text());
-    endOfWord = EndOfPrintableWord(startOfWord, endOfFile);
+    startOfWord = StartOfPrintableWord(endOfWord-1, text());
+    //endOfWord = EndOfPrintableWord(startOfWord, endOfFile);
 
     if (*startOfWord == '%') {
       if (updateTextColorBackward(startOfWord)) {

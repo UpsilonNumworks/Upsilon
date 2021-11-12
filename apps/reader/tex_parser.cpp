@@ -79,6 +79,7 @@ Layout TexParser::popText(char stop) {
   
   while (m_text < m_endOfText && *m_text != stop) {
     switch (*m_text) {
+      // TODO: Factorize this code
       case '\\':
         if (start != m_text) {
           layout.addOrMergeChildAtIndex(LayoutHelper::String(start, m_text - start), layout.numberOfChildren(), false);
@@ -129,41 +130,36 @@ Layout TexParser::popText(char stop) {
 }
 
 Layout TexParser::popCommand() {
+  // TODO: Factorize this code
   if (strncmp(k_fracCommand, m_text, strlen(k_fracCommand)) == 0) {
-    m_text += strlen(k_fracCommand);
-    if (*m_text == ' ' || *m_text == '{') {
+    if (isCommandEnded(*(m_text + strlen(k_fracCommand)))) {
+      m_text += strlen(k_fracCommand);
       return popFracCommand();
     } 
   }
-  if (strncmp(k_leftCommand, m_text, strlen(k_leftCommand)) == 0) {
-    m_text += strlen(k_leftCommand);
-    if (*m_text == '(') {
-      return popLeftCommand();
-    } 
-  }
-  if (strncmp(k_rightCommand, m_text, strlen(k_rightCommand)) == 0) {
-    m_text += strlen(k_rightCommand);
-    if (*m_text == ')') {
-      return popRightCommand();
-    } 
-  }
-  else if (strncmp(k_sqrtCommand, m_text, strlen(k_sqrtCommand)) == 0) {
-    m_text += strlen(k_sqrtCommand);
-    if (*m_text == ' ' || *m_text == '{' || *m_text == '[') {
+  if (strncmp(k_sqrtCommand, m_text, strlen(k_sqrtCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_sqrtCommand)))) {
+      m_text += strlen(k_sqrtCommand);
       return popSqrtCommand();
     }
   }
-  else if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
-    m_text += strlen(k_spaceCommand);
-    if (*m_text == ' ' || *m_text == '\\') {
+  if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_spaceCommand)))) {
+      m_text += strlen(k_spaceCommand);
       return popSpaceCommand();
+    }
+  }
+  if (strncmp(k_overrightArrowCommand, m_text, strlen(k_overrightArrowCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_overrightArrowCommand)))) {
+      m_text += strlen(k_overrightArrowCommand);
+      return popOverrightarrowCommand();
     }
   }
 
   for (int i = 0; i < k_NumberOfSymbols; i++) {
     if (strncmp(k_SymbolsCommands[i], m_text, strlen(k_SymbolsCommands[i])) == 0) {
-      m_text += strlen(k_SymbolsCommands[i]);
-      if (*m_text == ' ' || *m_text == '\\' || *m_text == '$') {
+      if (isCommandEnded(*(m_text + strlen(k_SymbolsCommands[i])))) {
+        m_text += strlen(k_SymbolsCommands[i]);
         return popSymbolCommand(i);
       }
     }
@@ -171,8 +167,8 @@ Layout TexParser::popCommand() {
 
   for (int i = 0; i < k_NumberOfFunctionCommands; i++) {
     if (strncmp(k_FunctionCommands[i], m_text, strlen(k_FunctionCommands[i])) == 0) {
-      m_text += strlen(k_FunctionCommands[i]);
-      if (*m_text == ' ' || *m_text == '_' || *m_text == '^' || *m_text == '(' || *m_text == '{' || *m_text == '\\' || *m_text == '$') {
+      if (isCommandEnded(*(m_text + strlen(k_FunctionCommands[i])))) {
+        m_text += strlen(k_FunctionCommands[i]);
         return LayoutHelper::String(k_FunctionCommands[i], strlen(k_FunctionCommands[i]));
       }
     }
@@ -219,10 +215,17 @@ Layout TexParser::popSpaceCommand() {
   return LayoutHelper::String(" ", 1);
 }
 
+
+Layout TexParser::popOverrightarrowCommand() {
+  return VectorLayout::Builder(popBlock());
+}
+
 Layout TexParser::popSymbolCommand(int SymbolIndex) {
   uint32_t codePoint = k_SymbolsCodePoints[SymbolIndex];
   return CodePointLayout::Builder(codePoint);
 }
 
-
+inline bool TexParser::isCommandEnded(char c) const {
+  return !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z');
+}
 }
