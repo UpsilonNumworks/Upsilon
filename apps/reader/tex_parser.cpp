@@ -137,6 +137,18 @@ Layout TexParser::popCommand() {
       return popFracCommand();
     } 
   }
+  if (strncmp(k_leftCommand, m_text, strlen(k_leftCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_leftCommand)))) {
+      m_text += strlen(k_leftCommand);
+      return popLeftCommand();
+    }
+  }
+  if (strncmp(k_rightCommand, m_text, strlen(k_rightCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_rightCommand)))) {
+      m_text += strlen(k_rightCommand);
+      return popRightCommand();
+    }
+  }
   if (strncmp(k_sqrtCommand, m_text, strlen(k_sqrtCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_sqrtCommand)))) {
       m_text += strlen(k_sqrtCommand);
