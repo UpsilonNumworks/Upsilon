@@ -54,7 +54,7 @@ constexpr static I18n::Message s_betaTestersUsernames[s_numberOfBetaTesters] = {
   I18n::Message::PHilaireLeRoux,
   I18n::Message::PHectorNussbaumer,
   I18n::Message::PRaphaelDyda,
-  I18n::Message::PThibautCellier,
+  I18n::Message::PThibautC,
 };
 
 void ContributorsController::willDisplayCellForIndex(HighlightCell * cell, int index) {
