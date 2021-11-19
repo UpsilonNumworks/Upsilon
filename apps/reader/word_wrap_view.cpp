@@ -208,7 +208,7 @@ void WordWrapTextView::drawRect(KDContext * ctx, KDRect rect) const {
     }
 
     if (toDraw == ToDraw::Expression) {
-      layout.draw(ctx, textPosition, m_textColor);
+      layout.draw(ctx, textPosition, m_textColor, m_backgroundColor);
     }
     else if (toDraw == ToDraw::Text) {
       ctx->drawString(word, textPosition, m_font, m_textColor, m_backgroundColor);
