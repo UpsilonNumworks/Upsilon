@@ -20,6 +20,8 @@ private:
   Layout popCommand();
 
   // Expressions
+  Layout popCeilCommand();
+  Layout popFloorCommand();
   Layout popFracCommand();
   Layout popLeftCommand();
   Layout popRightCommand();
@@ -37,6 +39,8 @@ private:
   inline bool isCommandEnded(char c) const;
 
   // Expressions that require specific handling
+  static constexpr char const * k_ceilCommand = "ceil";
+  static constexpr char const * k_floorCommand = "floor";
   static constexpr char const * k_fracCommand = "frac";
   static constexpr char const * k_leftCommand = "left";
   static constexpr char const * k_rightCommand = "right";

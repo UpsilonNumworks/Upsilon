@@ -131,6 +131,18 @@ Layout TexParser::popText(char stop) {
 
 Layout TexParser::popCommand() {
   // TODO: Factorize this code
+  if (strncmp(k_ceilCommand, m_text, strlen(k_ceilCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_ceilCommand)))) {
+      m_text += strlen(k_ceilCommand);
+      return popCeilCommand();
+    }
+  }
+  if (strncmp(k_floorCommand, m_text, strlen(k_floorCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_floorCommand)))) {
+      m_text += strlen(k_floorCommand);
+      return popFloorCommand();
+    }
+  }
   if (strncmp(k_fracCommand, m_text, strlen(k_fracCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_fracCommand)))) {
       m_text += strlen(k_fracCommand);
@@ -191,6 +203,16 @@ Layout TexParser::popCommand() {
 }
 
 // Expressions
+Layout TexParser::popCeilCommand() {
+  Layout ceil = popBlock(); 
+  return CeilingLayout::Builder(ceil);
+}
+
+Layout TexParser::popFloorCommand() {
+  Layout floor = popBlock(); 
+  return FloorLayout::Builder(floor);
+}
+
 Layout TexParser::popFracCommand() {
   Layout numerator = popBlock();
   Layout denominator = popBlock();
