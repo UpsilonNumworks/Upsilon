@@ -48,7 +48,7 @@ private:
   static constexpr char const * k_spaceCommand = "space";
   static constexpr char const * k_overrightArrowCommand = "overrightarrow";
 
-  static constexpr int const k_NumberOfSymbols = 70;
+  static constexpr int const k_NumberOfSymbols = 71;
   static constexpr int const k_NumberOfFunctionCommands = 32;
 };
   
