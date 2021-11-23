@@ -32,6 +32,8 @@ public:
   void setShowPopUp(bool showPopUp) { m_showPopUp = showPopUp; }
   bool autocomplete() const { return m_autoComplete; }
   void setAutocomplete(bool autocomple) { m_autoComplete = autocomple; }
+  bool syntaxhighlighting() const { return m_syntaxhighlighting; }
+  void setSyntaxhighlighting(bool syntaxhighlight) { m_syntaxhighlighting = syntaxhighlight; }
   int brightnessLevel() const { return m_brightnessLevel; }
   void setBrightnessLevel(int brightnessLevel);
   const KDFont * font() const { return m_font; }
@@ -47,6 +49,7 @@ private:
     m_tempExamMode(ExamMode::Standard),
     m_showPopUp(true),
     m_autoComplete(true),
+    m_syntaxhighlighting(true),
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
@@ -57,6 +60,7 @@ private:
   mutable ExamMode m_tempExamMode;
   bool m_showPopUp;
   bool m_autoComplete;
+  bool m_syntaxhighlighting;
   int m_brightnessLevel;
   const KDFont * m_font;
 };
