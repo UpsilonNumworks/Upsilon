@@ -72,3 +72,4 @@ binpack: $(BUILD_DIR)/flasher.light.bin $(BUILD_DIR)/epsilon.onboarding.two_bina
 	cp $(BUILD_DIR)/epsilon.onboarding.internal.bin $(BUILD_DIR)/epsilon.onboarding.external.bin $(BUILD_DIR)/binpack
 	cd $(BUILD_DIR) && for binary in flasher.light.bin epsilon.onboarding.internal.bin epsilon.onboarding.external.bin; do shasum -a 256 -b binpack/$${binary} > binpack/$${binary}.sha256;done
 	cd $(BUILD_DIR) && tar cvfz binpack-$(MODEL)-`git rev-parse HEAD | head -c 7`.tgz binpack/*
+	$(PYTHON) build/device/secure_ext.py $(BUILD_DIR)/epsilon.onboarding.external.bin
