@@ -102,13 +102,13 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
       }
       if(childLabel == I18n::Message::Battery){
         MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)m_selectableTableView.selectedCell();
-        char batteryLevel[15];
+        char batteryLevel[6];
         if(strchr(myCell->accessoryText(), '%') == NULL){
-          int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 15);
+          int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 6);
           batteryLevel[batteryLen] = '%';
           batteryLevel[batteryLen+1] = '\0';
         }else{
-          int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 15, Poincare::Preferences::PrintFloatMode::Decimal, 3);
+          int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 6, Poincare::Preferences::PrintFloatMode::Decimal, 3);
           batteryLevel[batteryLen] = 'V';
           batteryLevel[batteryLen+1] = '\0';
         }
@@ -181,8 +181,8 @@ void AboutController::willDisplayCellForIndex(HighlightCell * cell, int index) {
     MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)cell;
     static const char * mpVersion = MICROPY_VERSION_STRING;
 
-    static char batteryLevel[5];
-    int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 4, Poincare::Preferences::PrintFloatMode::Decimal, 3);
+    static char batteryLevel[6];
+    int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 6, Poincare::Preferences::PrintFloatMode::Decimal, 3);
     batteryLevel[batteryLen] = 'V';
     batteryLevel[batteryLen + 1] = '\0';
 
