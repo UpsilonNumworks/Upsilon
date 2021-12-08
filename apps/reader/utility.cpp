@@ -136,7 +136,7 @@ const char * StartOfPrintableWord(const char * word, const char * start) {
   const char * result = word;
   while (codePoint != '\n' && codePoint != ' ' && codePoint != '%' && codePoint != '$') {
     result = decoder.stringPosition();
-    if (result >= start) {
+    if (result <= start) {
       break;
     }
     codePoint = decoder.previousCodePoint();

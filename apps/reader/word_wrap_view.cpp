@@ -74,7 +74,7 @@ void WordWrapTextView::previousPage() {
     }
     else {
       if (*startOfWord == '\\' || *(startOfWord + 1) == '$') {
-      textSize = m_font->stringSizeUntil(startOfWord + 1, endOfWord);
+        textSize = m_font->stringSizeUntil(startOfWord + 1, endOfWord);
       }
       else {
         textSize = m_font->stringSizeUntil(startOfWord, endOfWord);

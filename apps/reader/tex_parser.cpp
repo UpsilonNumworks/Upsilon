@@ -169,6 +169,7 @@ Layout TexParser::popCommand() {
       return popSqrtCommand();
     }
   }
+
   if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_spaceCommand)))) {
       m_text += strlen(k_spaceCommand);
@@ -201,7 +202,7 @@ Layout TexParser::popCommand() {
   }	
 
   m_hasError = true; 
-  return LayoutHelper::String(m_text, strlen(m_text));
+  return EmptyLayout::Builder();
 }
 
 // Expressions
@@ -251,11 +252,10 @@ Layout TexParser::popSpaceCommand() {
   return LayoutHelper::String(" ", 1);
 }
 
-
 Layout TexParser::popOverrightarrowCommand() {
   return VectorLayout::Builder(popBlock());
 }
-
+  
 Layout TexParser::popSymbolCommand(int SymbolIndex) {
   uint32_t codePoint = k_SymbolsCodePoints[SymbolIndex];
   return CodePointLayout::Builder(codePoint);
@@ -264,4 +264,5 @@ Layout TexParser::popSymbolCommand(int SymbolIndex) {
 inline bool TexParser::isCommandEnded(char c) const {
   return !(c >= 'a' && c <= 'z') && !(c >= 'A' && c <= 'Z');
 }
+
 }
