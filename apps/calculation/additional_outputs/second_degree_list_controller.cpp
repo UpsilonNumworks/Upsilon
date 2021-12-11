@@ -169,24 +169,24 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
     Expression x0Opposite = getOppositeIfExists(x0, &reductionContext);
     if (x0Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x0, context, ExpressionNode::ReductionTarget::User);
-      firstFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0);
+      firstFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0));
     }
     else {
       PoincareHelpers::Simplify(&x0Opposite, context, ExpressionNode::ReductionTarget::User);
-      firstFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite);
+      firstFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0Opposite));
     }
     if (x0.type() == ExpressionNode::Type::Opposite) {
-      factorized = Parenthesis::Builder(Addition::Builder(Symbol::Builder("x", strlen("x")), x0.childAtIndex(0).clone()));
+      factorized = Parenthesis::Builder(Addition::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0.childAtIndex(0).clone())));
     }
 
     Expression x1Opposite = getOppositeIfExists(x1, &reductionContext);
     if (x1Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x1, context, ExpressionNode::ReductionTarget::User);
-      secondFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x1);
+      secondFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x1));
     }
     else {
       PoincareHelpers::Simplify(&x1Opposite, context, ExpressionNode::ReductionTarget::User);
-      secondFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x1Opposite);
+      secondFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x1Opposite));
     }
 
     Expression solutionProduct = Multiplication::Builder(Parenthesis::Builder(firstFactor), Parenthesis::Builder(secondFactor));
@@ -214,11 +214,11 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
     Expression factor;
     if (x0Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x0, context, ExpressionNode::ReductionTarget::User);
-      factor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0);
+      factor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0));
     }
     else {
       PoincareHelpers::Simplify(&x0Opposite, context, ExpressionNode::ReductionTarget::User);
-      factor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite);
+      factor = Addition::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0Opposite));
     }
     Expression solutionProduct = Power::Builder(Parenthesis::Builder(factor), Rational::Builder(2));
     switch (multiplicationTypeForA)
