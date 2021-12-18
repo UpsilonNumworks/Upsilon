@@ -9,19 +9,19 @@ BacklightDimmingTimer::BacklightDimmingTimer() :
 bool BacklightDimmingTimer::fire() {
   if (m_dimerExecutions == 0) {
     m_brightnessLevel = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
-    m_nbrofsteps = m_brightnessLevel / decreaseby;
-    m_timeToSleep = decreasetime / m_nbrofsteps;
+    m_dimerSteps = m_brightnessLevel / decreaseby;
+    m_timeToSleep = decreasetime / m_dimerSteps;
     m_period = m_timeToSleep / Timer::TickDuration;
     if (m_period == 0) {
       m_period = 1;
     }
     resetTimer();
   }
-  if (m_dimerExecutions < m_nbrofsteps) {
-    m_nextbrightness = (m_brightnessLevel-k_dimBacklightBrightness)/m_nbrofsteps * (m_nbrofsteps-m_dimerExecutions);
+  if (m_dimerExecutions < m_dimerSteps) {
+    m_nextbrightness = (m_brightnessLevel-k_dimBacklightBrightness)/m_dimerSteps * (m_nbrofsteps-m_dimerExecutions);
     Ion::Backlight::setBrightness(m_nextbrightness);
     resetTimer();
-  } else if (m_dimerExecutions == m_nbrofsteps) {
+  } else if (m_dimerExecutions == m_dimerSteps) {
     Ion::Backlight::setBrightness(k_dimBacklightBrightness);
   }
   m_dimerExecutions++;
