@@ -1,41 +1,35 @@
 #include "backlight_dimming_timer.h"
 #include "global_preferences.h"
 
-int nbrofrun = 0;
-int brightnessLevel;
-int nbrofsteps;
-int nextbrightness;
-float timeToSleep; // In miliseconds
-
 BacklightDimmingTimer::BacklightDimmingTimer() :
   Timer(k_idleBeforeDimmingDuration/Timer::TickDuration)
 {
 }
 
 bool BacklightDimmingTimer::fire() {
-  if (nbrofrun == 0) {
-    brightnessLevel = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
-    nbrofsteps = brightnessLevel / decreaseby;
-    timeToSleep = decreasetime / nbrofsteps;
-    m_period = timeToSleep / Timer::TickDuration;
+  if (m_dimerExecutions == 0) {
+    m_brightnessLevel = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
+    m_nbrofsteps = m_brightnessLevel / decreaseby;
+    m_timeToSleep = decreasetime / m_nbrofsteps;
+    m_period = m_timeToSleep / Timer::TickDuration;
     if (m_period == 0) {
       m_period = 1;
     }
     resetTimer();
   }
-  if (nbrofrun < nbrofsteps) {
-    nextbrightness = (brightnessLevel-k_dimBacklightBrightness)/nbrofsteps * (nbrofsteps-nbrofrun);
-    Ion::Backlight::setBrightness(nextbrightness);
+  if (m_dimerExecutions < m_nbrofsteps) {
+    m_nextbrightness = (m_brightnessLevel-k_dimBacklightBrightness)/m_nbrofsteps * (m_nbrofsteps-nbrofrun);
+    Ion::Backlight::setBrightness(m_nextbrightness);
     resetTimer();
-  } else if (nbrofrun == nbrofsteps) {
+  } else if (m_dimerExecutions == m_nbrofsteps) {
     Ion::Backlight::setBrightness(k_dimBacklightBrightness);
   }
-  nbrofrun++;
+  m_dimerExecutions++;
   return false;
 }
 
 void BacklightDimmingTimer::reset() {
-  nbrofrun = 0;
+  m_dimerExecutions = 0;
   m_period = k_idleBeforeDimmingDuration / Timer::TickDuration;
   resetTimer();
 }
