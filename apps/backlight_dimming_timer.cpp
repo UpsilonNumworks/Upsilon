@@ -18,7 +18,7 @@ bool BacklightDimmingTimer::fire() {
     resetTimer();
   }
   if (m_dimerExecutions < m_nbrofsteps) {
-    m_nextbrightness = (m_brightnessLevel-k_dimBacklightBrightness)/m_nbrofsteps * (m_nbrofsteps-nbrofrun);
+    m_nextbrightness = (m_brightnessLevel-k_dimBacklightBrightness)/m_nbrofsteps * (m_nbrofsteps-m_dimerExecutions);
     Ion::Backlight::setBrightness(m_nextbrightness);
     resetTimer();
   } else if (m_dimerExecutions == m_nbrofsteps) {
