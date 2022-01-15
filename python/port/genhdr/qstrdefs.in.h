@@ -340,6 +340,7 @@ Q(version_info)
 Q(zip)
 
   // Ion QSTR
+Q(get_keys)
 Q(ion)
 Q(keydown)
 Q(battery)
@@ -406,7 +407,6 @@ Q(set_pixel)
 Q(large_font)
 Q(small_font)
 Q(wait_vblank)
-Q(get_keys)
 Q(get_palette)
 
 Q(PrimaryText)
@@ -581,6 +581,10 @@ Q(listdir)
 
 #if defined(INCLUDE_ULAB)
 // ulab QSTRs
+Q(reduced)
+Q(qr)
+Q(flat)
+Q(flatiter)
 Q(threshold)
 Q(edgeitems)
 Q(inplace)

@@ -113,7 +113,7 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
       xMinusAlphaPowerTwoWithFactor = xMinusAlphaPowerTwo;
       break;
     case MultiplicationTypeForA::Minus:
-      xMinusAlphaPowerTwoWithFactor = Multiplication::Builder(a.clone(), xMinusAlphaPowerTwo);
+      xMinusAlphaPowerTwoWithFactor = Opposite::Builder(xMinusAlphaPowerTwo);
       break;
     case MultiplicationTypeForA::Parenthesis:
       xMinusAlphaPowerTwoWithFactor = Multiplication::Builder(Parenthesis::Builder(a.clone()), xMinusAlphaPowerTwo);
@@ -170,35 +170,35 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
     if (x0Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x0, context, ExpressionNode::ReductionTarget::User);
       if (x0.type() == ExpressionNode::Type::Addition || x0.type() == ExpressionNode::Type::Subtraction) {
-        x0 = Parenthesis::Builder(x0.clone());
+        firstFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0.clone()));
       }
-      firstFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0);
+      else {
+        firstFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0.clone());
+      }
     }
     else {
-      PoincareHelpers::Simplify(&x0Opposite, context, ExpressionNode::ReductionTarget::User);
       if (x0Opposite.type() == ExpressionNode::Type::Addition || x0Opposite.type() == ExpressionNode::Type::Subtraction) {
         x0Opposite = Parenthesis::Builder(x0Opposite.clone());
       }
-      firstFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite);
-    }
-    if (x0.type() == ExpressionNode::Type::Opposite) {
-      factorized = Parenthesis::Builder(Addition::Builder(Symbol::Builder("x", strlen("x")), x0.childAtIndex(0).clone()));
+      secondFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite.clone());
     }
 
     Expression x1Opposite = getOppositeIfExists(x1, &reductionContext);
     if (x1Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x1, context, ExpressionNode::ReductionTarget::User);
       if (x1.type() == ExpressionNode::Type::Addition || x1.type() == ExpressionNode::Type::Subtraction) {
-        x1 = Parenthesis::Builder(x1.clone());
+        secondFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x1.clone()));
       }
-      secondFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x1);
+      else {
+        secondFactor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x1.clone());
+      }
     }
     else {
       PoincareHelpers::Simplify(&x1Opposite, context, ExpressionNode::ReductionTarget::User);
       if (x1Opposite.type() == ExpressionNode::Type::Addition || x1Opposite.type() == ExpressionNode::Type::Subtraction) {
         x1Opposite = Parenthesis::Builder(x1Opposite.clone());
       }
-      secondFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x1Opposite);
+      secondFactor = Addition::Builder(Symbol::Builder("x", strlen("x")), x1Opposite.clone());
     }
 
     Expression solutionProduct = Multiplication::Builder(Parenthesis::Builder(firstFactor), Parenthesis::Builder(secondFactor));
@@ -208,7 +208,7 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
         factorized = solutionProduct;
         break;
       case MultiplicationTypeForA::Minus:
-        factorized = Multiplication::Builder(a.clone(), solutionProduct);
+        factorized = Opposite::Builder(solutionProduct);
         break;
       case MultiplicationTypeForA::Parenthesis:
         factorized = Multiplication::Builder(Parenthesis::Builder(a.clone()), solutionProduct);
@@ -227,11 +227,16 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
     
     if (x0Opposite.isUninitialized()) {
       PoincareHelpers::Simplify(&x0, context, ExpressionNode::ReductionTarget::User);
-      factor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0);
+      if (x0.type() == ExpressionNode::Type::Addition || x0.type() == ExpressionNode::Type::Subtraction) {
+        factor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), Parenthesis::Builder(x0.clone()));
+      }
+      else {
+        factor = Subtraction::Builder(Symbol::Builder("x", strlen("x")), x0.clone());
+      }
     }
     else {
       PoincareHelpers::Simplify(&x0Opposite, context, ExpressionNode::ReductionTarget::User);
-      factor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite);
+      factor = Addition::Builder(Symbol::Builder("x", strlen("x")), x0Opposite.clone());
     }
 
     Expression solutionProduct = Power::Builder(Parenthesis::Builder(factor), Rational::Builder(2));
@@ -241,7 +246,7 @@ void SecondDegreeListController::setExpression(Poincare::Expression e) {
         factorized = solutionProduct;
         break;
       case MultiplicationTypeForA::Minus:
-        factorized = Multiplication::Builder(a.clone(), solutionProduct);
+        factorized = Opposite::Builder(solutionProduct);
         break;
       case MultiplicationTypeForA::Parenthesis:
         factorized = Multiplication::Builder(Parenthesis::Builder(a.clone()), solutionProduct);
