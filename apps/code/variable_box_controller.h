@@ -80,7 +80,7 @@ private:
   // NestedMenuController
   HighlightCell * leafCellAtIndex(int index) override { assert(false); return nullptr; }
   HighlightCell * nodeCellAtIndex(int index) override { assert(false); return nullptr; }
-  bool selectLeaf(int rowIndex) override;
+  bool selectLeaf(int rowIndex, bool quitToolbox) override;
   void insertTextInCaller(const char * text, int textLength = -1);
 
   // Loading
@@ -92,7 +92,7 @@ private:
   bool addNodesFromImportMaybe(mp_parse_node_struct_t * parseNode, const char * textToAutocomplete, int textToAutocompleteLength, bool importFromModules = true);
   const char * importationSourceNameFromNode(mp_parse_node_t & node);
   bool importationSourceIsModule(const char * sourceName, const ToolboxMessageTree * * moduleChildren = nullptr, int * numberOfModuleChildren = nullptr);
-  bool importationSourceIsScript(const char * sourceName, const char * * scriptFullName, Script * retreivedScript = nullptr);
+  bool importationSourceIsScript(const char * sourceName, const char * * scriptFullName, Script * retrievedScript = nullptr);
   bool addImportStructFromScript(mp_parse_node_struct_t * pns, uint structKind, const char * scriptName, const char * textToAutocomplete, int textToAutocompleteLength);
   /* Add a node if it completes the text to autocomplete and if it is not
    * already contained in the variable box. The returned boolean means we
