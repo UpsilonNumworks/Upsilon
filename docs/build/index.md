@@ -234,6 +234,7 @@ make OMEGA_USERNAME="" binpack -j4
 to make binpack witch you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0110/). Binpacks are a great way to share a custom build of Upsilon to friends.
 
 <br>
+
 ### Web simulator
 
 First, install emsdk :
@@ -257,7 +258,7 @@ The simulator is now in `output/release/simulator/web/simulator.zip`
 
 <br>
 
-###3DS Simulator
+### 3DS Simulator
 
 You need devkitPro and devkitARM installed and in your path (instructions [here](https://devkitpro.org/wiki/Getting_Started))
 
