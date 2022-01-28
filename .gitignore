@@ -3,7 +3,7 @@
 build/device/**/*.pyc
 epsilon.elf
 epsilon.map
-/.vscode/*
+.vscode
 .DS_Store
 .gradle
 .idea/
