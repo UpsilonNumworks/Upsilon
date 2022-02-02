@@ -4,35 +4,127 @@ breadcrumb: SDK
 ---
 # Build and run your own version of Upsilon
 
-## Install the SDK
+### Manual
 
-### Windows
+ *You can refer to this [website](https://www.numworks.com/resources/engineering/software/build/) for the first step if you get errors.*
 
-#### With Msys2
-[Msys2](https://www.msys2.org/) environment is recommended by Numworks to get most of the required tools on Windows easily. It's where you'll paste all the commands of this tutorial. Once it's installed, paste these commands into the Msys2 terminal.
+
+
+### 1. Install SDK
+
+<br>
+
+<details>
+
+<summary><b>1.1 Linux</b></summary>
+
+<br>
+
+<details>
+
+<summary>Debian or Ubuntu</summary>
+
+<br>
+
+You just have to install dependencies by running these command with superuser privileges in a Terminal:
+
+```bash
+apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+```
+
+And there you can go to step 2!
+
+<br>
+
+</details>
+
+<details>
+
+<summary>Fedora</summary>
+
+<br>
+
+To install basics dev tools:
+
+```bash
+dnf install make automake gcc gcc-c++ kernel-devel
+```
+
+And then install required packages.
+
+```bash
+install git ImageMagick libX11-devel libXext-devel freetype-devel libpng-devel libjpeg-devel pkg-config
+```
+
+Then, install GCC cross compiler for ARM.
+
+```bash
+        dnf install arm-none-eabi-gcc-cs arm-none-eabi-gcc-cs-c++
+```
+
+<br>
+
+</details>
+
+<br>
+
+</details>
+
+<details>
+
+<summary><b>1.2 Mac</b></summary>
+
+<br>
+
+It's recommended to use [Homebrew](https://brew.sh/). Once it's installed, just run:
+
+```bash
+brew install numworks/tap/epsilon-sdk
+```
+
+and it will install all dependencies.
+
+<br>
+
+And there you can go to step 2!
+
+<br>
+
+</details>
+
+<details>
+
+<summary><b>1.3 Windows</b></summary>
+
+<br>
+
+<details>
+
+<summary>With Msys2/Mingw (officialized by numworks but with a lot of bugs)</summary>
+
+[Msys2](https://www.msys2.org/) environment is recommended by Numworks to get most of the required tools on Windows easily. It's where you'll paste all the commands of this tutorial. Once it'sinstalled, paste these commands into the Msys2 terminal.
 
 ```bash
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config mingw-w64-x86_64-libusb git make python
 echo "export PATH=/mingw64/bin:$PATH" >> .bashrc
 ```
 
-Next, you'll need to install the [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). When prompted for an install location, choose `C:\msys64\home\User\gcc-arm\`. You'll then need to add this folder to your $PATH. Just enter:
+Next, you'll need to install the [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). When prompted for aninstall location, choose `C:\msys64\home\User\gcc-arm\`. You'll then need to add this folder to your $PATH. Just enter:
 
 ```bash
 echo "export PATH=$PATH:$HOME/gcc-arm/bin" >> .bashrc
 ```
-Then, restart your terminal and that's it.
+Just restart terminal and you can go to step 2!
 
-<br>
-<br>
+</details>
 
-#### With WSL
+<details>
+
+<summary>With WSL 2</summary>
 
 You need a windows version >= 1903.
 
-<br>
-
-##### WSL Installation
+#### WSL Installation
 
 1. Use simultaneously win + X keys and then click on "admin powershell".
 ```powershell
@@ -52,16 +144,14 @@ This one allows virtual machines developed by Microsoft.
 4. Now open powershell admin like before and type:
 ```powershell
 wsl --set-default-version 2
-```
-5. Download [Ubuntu](https://www.microsoft.com/store/apps/9n6svws3rx71) from Microsoft store. You can also use [Debian](https://www.microsoft.com/store/productId/9MSVKQC78PK6).
+        ```
+5. Download [Ubuntu](https://www.microsoft.com/store/apps/9n6svws3rx71) from Microsoft store.
 
 WSL is now installed.
 
-<br>
-
-##### Usbipd installation to connect your calculator
-If you want to connect to the calculator, you have to connect to install this [tool](https://github.com/dorssel/usbipd-win/releases/download/v1.3.0/usbipd-win_1.3.0.msi). This will allow you to connect WSL to the calculator through internet. Follow the on screen information to install.
-###### Ubuntu
+### Usbipd installation to connect your calculator
+If you want to connect to the calculator, you have to connect to install this [tool](https://github.com/dorssel/usbipd-win/releases/download/v1.3.0/usbipd-win_1.3.0.msi). This will allow you toconnect WSL to the calculator through internet. Follow the on screen information to install.
+#### Ubuntu
 1. In a WSL Ubuntu command prompt, type:
 ```bash
 sudo apt install linux-tools-5.4.0-77-generic hwdata
@@ -73,16 +163,15 @@ sudo visudo
 3. Add `/usr/lib/linux-tools/5.4.0-77-generic` to the beginning of secure_path. After editing, the line should look similar to this.
 `Defaults secure_path="/usr/lib/linux-tools/5.4.0-77-generic:/usr/local/sbin:..."`
 
-###### Debian
+#### Debian
+
 1. If you use debian for your WSL distro, use this command instead:
 ```bash
 sudo apt install usbip hwdata usbutils
 ```
 And that's all for installation and set up.
 
-<br>
-
-##### To connect your calculator
+### To connect your calculator
 1. Open an Admin powershell and type:
 ```powershell
   usbipd wsl list
@@ -94,95 +183,34 @@ usbipd wsl attach --busid <BUSID>
 ```
 It will ask you to type your wsl's password and will connect your calculator to WSL.
 
-<br>
+You can now go to step 2!
 
-### macOS
+</details>
 
-We recommend using [Homebrew](https://brew.sh) to install all dependencies. Once you have installed Homebrew, install all the dependencies with the following command:
-
-```
-brew install numworks/tap/epsilon-sdk
-```
+</details>
 
 <br>
 
-### Debian or Ubuntu
 
-Most of the required tools are available as apt packages:
+### 2. Set up repo
 
-```
-apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config apt-get install gcc-arm-none-eabi binutils-arm-none-eabi
-```
 
-<br>
-
-### Fedora
-
-First install basics dev tools.
+Clone repo and use 'upsilon-dev' branch by pasting these two commands:
 
 ```bash
-dnf install make automake gcc gcc-c++ kernel-devel
+git clone --recursive https://github.com/Lauryy06/Upsilon.git
+cd Upsilon
+git checkout upsilon-dev
 ```
-
-Then install required packages.
-
-```bash
-dnf install git ImageMagick libX11-devel libXext-devel freetype-devel libpng-devel libjpeg-devel pkg-config
-```
-
-Then, install GCC cross compiler for ARM.
-
-```bash
-dnf install arm-none-eabi-gcc-cs arm-none-eabi-gcc-cs-c++
-```
-
 <br>
 
-### Other Linux distro
 
-You'll need to install the latest version of GCC and make it available in your $PATH:
+### 3. Choose the target
 
-1. Download the [GCC toolchain distributed by ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). You should obtain a `gcc-arm-none-eabi-x-linux.tar.bz2` file.
-2. Decompress that file with `tar xvfj gcc-arm-none-eabi-*-linux.tar.bz2`
-3. Add the resulting folder to your $PATH. If you use bash,
-```bash
-echo "export PATH=\$PATH:`find $(pwd)/gcc-arm-none-eabi-*-update/bin -type d`" >> ~/.bashrc
-```
-should do what you need (you'll need to restart your terminal afterwards).
 
-Also, try to find packages listed above in your default package manager.
+<details>
 
-<br>
-
-## Retrieve the source code
-
-The code is hosted on <a href="https://github.com/Lauryy06/Upsilon">GitHub</a>. You can retrieve it using the following command.
-
-```
-git clone https://github.com/Lauryy06/Upsilon.git
-```
-
-<br>
-
-## Run Upsilon on your computer
-
-Once the SDK has been installed, just open your terminal (Msys2, Terminal.app, xterm…) and type the following commands:
-
-You have a lot of different choices to run Upsilon (depending on your model...).
-The version of the hardware of the calculator is printed at its back.
-
-<br>
-
-### Simulator binaries for your platform
-
-```
-make PLATFORM=simulator clean
-make PLATFORM=simulator epsilon_run
-```
-
-<br>
-
-### Model n0100
+<summary><b>Model n0100</b></summary>
 
 (note: you can change the `EPSILON_I18N=en` flag to `fr`, `nl`, `pt`, `it`, `de`, `es` or `hu`).
 
@@ -205,11 +233,13 @@ or:
 ```bash
 make MODEL=n0100 OMEGA_USERNAME="" binpack -j4
 ```
-to make binpack witch you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Binpacks are a great way to share a custom build of Upsilon to friends.
+to make binpack which you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Binpacks are a great way to share a custom build of Upsilonto friends.
 
-<br>
+</details>
 
-### Model n0110
+<details>
+
+<summary><b>Model n0110</b></summary>
 
 
 ```bash
@@ -233,9 +263,11 @@ make OMEGA_USERNAME="" binpack -j4
 ```
 to make binpack witch you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0110/). Binpacks are a great way to share a custom build of Upsilon to friends.
 
-<br>
+</details>
 
-### Web simulator
+<details>
+
+<summary><b>Web simulator</b></summary>
 
 First, install emsdk :
 
@@ -256,9 +288,11 @@ make PLATFORM=simulator TARGET=web OMEGA_USERNAME="{Your name, max 15 characters
 
 The simulator is now in `output/release/simulator/web/simulator.zip`
 
-<br>
+</details>
 
-### 3DS Simulator
+<details>
+
+<summary><b>3DS Simulator</b></summary>
 
 You need devkitPro and devkitARM installed and in your path (instructions [here](https://devkitpro.org/wiki/Getting_Started))
 
@@ -274,6 +308,20 @@ You can then put epsilon.3dsx on a SD card to run it from the HBC or use 3dslink
 3dslink output/release/simulator/3ds/epsilon.3dsx -a <3DS' IP ADDRESS>
 ```
 
+</details>
+
+<br>
+
+Important: Don't forget the `--recursive` tag, because Upsilon relies on submodules.
+Also, you can change the number of processes that run in parallel during the build by changing the value of the `-j` flag.
+Don't forget to put your pseudo instead of `{your pseudo, max 15 char}`. If you don't want one, just remove the `OMEGA_USERNAME=""` argument.
+
+<br>
+
 Congratulations, you're running your very own version of Upsilon!
 
 To build with a special theme, please refer to this [page](../../themes/README.md).
+
+If you need help, you can join our Discord server here : https://discord.gg/NFvzdCBTQn
+
+<a href="https://discord.gg/NFvzdCBTQn"><p align="center"><img alt="Omega Banner Discord" src="https://user-images.githubusercontent.com/12123721/86287349-54ef5800-bbe8-11ea-80c1-34eb1f93eebd.png" /></p></a>
