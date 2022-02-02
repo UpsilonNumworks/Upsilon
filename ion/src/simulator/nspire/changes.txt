@@ -1,0 +1,49 @@
+
+comparison with original files:
+
+no changes:
+
+minor changes:
+events.cpp: removed haptics
+events.h: set SDL sharedExternalTextBufferSize to 0, added declaration of dumpEventCount and logAfter (why?)
+framebuffer.cpp: removed comments, changed Window to Main, sFrameBufferActive default to true
+telemetry_init.cpp: changed include path
+
+major changes:
+events_keyboard.cpp: from events_keyboard_platform.cpp
+display.cpp: move framebuffer contents managed by Upsilon to video memory, the concept is the same; void shutdown() renamed to void quit()
+keyboard.cpp: removed headless-related keyDown, keyUp and scanHandlesSDLKey, both share returning (State)state
+keyboard.h: now only contains keyboard image bitmap
+platform.h: WTF
+main.cpp: of course they're different
+
+new file:
+callback.cpp: useless, not called anywhere
+drivers etc.
+
+
+nspire port adaptations from 3DS:
+
+unchanged:
+events.cpp
+events.h
+framebuffer.cpp
+framebuffer.h
+telemetry_init.cpp
+platform.h
+callback.cpp
+clipboard.cpp
+main.h
+
+changed:
+display.h: now #include <n2DLib.h>
+display.cpp: memcpy framebuffer to BUFF_BASE_ADDRESS directly. Since Ndless already has a buffer and it is possible to read back from BUFF_BASE_ADDRESS, why not completely abolish that framebuffer? removed assert.h
+main.cpp: changed windowWidth to 320, useless; moved timing functions to timing.cpp
+callback.cpp: removed
+keyboard.cpp: rewritten based on the original SDL thing
+keyboard.h: trimmed
+events_keyboard.cpp: mostly rewritten
+NOTE: some #include and Makefile changes untracked!
+n2DLib.h & n2DLib.c: prefix 'GRAFX_' attached to macro 'min' and 'max', they were polluting C++ standard libraries!
+timing.cpp: modified based on the original; replace msleep function with the one provided by Ndless
+console.cpp: modified based on the original; removed headless-related code

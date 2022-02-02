@@ -141,6 +141,29 @@ Vous pouvez ensuite copier epsilon.3dsx sur une carte SD pour l'exécuter depuis
 
 </details>
 
+<details>
+  <summary><b>Simulateur TI-Nspire</b></summary>
+
+***Mes excuses, mais cette section est traduite automatiquement. Merci de nous aider à le localiser.***
+
+Tout d'abord, construisez et installez [Ndless SDK](https://hackspire.org/index.php/C_and_assembly_development_introduction);
+
+Compilez ensuite Upsilon en spécifiant la cible:
+
+```bash
+make clean
+make PLATFORM=simulator TARGET=nspire -j4
+```
+
+Copiez epsilon.tns sur Nspire Touchpad ou CX avec [Ndless](https://ndless.me) installé et exécutez-le à partir de Mes documents.
+
+Veuillez noter que l'exécutable est au [format Zehn](https://hackspire.org//index.php?title=Zehn) donc
+Ndless 3.1 ou une version ultérieure est requise.
+
+La méthode de mappage du clavier n'est pas parfaite et est susceptible de changer.
+
+</details>
+
 Si vous avez besoin d'aide, n'hésitez pas à rejoindre notre serveur discord : https://discord.gg/Q9buEMduXG
 
 <a href="https://discord.gg/Q9buEMduXG"><p align="center"><img alt="Omega Banner Discord" src="https://user-images.githubusercontent.com/12123721/86287349-54ef5800-bbe8-11ea-80c1-34eb1f93eebd.png" /></p></a>
@@ -177,9 +200,10 @@ Vous pouvez essayer Epsilon depuis votre navigateur sur le [simulateur en ligne]
 
 ## Licence
 
-NumWorks est une marque déposée de NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.
-Nintendo est Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, Etats-Unis.
-NumWorks SAS et Nintendo of America Inc ne sont en aucun cas associés avec ce projet.
+NumWorks est une marque déposée de NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.<br>
+Nintendo est Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, Etats-Unis.<br>
+NumWorks SAS et Nintendo of America Inc ne sont en aucun cas associés avec ce projet.<br>
+TI-Nspire est une marque déposée de Texas Instruments, Inc.
 
 * NumWorks Epsilon est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 * Omega est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).

@@ -328,6 +328,27 @@ You can then put epsilon.3dsx on a SD card to run it from the HBC or use 3dslink
 
 </details>
 
+<details>
+  <summary><b>TI-Nspire Simulator</b></summary>
+
+First, build and install [Ndless SDK](https://hackspire.org/index.php/C_and_assembly_development_introduction);
+
+Then compile Upsilon specifying the target:
+
+```bash
+make clean
+make PLATFORM=simulator TARGET=nspire -j4
+```
+
+Copy epsilon.tns to either Nspire Touchpad or CX with [Ndless](https://ndless.me) installed and run it from My Documents.
+
+Please note that the executable is in [Zehn format](https://hackspire.org//index.php?title=Zehn) thus
+Ndless 3.1 or a later version is required.
+
+Keyboard mapping method is not perfect and is subject to change.
+
+</details>
+
 <br>
 
 Important: Don't forget the `--recursive` tag, because Upsilon relies on submodules.
@@ -371,9 +392,10 @@ You can try Epsilon straight from your browser in the [online simulator](https:/
 
 ## License
 
-NumWorks is a registered trademark of NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.
-Nintendo and Nintendo 3DS are registered trademarks of Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, USA.
-NumWorks SAS and Nintendo of America Inc aren't associated in any shape or form with this project.
+NumWorks is a registered trademark of NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.<br>
+Nintendo and Nintendo 3DS are registered trademarks of Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, USA.<br>
+NumWorks SAS and Nintendo of America Inc aren't associated in any shape or form with this project.<br>
+TI-Nspire is a registered trademark of Texas Instruments, Inc.
 
 * NumWorks Epsilon is released under a [CC BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 * Omega is released under a [CC BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
