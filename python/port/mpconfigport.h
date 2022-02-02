@@ -85,6 +85,9 @@
 // Whether to provide math.factorial function
 #define MICROPY_PY_MATH_FACTORIAL (1)
 
+// Whether math.factorial is large, fast and recursive (1) or small and slow (0).
+#define MICROPY_OPT_MATH_FACTORIAL (0)
+
 // Whether to provide "cmath" module
 #define MICROPY_PY_CMATH (1)
 
