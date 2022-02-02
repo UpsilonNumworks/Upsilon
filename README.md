@@ -25,9 +25,7 @@ Upsilon is a fork of Omega, an user-made OS that runs on the Numworks calculator
 - Improvements for the Periodic table application
 - *And everything that has been added to Omega before its termination!* [See Omega's changelog here](https://github.com/Omega-Numworks/Omega/wiki/Changelog) | [Main Omega features + screenshots](https://github.com/Omega-Numworks/Omega/wiki/Main-features).
 
-
-
-
+<br>
 
 ## Installation
 
@@ -48,6 +46,7 @@ Do not disconnect your calculator until the installation is complete.
 <br>
 
 <details>
+
 <summary><b>1.1 Linux</b></summary>
 
 <br>
@@ -219,9 +218,10 @@ You can now go to step 2!
 
 </details>
 
-</detais>
+</details>
 
 <br>
+
 
 ### 2. Set up repo
 
