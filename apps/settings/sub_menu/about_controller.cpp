@@ -113,21 +113,21 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
         MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)m_selectableTableView.selectedCell();
         char batteryLevel[5];
         if(strchr(myCell->accessoryText(), '%') == NULL){
-          #ifdef DEVICE
-            if(!Ion::Battery::isCharging() && Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)) <= 100) {
+            if((int) ((Ion::Battery::voltage() - 3.6) * 166) < 0) {
+              batteryLevel[0] = '0';
+              batteryLevel[1] = '%';
+              batteryLevel[2] = '\0';
+            }
+            else
+            {
               int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 5);
               batteryLevel[batteryLen] = '%';
               batteryLevel[batteryLen+1] = '\0';
-            } else {
-                myCell->setAccessoryText("100%");
-              } 
+            }
+            if(Ion::Battery::isCharging() && (int) ((Ion::Battery::voltage() - 3.6) * 166) >= 100) {
+              myCell->setAccessoryText("100%");
               return true;
             }
-          #else
-            batteryLevel[0] = '0';
-            batteryLevel[1] = '%';
-            batteryLevel[2] = '\0';
-          #endif
         } else {
           int batteryLen = Poincare::Number::FloatNumber(Ion::Battery::voltage()).serialize(batteryLevel, 5, Poincare::Preferences::PrintFloatMode::Decimal, 3);
           batteryLevel[batteryLen] = 'V';
