@@ -11,7 +11,7 @@
 #include "variable_box_controller.h"
 #include "../shared/shared_app.h"
 
-#define DEFAULT_PYTHON_HEAP_SIZE 62000
+#define DEFAULT_PYTHON_HEAP_SIZE 67000
 
 namespace Code {
 
