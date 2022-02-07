@@ -99,13 +99,16 @@ App::App(Snapshot * snapshot) :
   // But we allocate only what the user defines so we've got free space to use
   this->k_pythonHeapSize = GlobalPreferences::sharedGlobalPreferences()->getPythonHeap() * 1000;
   if(this->k_pythonHeapSize != DEFAULT_PYTHON_HEAP_SIZE) {
-    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)this->m_pythonHeap[this->k_pythonHeapSize + 1];
-    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = (char*)this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE - this->k_pythonHeapSize];
-    this->m_pythonHeap[this->k_pythonHeapSize + 1] = 'c';
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)&this->m_pythonHeap[this->k_pythonHeapSize + 1];
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = (char*)&this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE - this->k_pythonHeapSize + 1];
+    this->m_pythonHeap[this->k_pythonHeapSize + 1] = 'c'; // If there is no crash, we can acess this memory area
   } else {
-    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE];
-    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = (char*)GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start;
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start = (char*)&this->m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE];
+    GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_end = GlobalPreferences::sharedGlobalPreferences()->memory_heap_available_start;
   }
+  // Now, we can set up the heapManager to allocate or free some space in the area available
+  GlobalPreferences::sharedGlobalPreferences()->heapManager.init();
+
   Clipboard::sharedClipboard()->enterPython();
 }
 

@@ -2,6 +2,7 @@
 #define APPS_GLOBAL_PREFERENCES_H
 
 #include <apps/i18n.h>
+#include <ion.h>
 
 class GlobalPreferences {
 public:
@@ -45,9 +46,10 @@ public:
   // To modify the python heap
   void setPythonHeap(uint8_t n);
   int8_t getPythonHeap();
-  char *memory_heap_available_start;
-  char *memory_heap_available_end;
+  char *memory_heap_available_start = NULL;
+  char *memory_heap_available_end = NULL;
   bool isPythonInit = false;
+  Ion::PythonHeapManager heapManager;
   // End
   const KDFont * font() const { return m_font; }
   void setFont(const KDFont * font) { m_font = font; }
