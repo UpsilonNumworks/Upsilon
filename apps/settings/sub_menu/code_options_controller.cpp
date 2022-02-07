@@ -50,7 +50,7 @@ bool CodeOptionsController::handleEvent(Ion::Events::Event event) {
         GlobalPreferences::sharedGlobalPreferences()->setAutocomplete(!GlobalPreferences::sharedGlobalPreferences()->autocomplete());
         m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
         break;
-      case 43:
+      case 3:
         m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
         break;
       case 2:
@@ -135,21 +135,21 @@ void CodeOptionsController::willDisplayCellForIndex(HighlightCell * cell, int in
 #endif
 
   if(index == 3)
-{
-  MessageTableCellWithGauge *gaugeCell = (MessageTableCellWithGauge*)cell;
-  GaugeView * myGauge = (GaugeView *)gaugeCell->accessoryView();
-  myGauge->setLevel(this->heap_level / 20.00);
-  gaugeCell->setMessage(I18n::Message::About);
-  if(!this->heap_clicked) {
-    gaugeCell->setMessageFont(KDFont::LargeFont);
-    gaugeCell->setMessage(I18n::Message::PythonHeap);
+  {
+    MessageTableCellWithGauge *gaugeCell = (MessageTableCellWithGauge*)cell;
+    GaugeView * myGauge = (GaugeView *)gaugeCell->accessoryView();
+    myGauge->setLevel(this->heap_level / 20.00);
+    gaugeCell->setMessage(I18n::Message::About);
+    if(!this->heap_clicked) {
+      gaugeCell->setMessageFont(KDFont::LargeFont);
+      gaugeCell->setMessage(I18n::Message::PythonHeap);
+    }
+    else {
+      gaugeCell->setMessageFont(KDFont::SmallFont);
+      gaugeCell->setMessage(I18n::Message::PythonHeapExplanation);
+    }
+    
   }
-  else {
-    gaugeCell->setMessageFont(KDFont::SmallFont);
-    gaugeCell->setMessage(I18n::Message::PythonHeapExplanation);
-  }
-  
-}
 }
 
 }
