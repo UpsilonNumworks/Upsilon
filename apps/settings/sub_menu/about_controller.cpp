@@ -114,9 +114,15 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
         char batteryLevel[5];
         if(strchr(myCell->accessoryText(), '%') == NULL){
           #ifdef DEVICE
-            int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 5);
-            batteryLevel[batteryLen] = '%';
-            batteryLevel[batteryLen+1] = '\0';
+            if(!Ion::Battery::isCharging() && Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)) <= 100) {
+              int batteryLen = Poincare::Integer((int) ((Ion::Battery::voltage() - 3.6) * 166)).serialize(batteryLevel, 5);
+              batteryLevel[batteryLen] = '%';
+              batteryLevel[batteryLen+1] = '\0';
+            } else {
+                myCell->setAccessoryText("100%");
+              } 
+              return true;
+            }
           #else
             batteryLevel[0] = '0';
             batteryLevel[1] = '%';
