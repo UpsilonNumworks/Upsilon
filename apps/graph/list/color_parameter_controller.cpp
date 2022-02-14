@@ -22,7 +22,7 @@ namespace Graph {
         App * myApp = App::app();
         assert(!m_record.isNull());
         Shared::ExpiringPointer<Shared::ContinuousFunction> function = myApp->functionStore()->modelForRecord(m_record);
-        function->changeColor(FunctionColors::color(selectedRow()));
+        function->changeColor(color(selectedRow()));
         StackViewController * stack = stackController();
         stack->pop();
         stack->pop();
@@ -56,8 +56,8 @@ namespace Graph {
     void ColorParameterController::willDisplayCellForIndex(HighlightCell * cell, int index) {
     assert(0 <= index && index < k_numberOfTypes);
     MessageTableCellWithExpression * myCell = static_cast<MessageTableCellWithExpression *>(cell);
-    myCell->setMessage(FunctionColors::Message(index));
-    myCell->setTextColor(FunctionColors::color(index));
+    myCell->setMessage(Message(index));
+    myCell->setTextColor(color(index));
     }
 
     MessageTableCellWithExpression * ColorParameterController::reusableCell(int index, int type) {

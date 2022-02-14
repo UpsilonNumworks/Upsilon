@@ -88,7 +88,7 @@ void ListParameterController::willDisplayCellForIndex(HighlightCell * cell, int 
       m_typeCell.setSubtitle(PlotTypeHelper::Message(row));
     } else if(cell == &m_colorCell) {
         m_colorCell.setMessage(I18n::Message::FunctionColor);
-        m_colorCell.setSubtitle(FunctionColors::currentColor(function->color()));
+        m_colorCell.setSubtitle(currentColor(function->color()));
       } else {
       assert(cell == &m_functionDomain);
       m_functionDomain.setMessage(I18n::Message::FunctionDomain);
