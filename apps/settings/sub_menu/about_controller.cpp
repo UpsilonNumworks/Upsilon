@@ -115,7 +115,7 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
         if(strchr(myCell->accessoryText(), '%') == NULL) {
           float voltage = (Ion::Battery::voltage() - 3.6) * 166;
           if(voltage < 0.0) {
-            myCell->setAccessoryText("0%"); // We cheat... => I don't agree : 0% is 0% not 1% x)
+            myCell->setAccessoryText("1%"); // We cheat...
             return true;
           } else if (voltage >= 100.0) {
             myCell->setAccessoryText("100%");
