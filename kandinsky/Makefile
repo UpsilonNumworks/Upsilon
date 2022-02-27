@@ -21,8 +21,11 @@ kandinsky_src += $(addprefix kandinsky/src/,\
   rect.cpp \
 )
 
-simple_kandinsky_src := $(kandinsky_src)
-default_kandinsky_src := $(kandinsky_src)
+kandinsky_src += $(addprefix kandinsky/fonts/, \
+  LargeFont.ttf \
+  SmallFont.ttf \
+  ItalicFont.ttf \
+)
 
 tests_src += $(addprefix kandinsky/test/,\
   color.cpp\
@@ -51,53 +54,17 @@ $(eval $(call rule_for, \
 
 RASTERIZER := $(BUILD_DIR)/kandinsky/fonts/rasterizer
 
-# Define a rasterizing recipe. Parameters : font source, font name, size, packed_width, packed_height
+# Define a rasterizing recipe. Parameters : font name, size, packed_width, packed_height
 define raster_font
 $(call rule_for, \
   RASTER, \
-  kandinsky/fonts/$(2).cpp, \
+  kandinsky/fonts/$(1).cpp, \
   kandinsky/fonts/$(1).ttf $$(RASTERIZER), \
-  $$(RASTERIZER) $$< $(3) $(4) $(4) $(5) $(6) $(1) $$@ $(if $(HAS_LIBPNG),$$(basename $$@).png), \
+  $$(RASTERIZER) $$< $(2) $(2) $(3) $(4) $(1) $$@ $(if $(HAS_LIBPNG),$$(basename $$@).png), \
   global \
 )
 endef
 
-ifdef HAS_READER
-
-kandinsky_src += $(addprefix kandinsky/fonts/, \
-  LargeFontExtended.ttf \
-  SmallFontExtended.ttf \
-  LargeFontSimple.ttf \
-  SmallFontSimple.ttf \
-)
-
-default_kandinsky_src += $(addprefix kandinsky/fonts/, \
-  LargeFontExtended.ttf \
-  SmallFontExtended.ttf \
-)
-
-simple_kandinsky_src += $(addprefix kandinsky/fonts/, \
-  LargeFontSimple.ttf \
-  SmallFontSimple.ttf \
-)
-
-$(eval $(call raster_font,SmallFont,SmallFontExtended,1,12,7,14))
-$(eval $(call raster_font,LargeFont,LargeFontExtended,1,16,10,18))
-
-$(eval $(call raster_font,SmallFont,SmallFontSimple,0,12,7,14))
-$(eval $(call raster_font,LargeFont,LargeFontSimple,0,16,10,18))
-
-else
-
-kandinsky_src += $(addprefix kandinsky/fonts/, \
-  LargeFont.ttf \
-  SmallFont.ttf \
-)
-
-simple_kandinsky_src = $(kandinsky_src)
-default_kandinsky_src = $(kandinsky_src)
-
-$(eval $(call raster_font,SmallFont,SmallFontSimple,0,12,7,14))
-$(eval $(call raster_font,LargeFont,LargeFontSimple,0,16,10,18))
-
-endif
+$(eval $(call raster_font,SmallFont,12,7,14))
+$(eval $(call raster_font,LargeFont,16,10,18))
+$(eval $(call raster_font,ItalicFont,16,10,18))
