@@ -67,7 +67,7 @@ ifdef HAS_READER
 kandinsky_src += $(addprefix kandinsky/fonts/, \
   LargeFontExtended.ttf \
   SmallFontExtended.ttf \
-  ItalicFontExtended \
+  ItalicFontExtended.ttf \
   LargeFontSimple.ttf \
   SmallFontSimple.ttf \
   ItalicFontSimple.ttf \
@@ -76,6 +76,7 @@ kandinsky_src += $(addprefix kandinsky/fonts/, \
 default_kandinsky_src += $(addprefix kandinsky/fonts/, \
   LargeFontExtended.ttf \
   SmallFontExtended.ttf \
+  ItalicFontExtended.ttf \
 )
 
 simple_kandinsky_src += $(addprefix kandinsky/fonts/, \
@@ -86,6 +87,7 @@ simple_kandinsky_src += $(addprefix kandinsky/fonts/, \
 
 $(eval $(call raster_font,SmallFont,SmallFontExtended,1,12,7,14))
 $(eval $(call raster_font,LargeFont,LargeFontExtended,1,16,10,18))
+$(eval $(call raster_font,ItalicFont,ItalicFontExtended,1,16,10,18))
 
 $(eval $(call raster_font,SmallFont,SmallFontSimple,0,12,7,14))
 $(eval $(call raster_font,LargeFont,LargeFontSimple,0,16,10,18))
