@@ -65,7 +65,7 @@ static constexpr CodePoint UCodePointRightwardsArrow          = 0x2192;  // →
 static constexpr CodePoint UCodePointNArySummation            = 0x2211;  // ∑
 static constexpr CodePoint UCodePointSquareRoot               = 0x221a;  // √
 static constexpr CodePoint UCodePointIntegral                 = 0x222b;  // ∫
-static constexpr CodePoint UCodePointMathematicalBoldSmallI   = 0x1d422; // 𝐢
+static constexpr CodePoint UCodePointMathematicalBoldSmallI   = 0x3b9; // 𝐢
 static constexpr CodePoint UCodePointInfinity                 = 0x221e;  // ∞
 
 #endif
