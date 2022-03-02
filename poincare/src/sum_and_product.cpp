@@ -2,6 +2,10 @@
 #include <poincare/decimal.h>
 #include <poincare/undefined.h>
 #include <poincare/variable_context.h>
+#include <poincare/integer_variable_context.h>
+#include <poincare/sum.h>
+#include <poincare/product.h>
+#include <poincare/symbol.h>
 extern "C" {
 #include <assert.h>
 #include <stdlib.h>
@@ -41,12 +45,6 @@ Evaluation<T> SumAndProductNode::templatedApproximate(ApproximationContext appro
     }
     nContext.setApproximationForVariable<T>((T)i);
     Expression child = Expression(childAtIndex(0)).clone();
-    if (child.type() == ExpressionNode::Type::Sequence) {
-      /* Since we cannot get the expression of a sequence term like we would for
-      * a function, we replace its potential abstract rank by the value it should
-      * have. We can then evaluate its value */
-      child.childAtIndex(0).replaceSymbolWithExpression(symbol, Float<T>::Builder(i));
-    }
     approximationContext.setContext(&nContext);
     result = evaluateWithNextTerm(T(), result, child.node()->approximate(T(), approximationContext), approximationContext.complexFormat());
     if (result.isUndefined()) {
@@ -54,6 +52,36 @@ Evaluation<T> SumAndProductNode::templatedApproximate(ApproximationContext appro
     }
   }
   return result;
+}
+
+Expression SumAndProductNode::deepReplaceReplaceableSymbols(Context * context, bool * didReplace, bool replaceFunctionsOnly, int parameteredAncestorsCount) {
+  return SumAndProduct(this).deepReplaceReplaceableSymbols(context, didReplace, replaceFunctionsOnly, parameteredAncestorsCount);
+}
+
+Expression SumAndProduct::deepReplaceReplaceableSymbols(Context * context, bool * didReplace, bool replaceFunctionsOnly, int parameteredAncestorsCount) {
+  int nbChildren = numberOfChildren();
+  for (int i = 1; i < nbChildren; i++) {
+    Expression c = childAtIndex(i).deepReplaceReplaceableSymbols(context, didReplace, replaceFunctionsOnly, parameteredAncestorsCount);
+    if (c.isUninitialized()) {
+      return Expression();
+    }
+  }
+
+  Symbol symbol = childAtIndex(1).convert<Symbol>();
+  IntegerVariableContext newContext = IntegerVariableContext(symbol.name(), context);
+  Expression c = childAtIndex(0).deepReplaceReplaceableSymbols(&newContext, didReplace, replaceFunctionsOnly, parameteredAncestorsCount);
+  if (c.isUninitialized()) {
+    return Expression();
+  }
+
+  return *this;
+}
+
+void SumAndProductNode::deepReduceChildren(ReductionContext reductionContext) {
+  SymbolNode * symbol = static_cast<SymbolNode *>(childAtIndex(1));
+  IntegerVariableContext newContext = IntegerVariableContext(symbol->name(), reductionContext.context());
+  reductionContext.setContext(&newContext);
+  ExpressionNode::deepReduceChildren(reductionContext);
 }
 
 Expression SumAndProduct::shallowReduce(Context * context) {
