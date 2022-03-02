@@ -14,7 +14,7 @@ public:
       size_t draftTextBufferSize,
       ::InputEventHandlerDelegate * inputEventHandlerDelegate,
       ::TextFieldDelegate * delegate = nullptr,
-      const KDFont * size = KDFont::ItalicFont,
+      const KDFont * size = KDFont::LargeFont,
       float horizontalAlignment = 0.0f,
       float verticalAlignment = 0.5f,
       KDColor textColor = Palette::PrimaryText,
