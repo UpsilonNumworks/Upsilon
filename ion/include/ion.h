@@ -16,6 +16,7 @@
 #include <ion/storage.h>
 #include <ion/timing.h>
 #include <ion/usb.h>
+#include <ion/python_heap.h>
 #include <ion/unicode/utf8_decoder.h>
 #include <ion/unicode/utf8_helper.h>
 #include <stdint.h>

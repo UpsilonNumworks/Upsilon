@@ -11,6 +11,8 @@
 #include "variable_box_controller.h"
 #include "../shared/shared_app.h"
 
+#define DEFAULT_PYTHON_HEAP_SIZE 67000
+
 namespace Code {
 
 class App : public Shared::InputEventHandlerDelegateApp {
@@ -75,7 +77,7 @@ public:
 
   VariableBoxController * variableBoxController() { return &m_variableBoxController; }
 
-  static constexpr int k_pythonHeapSize = 67000;
+  int k_pythonHeapSize = DEFAULT_PYTHON_HEAP_SIZE;
 
 private:
   /* Python delegate:
@@ -83,7 +85,9 @@ private:
    * buffer here and we give to controllers that load Python environment. We
    * also memoize the last Python user to avoid re-initiating MicroPython when
    * unneeded. */
-  char m_pythonHeap[k_pythonHeapSize];
+
+  // The array is created with the biggest size and then, if the its size is modified some pointers will be given to use the free space
+  char m_pythonHeap[DEFAULT_PYTHON_HEAP_SIZE];
   const void * m_pythonUser;
 
   App(Snapshot * snapshot);

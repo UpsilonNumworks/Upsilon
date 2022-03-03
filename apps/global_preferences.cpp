@@ -1,4 +1,6 @@
 #include "global_preferences.h"
+#include <python/port/port.h>
+#include <apps/code/app.h>
 
 GlobalPreferences * GlobalPreferences::sharedGlobalPreferences() {
   static GlobalPreferences globalPreferences;
@@ -43,4 +45,14 @@ void GlobalPreferences::setBrightnessLevel(int brightnessLevel) {
     m_brightnessLevel = brightnessLevel;
     Ion::Backlight::setBrightness(m_brightnessLevel);
   }
+}
+
+void GlobalPreferences::setPythonHeap(uint8_t n)
+{
+  this->python_heap = ((n * 46) / 21) + 16;
+}
+
+int8_t GlobalPreferences::getPythonHeap()
+{
+  return ((this->python_heap - 16) * 21) / 46;
 }

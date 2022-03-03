@@ -3,6 +3,7 @@
 
 #include "generic_sub_controller.h"
 #include "preferences_controller.h"
+#include "selectable_view_with_messages.h"
 
 namespace Settings {
 
@@ -14,14 +15,17 @@ public:
   int reusableCellCount(int type) override;
   void willDisplayCellForIndex(HighlightCell * cell, int index) override;
 private:
-  constexpr static int k_totalNumberOfCell = 4;
+  constexpr static int k_totalNumberOfCell = 5;
   PreferencesController m_preferencesController;
   MessageTableCellWithChevronAndMessage m_chevronCellFontSize;
   MessageTableCellWithSwitch m_switchCellAutoCompletion;
   MessageTableCellWithSwitch m_switchCellSyntaxHighlighting;
   MessageTableCellWithSwitch m_switchCellCursorSaving;
+  MessageTableCellWithGauge m_gaugeCellPythonHeap;
+  bool heap_clicked;
+  int8_t heap_level;
+  int8_t last_heap_level;
 };
-
 }
 
 #endif

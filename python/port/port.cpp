@@ -67,6 +67,8 @@ extern "C" {
 }
 
 #include <escher/palette.h>
+#include "apps/global_preferences.h"
+
 
 static MicroPython::ScriptProvider * sScriptProvider = nullptr;
 static MicroPython::ExecutionEnvironment * sCurrentExecutionEnvironment = nullptr;
@@ -163,6 +165,7 @@ extern "C" {
 }
 
 void MicroPython::init(void * heapStart, void * heapEnd) {
+  GlobalPreferences::sharedGlobalPreferences()->isPythonInit = true;
   /* We delimit the stack part that will be used by Python. The stackTop is the
    * address of the first object that can be allocated on Python stack. This
    * boundaries are used:

@@ -93,4 +93,4 @@ The firmware will also need to take special care of the system initialization. T
 
 Enforcing such a careful memory layout would be an impossible job without the proper tool. Fortunately, embedded linkers can be scripted and allow this kind of tailor-made configuration. You'll find Epsilon's linker script in [ion/src/device/n0110/flash.ld](https://github.com/numworks/epsilon/blob/master/ion/src/device/n0110/flash.ld) - it is heavily commented and should be self-explanatory.
 
-That being said, there are additional things the OS usually takes care of which we need to do ourselves : for example, initialize global variables to zero. This is done in the [ion/src/device/shared/boot/rt0.cpp](https://github.com/numworks/epsilon/blob/master/ion/src/device/shared/boot/rt0.cpp) file, which is worth reading too.
+That being said, there are additional things the OS usually takes care of which we need to do ourselves : for example, initialize global variables to zero. This is done in the [ion/src/device/shared/boot/](https://github.com/numworks/epsilon/blob/master/ion/src/device/shared/boot/rt0.cpp) file, which is worth reading too.

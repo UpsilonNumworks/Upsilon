@@ -67,4 +67,6 @@ private:
 
 }
 
+extern bool isPythonInit;
+
 #endif

@@ -2,6 +2,7 @@
 #define APPS_GLOBAL_PREFERENCES_H
 
 #include <apps/i18n.h>
+#include <ion.h>
 
 class GlobalPreferences {
 public:
@@ -42,6 +43,14 @@ public:
   void setCursorSaving(bool cursorsave) { m_cursorSaving = cursorsave; }
   int brightnessLevel() const { return m_brightnessLevel; }
   void setBrightnessLevel(int brightnessLevel);
+  // To modify the python heap
+  void setPythonHeap(uint8_t n);
+  int8_t getPythonHeap();
+  char *memory_heap_available_start = NULL;
+  char *memory_heap_available_end = NULL;
+  bool isPythonInit = false;
+  Ion::PythonHeapManager heapManager;
+  // End
   const KDFont * font() const { return m_font; }
   void setFont(const KDFont * font) { m_font = font; }
   constexpr static int NumberOfBrightnessStates = 15;
@@ -74,6 +83,7 @@ private:
   bool m_syntaxhighlighting;
   bool m_cursorSaving;
   int m_brightnessLevel;
+  uint32_t python_heap = 62;
   const KDFont * m_font;
 };
 

@@ -35,6 +35,7 @@ ion_src += $(addprefix ion/src/shared/, \
   rtc.cpp \
   stack_position.cpp \
   storage.cpp \
+  python_heap.cpp \
   unicode/utf8_decoder.cpp\
   unicode/utf8_helper.cpp\
 )
