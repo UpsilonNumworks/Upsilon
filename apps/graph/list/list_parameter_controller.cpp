@@ -5,6 +5,7 @@
 #include "../app.h"
 #include <escher/metric.h>
 #include <assert.h>
+#include "color_list.h"
 
 using namespace Shared;
 using namespace Poincare;
@@ -16,10 +17,12 @@ ListParameterController::ListParameterController(ListController * listController
   m_listController(listController),
   m_typeCell(),
   m_typeParameterController(this),
+  m_colorParameterController(this),
   m_domainParameterController(nullptr, inputEventHandlerDelegate),
-  m_renameCell(I18n::Message::Rename)
+  m_renameCell(I18n::Message::Rename),
+  m_colorCell()
 {
-  m_selectableTableView.setMargins(Metric::CommonTopMargin, Metric::CommonTopMargin, Metric::CommonBottomMargin, Metric::CommonTopMargin); // Reduce the margins to make te text fit
+  m_selectableTableView.setMargins(Metric::CommonTopMargin, Metric::CommonTopMargin, Metric::CommonBottomMargin, Metric::CommonTopMargin); // Reduce the margins to make the text fit
 }
 
 HighlightCell * ListParameterController::reusableCell(int index, int type) {
@@ -30,6 +33,8 @@ HighlightCell * ListParameterController::reusableCell(int index, int type) {
     return &m_functionDomain;
   case 2:
     return &m_renameCell;
+  case 3:
+    return &m_colorCell;
   default:
     return Shared::ListParameterController::reusableCell(index, type - 3);
   }
@@ -41,7 +46,7 @@ bool ListParameterController::handleEvent(Ion::Events::Event event) {
   }
   if (event == Ion::Events::Right) {
     int selectedR = selectedRow();
-    if (selectedR == 0 || selectedR == 1) {
+    if (selectedR == 0 || selectedR == 1 || selectedR == 3) {
       // Go in the submenu
       return handleEnterOnRow(selectedR);
     }
@@ -73,7 +78,7 @@ int writeInterval(char * buffer, int bufferSize, double min, double max, int num
 
 void ListParameterController::willDisplayCellForIndex(HighlightCell * cell, int index) {
   Shared::ListParameterController::willDisplayCellForIndex(cell, index);
-  if ((cell == &m_typeCell || cell == &m_functionDomain) && !m_record.isNull()) {
+  if ((cell == &m_typeCell || cell == &m_functionDomain || cell == &m_colorCell) && !m_record.isNull()) {
     App * myApp = App::app();
     assert(!m_record.isNull());
     Shared::ExpiringPointer<Shared::ContinuousFunction> function = myApp->functionStore()->modelForRecord(m_record);
@@ -81,7 +86,10 @@ void ListParameterController::willDisplayCellForIndex(HighlightCell * cell, int 
       m_typeCell.setMessage(I18n::Message::CurveType);
       int row = static_cast<int>(function->plotType());
       m_typeCell.setSubtitle(PlotTypeHelper::Message(row));
-    } else {
+    } else if(cell == &m_colorCell) {
+        m_colorCell.setMessage(I18n::Message::FunctionColor);
+        m_colorCell.setSubtitle(currentColor(function->color()));
+      } else {
       assert(cell == &m_functionDomain);
       m_functionDomain.setMessage(I18n::Message::FunctionDomain);
       double min = function->tMin();
@@ -111,6 +119,10 @@ bool ListParameterController::handleEnterOnRow(int rowIndex) {
     return true;
   case 2:
     renameFunction();
+    return true;
+  case 3:
+    m_colorParameterController.setRecord(m_record);
+    stack->push(&m_colorParameterController);
     return true;
   default:
     return Shared::ListParameterController::handleEnterOnRow(rowIndex - 3);

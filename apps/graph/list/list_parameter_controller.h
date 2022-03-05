@@ -3,6 +3,7 @@
 
 #include <apps/shared/list_parameter_controller.h>
 #include "type_parameter_controller.h"
+#include "color_parameter_controller.h"
 #include "domain_parameter_controller.h"
 
 namespace Graph {
@@ -20,13 +21,15 @@ protected:
   bool handleEnterOnRow(int rowIndex) override;
 private:
   int totalNumberOfCells() const override {
-    return Shared::ListParameterController::totalNumberOfCells() + 2;
+    return Shared::ListParameterController::totalNumberOfCells() + 3;
   }
   void renameFunction();
   ListController * m_listController;
   MessageTableCellWithChevronAndMessage m_typeCell;
   MessageTableCellWithChevronAndBuffer m_functionDomain;
+  MessageTableCellWithChevronAndMessage m_colorCell;
   TypeParameterController m_typeParameterController;
+  ColorParameterController m_colorParameterController;
   DomainParameterController m_domainParameterController;
   MessageTableCell m_renameCell;
 };

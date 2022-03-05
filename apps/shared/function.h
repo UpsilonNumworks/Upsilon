@@ -35,6 +35,7 @@ public:
   // Properties
   bool isActive() const;
   KDColor color() const;
+  void changeColor(KDColor color);
   void setActive(bool active);
 
   // Definition Interval
@@ -78,6 +79,7 @@ protected:
     }
     bool isActive() const { return m_active; }
     void setActive(bool active) { m_active = active; }
+    void changeColor(uint16_t color) { m_color = color; }
   private:
 #if __EMSCRIPTEN__
     /* For emscripten memory representation, loads and stores must be aligned;

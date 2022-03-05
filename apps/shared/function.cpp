@@ -44,6 +44,10 @@ bool Function::isActive() const {
   return recordData()->isActive();
 }
 
+void Function::changeColor(KDColor color) {
+  recordData()->changeColor(color.rgb());
+}
+
 KDColor Function::color() const {
   return recordData()->color();
 }
