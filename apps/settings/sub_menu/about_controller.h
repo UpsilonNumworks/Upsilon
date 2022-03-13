@@ -11,7 +11,6 @@ namespace Settings {
 class AboutController : public GenericSubController {
 public:
   AboutController(Responder * parentResponder);
-  //View * view() override { return &m_view; }
   View * view() override { return &m_selectableTableView; }
   void viewWillAppear() override;
   TELEMETRY_ID("About");
@@ -22,11 +21,11 @@ public:
   int typeAtLocation(int i, int j) override;
   int numberOfRows() const override;
 private:
-  constexpr static int k_totalNumberOfCell = 9;
+  constexpr static int k_totalNumberOfCell = 8;
   bool hasUsernameCell() const;
   ContributorsController m_contributorsController;
   MessageTableCellWithChevronAndMessage m_contributorsCell;
-  MessageTableCellWithBuffer m_cells[k_totalNumberOfCell];
+  MessageTableCellWithBuffer m_cells[k_totalNumberOfCell - 1];
   HardwareTest::PopUpController m_hardwareTestPopUpController;
 };
 

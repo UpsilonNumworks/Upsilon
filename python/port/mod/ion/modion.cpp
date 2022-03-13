@@ -4,6 +4,8 @@ extern "C" {
 #include <py/runtime.h>
 }
 #include <ion.h>
+#include "apps/apps_container.h"
+#include "apps/global_preferences.h"
 #include "port.h"
 
 mp_obj_t modion_keyboard_keydown(mp_obj_t key_o) {
@@ -67,8 +69,8 @@ const static key2mp keyMapping[] =
     { Ion::Keyboard::Key::Seven, MP_ROM_QSTR(MP_QSTR_7) },
     { Ion::Keyboard::Key::Eight, MP_ROM_QSTR(MP_QSTR_8) },
     { Ion::Keyboard::Key::Nine, MP_ROM_QSTR(MP_QSTR_9) },
-    { Ion::Keyboard::Key::RightParenthesis, MP_ROM_QSTR(MP_QSTR__paren_open_) },
-    { Ion::Keyboard::Key::LeftParenthesis, MP_ROM_QSTR(MP_QSTR__paren_close_) },
+    { Ion::Keyboard::Key::LeftParenthesis, MP_ROM_QSTR(MP_QSTR__paren_open_) },
+    { Ion::Keyboard::Key::RightParenthesis, MP_ROM_QSTR(MP_QSTR__paren_close_) },
 
     { Ion::Keyboard::Key::Four, MP_ROM_QSTR(MP_QSTR_4) },
     { Ion::Keyboard::Key::Five, MP_ROM_QSTR(MP_QSTR_5) },
@@ -102,4 +104,18 @@ mp_obj_t modion_get_keys() {
   }
 
   return result;
+}
+
+mp_obj_t modion_set_brightness(mp_obj_t brightness_mp){
+  uint8_t brightness = static_cast<uint8_t>(mp_obj_get_int(brightness_mp));
+  GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(brightness);
+  Ion::Backlight::setBrightness(brightness);
+  micropython_port_interrupt_if_needed();
+  return mp_const_none;
+}
+
+mp_obj_t modion_get_brightness(){
+  uint8_t brightness = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
+  micropython_port_interrupt_if_needed();
+  return mp_obj_new_int((int)brightness);
 }
