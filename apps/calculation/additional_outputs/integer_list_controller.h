@@ -8,13 +8,17 @@ namespace Calculation {
 class IntegerListController : public ExpressionsListController {
 public:
   IntegerListController(EditExpressionController * editExpressionController) :
-    ExpressionsListController(editExpressionController) {}
+    ExpressionsListController(editExpressionController), m_exponent(0) {}
 
   void setExpression(Poincare::Expression e) override;
 
+  bool handleEvent(Ion::Events::Event event) override;
+
 private:
-  static constexpr int k_indexOfFactorExpression = 3;
+  void refreshScientificDisplay();
+  static constexpr int k_indexOfFactorExpression = 4;
   I18n::Message messageAtIndex(int index) override;
+  int m_exponent;
 };
 
 }

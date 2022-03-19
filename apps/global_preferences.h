@@ -42,6 +42,8 @@ public:
   void setCursorSaving(bool cursorsave) { m_cursorSaving = cursorsave; }
   int brightnessLevel() const { return m_brightnessLevel; }
   void setBrightnessLevel(int brightnessLevel);
+  int getDecimalShift() const { return m_decimalShift; }
+  void setDecimalShift(int shift) { m_decimalShift = shift; }
   const KDFont * font() const { return m_font; }
   void setFont(const KDFont * font) { m_font = font; }
   constexpr static int NumberOfBrightnessStates = 15;
@@ -60,6 +62,7 @@ private:
     m_syntaxhighlighting(true),
     m_cursorSaving(true),
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
+    m_decimalShift(0),
     m_font(KDFont::LargeFont) {}
   I18n::Language m_language;
   I18n::Country m_country;
@@ -74,6 +77,7 @@ private:
   bool m_syntaxhighlighting;
   bool m_cursorSaving;
   int m_brightnessLevel;
+  int m_decimalShift;
   const KDFont * m_font;
 };
 

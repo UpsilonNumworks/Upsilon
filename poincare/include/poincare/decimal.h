@@ -70,9 +70,9 @@ public:
 
   // Layout
   Layout createLayout(Preferences::PrintFloatMode floatDisplayMode, int numberOfSignificantDigits) const override;
-private:
   // Worst case is -1.2345678901234E-1000
   constexpr static int k_maxBufferSize = PrintFloat::k_numberOfStoredSignificantDigits+1+1+1+1+4+1;
+ private:
   int convertToText(char * buffer, int bufferSize, Preferences::PrintFloatMode mode, int numberOfSignificantDigits) const;
   template<typename T> T templatedApproximate() const;
   void setNegative(bool negative) { m_negative = negative; }

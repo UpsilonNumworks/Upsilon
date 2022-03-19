@@ -160,8 +160,8 @@ public:
   static Expression CreateEuclideanDivision(const Integer & num, const Integer & denom);
 
   constexpr static int k_maxNumberOfDigits = 32;
-private:
   constexpr static int k_maxNumberOfDigitsBase10 = 308; // (2^32)^k_maxNumberOfDigits ~ 1E308
+ private:
   constexpr static int k_maxExtractableInteger = 0x7FFFFFFF;
 
   // Constructors

@@ -76,6 +76,7 @@ bool HistoryController::handleEvent(Ion::Events::Event event) {
     return true;
   }
   if (event == Ion::Events::OK || event == Ion::Events::EXE) {
+    GlobalPreferences::sharedGlobalPreferences()->setDecimalShift(0);
     int focusRow = selectedRow();
     HistoryViewCell * selectedCell = (HistoryViewCell *)m_selectableTableView.selectedCell();
     SubviewType subviewType = selectedSubviewType();
