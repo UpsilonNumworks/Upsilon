@@ -1009,7 +1009,7 @@ typedef double mp_float_t;
 // "Reverse" methods are controlled by
 // MICROPY_PY_REVERSE_SPECIAL_METHODS below.
 #ifndef MICROPY_PY_ALL_SPECIAL_METHODS
-#define MICROPY_PY_ALL_SPECIAL_METHODS (0)
+#define MICROPY_PY_ALL_SPECIAL_METHODS (1)
 #endif
 
 // Whether to support all inplace arithmetic operarion methods
