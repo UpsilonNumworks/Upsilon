@@ -23,7 +23,7 @@ public:
   static constexpr char funcExtension[] = "func";
   static constexpr char seqExtension[] = "seq";
 
-  constexpr static size_t k_storageSize = 64000;
+  constexpr static size_t k_storageSize = 60000;
   static_assert(UINT16_MAX >= k_storageSize, "record_size_t not big enough");
 
   constexpr static char k_dotChar = '.';
