@@ -23,9 +23,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - run: echo The branch is the test branch
-      if: ${{ GITHUB_REF_NAME == 'upsilon-dev-ci-upload-fix' && GITHUB_REPOSITORY == 'lolocomotive/Upsilon' }}
+      if: ${{ github.ref_name == 'upsilon-dev-ci-upload-fix' && github.repository == 'lolocomotive/Upsilon' }}
     - run: echo The branch is the upsilonNumworks/upsilon-dev branch
-      if: ${{ GITHUB_REF_NAME == 'upsilon-dev' && GITHUB_REPOSITORY == 'UpsilonNumworks/Upsilon' }}
+      if: ${{ github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
   nintendo_3ds:
     if: github.event.inputs.trigger3DS == 'yes'
     runs-on: ubuntu-latest
