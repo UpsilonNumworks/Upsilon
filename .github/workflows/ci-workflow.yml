@@ -17,15 +17,7 @@ on:
         description: 'Run 3DS tests'
         required: true
         default: 'no'
-
 jobs:
-  test:
-    runs-on: ubuntu-latest
-    steps:
-    - run: echo The branch is the test branch
-      if: ${{ github.ref_name == 'upsilon-dev-ci-upload-fix' && github.repository == 'lolocomotive/Upsilon' }}
-    - run: echo The branch is the upsilonNumworks/upsilon-dev branch
-      if: ${{ github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
   nintendo_3ds:
     if: github.event.inputs.trigger3DS == 'yes'
     runs-on: ubuntu-latest
@@ -50,248 +42,248 @@ jobs:
         with:
           name: epsilon-3ds.cia
           path: output/release/simulator/3ds/epsilon.cia
-  #android:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 PLATFORM=simulator TARGET=android
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-file'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'output/release/simulator/android/epsilon.apk'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-android.apk
-  #        path: output/release/simulator/android/epsilon.apk
-  #n0100:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
-  #    - uses: numworks/setup-arm-toolchain@2020-q2
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: mkdir final-output
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=en output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.en.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=fr output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.fr.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=nl output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.nl.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=pt output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.pt.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=it output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.it.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=de output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.de.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=es output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.es.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 EPSILON_I18N=hu output/release/device/n0100/epsilon.onboarding.two_binaries
-  #    - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.hu.bin
-  #    - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
-  #    - run: make -j2 MODEL=n0100 output/release/device/n0100/flasher.light.bin
-  #    - run: mv output/release/device/n0100/flasher.light.bin final-output/flasher.light.bin
-  #    - run: find final-output/ -type f -exec bash -c "shasum -a 256 -b {} > {}.sha256" \;
-  #    - run: tar cvfz binpack-n0100.tgz final-output/*
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push'}}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-directory'
-  #      if: ${{ github.event_name == 'push'}}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'final-output/'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/n100/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-binpack-n0100.tgz
-  #        path: binpack-n0100.tgz
-  #n0110:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
-  #    - uses: numworks/setup-arm-toolchain@2020-q2
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 epsilon.dfu
-  #    - run: make -j2 epsilon.onboarding.dfu
-  #    - run: make -j2 epsilon.onboarding.update.dfu
-  #    - run: make -j2 epsilon.onboarding.beta.dfu
-  #    - run: make -j2 flasher.light.dfu
-  #    - run: make -j2 flasher.verbose.dfu
-  #    - run: make -j2 bench.ram.dfu
-  #    - run: make -j2 bench.flash.dfu
-  #    - run: make -j2 binpack
-  #    - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack-n0110.tgz
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-directory'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'output/release/device/n0110/binpack/'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/n110/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-binpack-n0110.tgz
-  #        path: output/release/device/n0110/binpack-n0110.tgz
-  #bootloader:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
-  #    - uses: numworks/setup-arm-toolchain@2020-q2
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 bootloader.dfu
-  #    - run: make MODEL=bootloader -j2 epsilon.A.dfu epsilon.B.dfu
-  #    - run: make MODEL=bootloader -j2 epsilon.onboarding.A.dfu epsilon.onboarding.B.dfu
-  #    - run: make MODEL=bootloader -j2 epsilon.onboarding.update.A.dfu epsilon.onboarding.update.B.dfu
-  #    - run: make MODEL=bootloader -j2 epsilon.onboarding.beta.A.dfu epsilon.onboarding.beta.B.dfu
-  #    - run: make -j2 binpack
-  #    - run: cp output/release/device/bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/bootloader/binpack-bootloader.tgz
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-binpack-bootloader.tgz
-  #        path: output/release/device/bootloader/binpack-bootloader.tgz
-  #windows:
-  #  runs-on: windows-latest
-  #  defaults:
-  #     run:
-  #       shell: msys2 {0}
-  #  steps:
-  #    - uses: msys2/setup-msys2@v2
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config make mingw-w64-x86_64-python3 mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng
-  #    - run: make -j2 PLATFORM=simulator
-  #    - run: make -j2 PLATFORM=simulator test.exe
-  #    - run: cmd /c output\release\simulator\windows\test.exe --headless
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-file'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'output/release/simulator/windows/epsilon.exe'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-windows.exe
-  #        path: output/release/simulator/windows/epsilon.exe
-  #web:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - uses: numworks/setup-emscripten@v1
-  #      with:
-  #        sdk: 1.40.1
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 PLATFORM=simulator TARGET=web
-  #    - run: make -j2 PLATFORM=simulator TARGET=web test.js
-  #    - run: node output/release/simulator/web/test.js --headless
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-file'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'output/release/simulator/web/epsilon.js'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-web.zip
-  #        path: output/release/simulator/web/epsilon.zip
-  #linux:
-  #  runs-on: ubuntu-latest
-  #  steps:
-  #    - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 PLATFORM=simulator
-  #    - run: make -j2 PLATFORM=simulator test.bin
-  #    - run: output/release/simulator/linux/test.bin --headless
-  #    - id: 'auth'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/auth@v0'
-  #      with:
-  #        credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
-  #    - id: 'upload-file'
-  #      if: ${{ github.event_name == 'push' }}
-  #      uses: 'google-github-actions/upload-cloud-storage@v0'
-  #      with:
-  #        path: 'output/release/simulator/linux/epsilon.bin'
-  #        destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
-  #        parent: false
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-linux.bin
-  #        path: output/release/simulator/linux/epsilon.bin
-  #macos:
-  #  if: github.event.inputs.triggerMacos == 'yes'
-  #  runs-on: macOS-latest
-  #  steps:
-  #    - run: brew install numworks/tap/epsilon-sdk
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 PLATFORM=simulator
-  #    - run: make -j2 PLATFORM=simulator ARCH=x86_64 test.bin
-  #    - run: output/release/simulator/macos/x86_64/test.bin --headless
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-macos.zip
-  #        path: output/release/simulator/macos/epsilon.app
-  #ios:
-  #  if: github.event.inputs.triggerIos == 'yes'
-  #  runs-on: macOS-latest
-  #  steps:
-  #    - run: brew install numworks/tap/epsilon-sdk
-  #    - uses: actions/checkout@v2
-  #      with:
-  #        submodules: 'recursive'
-  #    - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
-  #    - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 APPLE_PLATFORM=ios-simulator
-  #    - uses: actions/upload-artifact@master
-  #      with:
-  #        name: epsilon-ios.ipa
-  #        path: output/release/simulator/ios/epsilon.ipa
+  android:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 PLATFORM=simulator TARGET=android
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-file'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'output/release/simulator/android/epsilon.apk'
+          destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-android.apk
+          path: output/release/simulator/android/epsilon.apk
+  n0100:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
+      - uses: numworks/setup-arm-toolchain@2020-q2
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: mkdir final-output
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=en output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.en.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=fr output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.fr.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=nl output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.nl.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=pt output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.pt.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=it output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.it.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=de output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.de.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=es output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.es.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 EPSILON_I18N=hu output/release/device/n0100/epsilon.onboarding.two_binaries
+      - run: mv output/release/device/n0100/epsilon.onboarding.internal.bin final-output/epsilon.onboarding.internal.hu.bin
+      - run: rm output/release/device/n0100/apps/i18n.o output/release/device/n0100/apps/i18n.cpp
+      - run: make -j2 MODEL=n0100 output/release/device/n0100/flasher.light.bin
+      - run: mv output/release/device/n0100/flasher.light.bin final-output/flasher.light.bin
+      - run: find final-output/ -type f -exec bash -c "shasum -a 256 -b {} > {}.sha256" \;
+      - run: tar cvfz binpack-n0100.tgz final-output/*
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon'}}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-directory'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon'}}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'final-output/'
+          destination: 'upsilon-binfiles.appspot.com/dev/n100/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-binpack-n0100.tgz
+          path: binpack-n0100.tgz
+  n0110:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
+      - uses: numworks/setup-arm-toolchain@2020-q2
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 epsilon.dfu
+      - run: make -j2 epsilon.onboarding.dfu
+      - run: make -j2 epsilon.onboarding.update.dfu
+      - run: make -j2 epsilon.onboarding.beta.dfu
+      - run: make -j2 flasher.light.dfu
+      - run: make -j2 flasher.verbose.dfu
+      - run: make -j2 bench.ram.dfu
+      - run: make -j2 bench.flash.dfu
+      - run: make -j2 binpack
+      - run: cp output/release/device/n0110/binpack-n0110-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110/binpack-n0110.tgz
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-directory'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'output/release/device/n0110/binpack/'
+          destination: 'upsilon-binfiles.appspot.com/dev/n110/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-binpack-n0110.tgz
+          path: output/release/device/n0110/binpack-n0110.tgz
+  bootloader:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
+      - uses: numworks/setup-arm-toolchain@2020-q2
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 bootloader.dfu
+      - run: make MODEL=bootloader -j2 epsilon.A.dfu epsilon.B.dfu
+      - run: make MODEL=bootloader -j2 epsilon.onboarding.A.dfu epsilon.onboarding.B.dfu
+      - run: make MODEL=bootloader -j2 epsilon.onboarding.update.A.dfu epsilon.onboarding.update.B.dfu
+      - run: make MODEL=bootloader -j2 epsilon.onboarding.beta.A.dfu epsilon.onboarding.beta.B.dfu
+      - run: make -j2 binpack
+      - run: cp output/release/device/bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/bootloader/binpack-bootloader.tgz
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-binpack-bootloader.tgz
+          path: output/release/device/bootloader/binpack-bootloader.tgz
+  windows:
+    runs-on: windows-latest
+    defaults:
+       run:
+         shell: msys2 {0}
+    steps:
+      - uses: msys2/setup-msys2@v2
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config make mingw-w64-x86_64-python3 mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng
+      - run: make -j2 PLATFORM=simulator
+      - run: make -j2 PLATFORM=simulator test.exe
+      - run: cmd /c output\release\simulator\windows\test.exe --headless
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-file'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'output/release/simulator/windows/epsilon.exe'
+          destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-windows.exe
+          path: output/release/simulator/windows/epsilon.exe
+  web:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: numworks/setup-emscripten@v1
+        with:
+          sdk: 1.40.1
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 PLATFORM=simulator TARGET=web
+      - run: make -j2 PLATFORM=simulator TARGET=web test.js
+      - run: node output/release/simulator/web/test.js --headless
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-file'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'output/release/simulator/web/epsilon.js'
+          destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-web.zip
+          path: output/release/simulator/web/epsilon.zip
+  linux:
+    runs-on: ubuntu-latest
+    steps:
+      - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 PLATFORM=simulator
+      - run: make -j2 PLATFORM=simulator test.bin
+      - run: output/release/simulator/linux/test.bin --headless
+      - id: 'auth'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/auth@v0'
+        with:
+          credentials_json: '${{secrets.GOOGLE_CREDENTIALS}}'
+      - id: 'upload-file'
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: 'google-github-actions/upload-cloud-storage@v0'
+        with:
+          path: 'output/release/simulator/linux/epsilon.bin'
+          destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
+          parent: false
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-linux.bin
+          path: output/release/simulator/linux/epsilon.bin
+  macos:
+    if: github.event.inputs.triggerMacos == 'yes'
+    runs-on: macOS-latest
+    steps:
+      - run: brew install numworks/tap/epsilon-sdk
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 PLATFORM=simulator
+      - run: make -j2 PLATFORM=simulator ARCH=x86_64 test.bin
+      - run: output/release/simulator/macos/x86_64/test.bin --headless
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-macos.zip
+          path: output/release/simulator/macos/epsilon.app
+  ios:
+    if: github.event.inputs.triggerIos == 'yes'
+    runs-on: macOS-latest
+    steps:
+      - run: brew install numworks/tap/epsilon-sdk
+      - uses: actions/checkout@v2
+        with:
+          submodules: 'recursive'
+      - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
+      - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 APPLE_PLATFORM=ios-simulator
+      - uses: actions/upload-artifact@master
+        with:
+          name: epsilon-ios.ipa
+          path: output/release/simulator/ios/epsilon.ipa
 
 env:
   ACCEPT_OFFICIAL_TOS: 1
