@@ -17,6 +17,10 @@ I18n::Message App::Descriptor::upperName() {
   return I18n::Message::CalculAppCapital;
 }
 
+App::Descriptor::ExaminationLevel App::Descriptor::examinationLevel() {
+  return App::Descriptor::ExaminationLevel::Strict;
+}
+
 const Image * App::Descriptor::icon() {
   return ImageStore::CalculationIcon;
 }
@@ -68,7 +72,7 @@ bool App::isAcceptableExpression(const Poincare::Expression expression) {
       return false;
     }
   }
-  return !(expression.isUninitialized() || expression.type() == ExpressionNode::Type::Equal);
+  return !expression.isUninitialized();
 }
 
 void App::didBecomeActive(Window * window) {

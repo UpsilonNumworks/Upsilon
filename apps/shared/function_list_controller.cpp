@@ -17,13 +17,13 @@ FunctionListController::FunctionListController(Responder * parentResponder, Butt
       TabViewController * tabController = list->tabController();
       tabController->setActiveTab(1);
       return true;
-    }, this), KDFont::SmallFont, Palette::PurpleBright),
+    }, this), KDFont::SmallFont, Palette::ButtonText),
   m_valuesButton(this, I18n::Message::DisplayValues, Invocation([](void * context, void * sender) {
       FunctionListController * list = (FunctionListController *)context;
       TabViewController * tabController = list->tabController();
       tabController->setActiveTab(2);
       return true;
-    }, this), KDFont::SmallFont, Palette::PurpleBright),
+    }, this), KDFont::SmallFont, Palette::ButtonText),
   m_titlesColumnWidth(k_minTitleColumnWidth)
 {
   /* m_memoizedCellBaseline is not initialized by the call to
@@ -198,6 +198,11 @@ bool FunctionListController::handleEvent(Ion::Events::Event event) {
       selectCellAtLocation(selectedColumn(), newSelectedRow);
       selectableTableView()->reloadData();
     }
+    return true;
+  }
+  if (event == Ion::Events::ShiftBack) {
+    Ion::Storage::sharedStorage()->reinsertTrash(recordExtension());
+    selectableTableView()->reloadData();
     return true;
   }
   return false;

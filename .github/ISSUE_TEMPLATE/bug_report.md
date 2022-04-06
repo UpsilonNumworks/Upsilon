@@ -1,25 +1,29 @@
 ---
 name: Bug report
-about: Epsilon is not working like it should? Let us know!
-labels: 'bug'
+about: Upsilon is not working like it should? Let us know!
+title: ''
+labels: 'Status: Triage, Type: Bug'
+assignees: ''
 
 ---
-#### Describe the bug
-A clear and concise description of what the bug is. Please describe a **single** bug per issue. Feel free to create multiple issues though!
 
-#### Screenshots
-Please provide at least one screenshot of the issue happening. This is by far the best way to quickly show any issue! To attach a screenshot, just go to our [online simulator](https://www.numworks.com/simulator), navigate to reproduce your issue, and click the "screenshot" button. Then drag'n'drop the file here!
+**Describe the bug**
+A clear and concise description of what the bug is.
 
-#### To Reproduce
+**To Reproduce**
 Steps to reproduce the behavior:
-1. Go to the '...' app
-2. Type '....'
+1. Go to '...'
+2. Click on '....'
 3. Scroll down to '....'
 4. See error
 
-#### Expected behavior
+**Expected behavior**
 A clear and concise description of what you expected to happen.
 
-#### Environment
- - Epsilon version (Settings > About > Software version).
- - The platform(s) on which the problem happens: online simulator, actual device, etc...
+**Screenshots**
+If applicable, add screenshots to help explain your problem.
+
+**Device (please complete the following information):**
+ - The device on which you're running Upsilon (computer, n0110, n0100, etc...)
+ - Upsilon Version: [go to settings > about > Upsilon Version and type the version here]
+ - Upsilon commit: [settings > about > click one time on epsilon version]

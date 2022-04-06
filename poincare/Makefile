@@ -12,6 +12,7 @@ poincare_src += $(addprefix poincare/src/,\
   grid_layout.cpp \
   horizontal_layout.cpp \
   integral_layout.cpp \
+  kmat.cpp \
   layout_cursor.cpp \
   layout.cpp \
   layout_node.cpp \
@@ -25,6 +26,7 @@ poincare_src += $(addprefix poincare/src/,\
   right_square_bracket_layout.cpp \
   sequence_layout.cpp \
   sum_layout.cpp \
+  vector_layout.cpp \
   vertical_offset_layout.cpp \
 )
 
@@ -180,6 +182,7 @@ tests_src += $(addprefix poincare/test/,\
   function_solver.cpp\
   helper.cpp\
   helpers.cpp\
+  infinity.cpp \
   integer.cpp\
   layout.cpp\
   layout_cursor.cpp\

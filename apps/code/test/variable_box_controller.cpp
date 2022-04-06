@@ -40,7 +40,7 @@ void assert_variables_are(const char * script, const char * nameToComplete, cons
         &addParentheses,
         i,
         &index);
-    quiz_assert(i == index); // If false, the autompletion has cycled: there are not as many results as expected
+    quiz_assert(i == index); // If false, the autocompletion has cycled: there are not as many results as expected
     quiz_assert(strncmp(*(expectedVariables + i), autocompletionI - nameToCompleteLength, textToInsertLength + nameToCompleteLength) == 0);
     index++;
   }
@@ -63,7 +63,7 @@ QUIZ_CASE(variable_box_controller) {
   };
   // FIXME This test does not load imported variables for now
   assert_variables_are(
-      "\x01 from math import *\nfroo=3",
+      "\x01\x01\x01 from math import *\nfroo=3",
       "fr",
       expectedVariables,
       sizeof(expectedVariables) / sizeof(const char *));

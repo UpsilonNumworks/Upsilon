@@ -124,7 +124,8 @@ void MathVariableBoxController::willDisplayCellForIndex(HighlightCell * cell, in
         symbolName,
         Shared::Sequence::k_maxNameWithArgumentSize
     );
-    symbolLayout = u.definitionName();
+    Expression symbolExpression = Expression::Parse(symbolName, AppsContainer::sharedAppsContainer()->globalContext());
+    symbolLayout = symbolExpression.createLayout(Poincare::Preferences::sharedPreferences()->displayMode(), Poincare::Preferences::sharedPreferences()->numberOfSignificantDigits())
   }
   if (symbolLayout.isUninitialized()) {
     symbolLayout = LayoutHelper::String(symbolName, symbolLength);
@@ -192,7 +193,7 @@ bool MathVariableBoxController::returnToPreviousMenu() {
   return AlternateEmptyNestedMenuController::returnToPreviousMenu();
 }
 
-bool MathVariableBoxController::selectLeaf(int selectedRow) {
+bool MathVariableBoxController::selectLeaf(int selectedRow, bool quitToolbox) {
   if (isDisplayingEmptyController()) {
     /* We do not want to handle OK/EXE events in that case. */
     return false;

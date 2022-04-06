@@ -4,6 +4,7 @@
 #include "../apps_container.h"
 #include <assert.h>
 #include <escher/metric.h>
+#include <ion.h>
 #include <ion/events.h>
 #include <ion/unicode/utf8_decoder.h>
 
@@ -89,6 +90,11 @@ bool MenuController::handleEvent(Ion::Events::Event event) {
     footer()->setSelectedButton(0);
     return true;
   }
+  if (event == Ion::Events::ShiftBack) {
+    Ion::Storage::sharedStorage()->reinsertTrash("py");
+    m_selectableTableView.reloadData();
+    return true;
+  }
   if (event == Ion::Events::Up) {
     if (footer()->selectedButton() == 0) {
       footer()->setSelectedButton(-1);
@@ -132,6 +138,18 @@ void MenuController::renameSelectedScript() {
   tf->setEditing(true);
   tf->setText(previousText);
   tf->setCursorLocation(tf->text() + strlen(previousText));
+}
+
+void MenuController::duplicateScript(Script script) {
+  assert(!script.isNull());
+  
+  // Clone here
+  char buffer[10];
+  Script::DefaultName(buffer, 10);
+  
+  Ion::Storage::sharedStorage()->createRecordWithExtension(buffer, Code::ScriptStore::k_scriptExtension, script.value().buffer, script.value().size);
+  
+  updateAddScriptRowDisplay();
 }
 
 void MenuController::deleteScript(Script script) {

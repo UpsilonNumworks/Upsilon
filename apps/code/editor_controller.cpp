@@ -4,6 +4,7 @@
 #include "app.h"
 #include <escher/metric.h>
 #include <ion.h>
+#include "../global_preferences.h"
 
 using namespace Shared;
 
@@ -63,7 +64,11 @@ void EditorController::didBecomeFirstResponder() {
 void EditorController::viewWillAppear() {
   ViewController::viewWillAppear();
   m_editorView.loadSyntaxHighlighter();
-  m_editorView.setCursorLocation(m_editorView.text() + strlen(m_editorView.text()));
+  if(GlobalPreferences::sharedGlobalPreferences()->cursorSaving()) {
+    m_editorView.setCursorLocation(m_editorView.text() + strlen(m_editorView.text()));
+  } else {
+    m_editorView.setCursorLocation(m_editorView.text() + strlen(m_editorView.text()));
+  }
 }
 
 void EditorController::viewDidDisappear() {
@@ -80,6 +85,7 @@ bool EditorController::textAreaDidReceiveEvent(TextArea * textArea, Ion::Events:
     return true;
   }
 
+  
   if (event == Ion::Events::Backspace && textArea->selectionIsEmpty()) {
     /* If the cursor is on the left of the text of a line, backspace one
      * indentation space at a time. */

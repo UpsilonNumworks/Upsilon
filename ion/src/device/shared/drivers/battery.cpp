@@ -4,10 +4,10 @@
 
 /* To measure the battery voltage, we're using the internal ADC. The ADC works
  * by comparing the input voltage to a reference voltage. The only fixed voltage
- * we have around is 2.8V, so that's the one we're using as a refrence. However,
+ * we have around is 2.8V, so that's the one we're using as a reference. However,
  * and ADC can only measure voltage that is lower than the reference voltage. So
  * we need to use a voltage divider before sampling Vbat.
- * To avoid draining the battery, we're using an high-impedence voltage divider,
+ * To avoid draining the battery, we're using a high-impedance voltage divider,
  * so we need to be careful when sampling the ADC. See AN2834 for more info. */
 
 
@@ -30,7 +30,7 @@ Charge level() {
 
   constexpr static int numberOfChargeStates = 4;
   constexpr static int numberOfThresholds = numberOfChargeStates - 1;
-  constexpr float hysteresis = 0.02f;
+  constexpr float hysteresis = 0.04f;
   const float thresholds[numberOfThresholds] = {3.6f + hysteresis, 3.7f, 3.8f}; // We do not want to lower the threshold for empty battery, so we add the hysteresis to it
   int nextLevel = -1;
   for (int i = 0; i < numberOfThresholds; i++) {

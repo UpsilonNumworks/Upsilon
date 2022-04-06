@@ -20,10 +20,12 @@
 #include <assert.h>
 #include <cmath>
 #include <utility>
+#include <poincare/preferences.h>
 #include <algorithm>
 
 namespace Poincare {
 
+const int numberOfFondamentalUnits = 10;
 /* Multiplication Node */
 
 ExpressionNode::Sign MultiplicationNode::sign(Context * context) const {
@@ -38,6 +40,16 @@ ExpressionNode::Sign MultiplicationNode::sign(Context * context) const {
     return ExpressionNode::sign(context);
   }
   return (Sign)sign;
+}
+
+ExpressionNode::IntegerStatus MultiplicationNode::integerStatus(Context * context) const {
+  int nbOfChildren = numberOfChildren();
+  for (int i = 0; i < nbOfChildren; i++) {
+    if (childAtIndex(i)->integerStatus(context) != IntegerStatus::Integer) {
+      return IntegerStatus::Unknown;
+    }
+  }
+  return IntegerStatus::Integer;
 }
 
 int MultiplicationNode::polynomialDegree(Context * context, const char * symbolName) const {
@@ -174,20 +186,38 @@ static int operatorSymbolBetween(ExpressionNode::LayoutShape left, ExpressionNod
 }
 
 CodePoint MultiplicationNode::operatorSymbol() const {
+  Preferences * preferences = Preferences::sharedPreferences();
   /* ø --> 0
    * · --> 1
-   * × --> 2 */
+   * × --> 2
+   * * --> 3 */
   int sign = -1;
-  for (int i = 0; i < numberOfChildren() - 1; i++) {
-    /* The operator symbol must be the same for all operands of the multiplication.
-     * If one operator has to be '×', they will all be '×'. Idem for '·'. */
-    sign = std::max(sign, operatorSymbolBetween(childAtIndex(i)->rightLayoutShape(), childAtIndex(i+1)->leftLayoutShape()));
+  if(preferences->symbolOfMultiplication() == Poincare::Preferences::SymbolMultiplication::Auto){
+      for (int i = 0; i < numberOfChildren() - 1; i++) {
+      /* The operator symbol must be the same for all operands of the multiplication.
+      * If one operator has to be '×', they will all be '×'. Idem for '·'. */
+      sign = std::max(sign, operatorSymbolBetween(childAtIndex(i)->rightLayoutShape(), childAtIndex(i+1)->leftLayoutShape()));
+    }
+  } else {
+    switch(preferences->symbolOfMultiplication()){
+      case Poincare::Preferences::SymbolMultiplication::MiddleDot :
+        sign = 1; // · --> · (1)
+        break;
+      case Poincare::Preferences::SymbolMultiplication::Star :
+        sign = 3; // * --> * (3)
+        break;
+      default:
+        sign = 2; // × --> × (2)
+        break;
+    }
   }
   switch (sign) {
     case 0:
       return UCodePointNull;
     case 1:
       return UCodePointMiddleDot;
+    case 3:
+      return UCodePointStar;
     default:
       return UCodePointMultiplicationSign;
   }
@@ -424,7 +454,7 @@ Expression Multiplication::shallowBeautify(ExpressionNode::ReductionContext * re
   if (hasUnit()) {
     Expression units;
     /* removeUnit has to be called on reduced expression but we want to modify
-     * the least the expression so we use the uninvasive reduction context. */
+     * the least the expression so we use the noninvasive reduction context. */
     self = self.reduceAndRemoveUnit(ExpressionNode::ReductionContext::NonInvasiveReductionContext(*reductionContext), &units);
 
     if (self.isUndefined() || units.isUninitialized()) {
@@ -821,7 +851,7 @@ Expression Multiplication::privateShallowReduce(ExpressionNode::ReductionContext
     i++;
   }
 
-   /* Step 7: If the first child is zero, the multiplication result is zero. We
+   /* Step 8: If the first child is zero, the multiplication result is zero. We
     * do this after merging the rational children, because the merge takes care
     * of turning 0*inf into undef. We still have to check that no other child
     * involves an infinity expression to avoid reducing 0*e^(inf) to 0.

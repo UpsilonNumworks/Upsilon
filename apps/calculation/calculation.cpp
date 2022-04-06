@@ -8,6 +8,7 @@
 #include <poincare/undefined.h>
 #include <poincare/unit.h>
 #include <poincare/unreal.h>
+#include <poincare/symbol_abstract.h>
 #include <string.h>
 #include <cmath>
 #include <algorithm>
@@ -197,8 +198,8 @@ bool Calculation::shouldOnlyDisplayExactOutput() {
   /* If the input is a "store in a function", do not display the approximate
    * result. This prevents x->f(x) from displaying x = undef. */
   Expression i = input();
-  return i.type() == ExpressionNode::Type::Store
-    && i.childAtIndex(1).type() == ExpressionNode::Type::Function;
+  return (i.type() == ExpressionNode::Type::Store && i.childAtIndex(1).type() == ExpressionNode::Type::Function)
+    || strcmp(approximateOutputText(NumberOfSignificantDigits::Maximal), Undefined::Name()) == 0;
 }
 
 Calculation::EqualSign Calculation::exactAndApproximateDisplayedOutputsAreEqual(Poincare::Context * context) {
@@ -271,6 +272,9 @@ Calculation::AdditionalInformationType Calculation::additionalInformationType(Co
   }
   if (o.type() == ExpressionNode::Type::Matrix) {
     return AdditionalInformationType::Matrix;
+  }
+  if (o.polynomialDegree(context, "x") == 2) {
+    return AdditionalInformationType::SecondDegree;
   }
   return AdditionalInformationType::None;
 }

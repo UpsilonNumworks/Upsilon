@@ -3,6 +3,7 @@
 #include <escher/palette.h>
 #include <ion/unicode/utf8_helper.h>
 #include <python/port/port.h>
+#include "../global_preferences.h"
 
 extern "C" {
 #include "py/nlr.h"
@@ -13,18 +14,20 @@ extern "C" {
 
 namespace Code {
 
-constexpr KDColor CommentColor = KDColor::RGB24(0x999988);
-constexpr KDColor NumberColor =  KDColor::RGB24(0x009999);
-constexpr KDColor KeywordColor = KDColor::RGB24(0xFF000C);
+constexpr KDColor CommentColor = Palette::CodeComment;
+constexpr KDColor NumberColor =  Palette::CodeNumber;
+constexpr KDColor KeywordColor = Palette::CodeKeyword;
 // constexpr KDColor BuiltinColor = KDColor::RGB24(0x0086B3);
-constexpr KDColor OperatorColor = KDColor::RGB24(0xd73a49);
-constexpr KDColor StringColor = KDColor::RGB24(0x032f62);
-constexpr KDColor AutocompleteColor = KDColor::RGB24(0xC6C6C6);
-constexpr KDColor BackgroundColor = KDColorWhite;
-constexpr KDColor HighlightColor = Palette::Select;
-constexpr KDColor DefaultColor = KDColorBlack;
+constexpr KDColor OperatorColor = Palette::CodeOperator;
+constexpr KDColor StringColor = Palette::CodeString;
+constexpr KDColor BackgroundColor = Palette::CodeBackground;
+constexpr KDColor HighlightColor = Palette::CodeBackgroundSelected;
+constexpr KDColor AutocompleteColor = KDColor::RGB24(0xC6C6C6); // TODO Palette change
 
 static inline KDColor TokenColor(mp_token_kind_t tokenKind) {
+  if (!GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting()) {
+    return Palette::CodeText;
+  }
   if (tokenKind == MP_TOKEN_STRING) {
     return StringColor;
   }
@@ -66,7 +69,8 @@ static inline KDColor TokenColor(mp_token_kind_t tokenKind) {
       && MP_TOKEN_KW_TRY        + 1 == MP_TOKEN_KW_WHILE
       && MP_TOKEN_KW_WHILE      + 1 == MP_TOKEN_KW_WITH
       && MP_TOKEN_KW_WITH       + 1 == MP_TOKEN_KW_YIELD
-      && MP_TOKEN_KW_YIELD      + 1 == MP_TOKEN_OP_TILDE,
+      && MP_TOKEN_KW_YIELD      + 1 == MP_TOKEN_OP_ASSIGN
+      && MP_TOKEN_OP_ASSIGN     + 1 == MP_TOKEN_OP_TILDE,
     "MP_TOKEN order changed, so Code::PythonTextArea::TokenColor might need to change too.");
   if (tokenKind >= MP_TOKEN_KW_FALSE && tokenKind <= MP_TOKEN_KW_YIELD) {
     return KeywordColor;
@@ -119,11 +123,12 @@ static inline KDColor TokenColor(mp_token_kind_t tokenKind) {
 
   if ((tokenKind >= MP_TOKEN_OP_TILDE && tokenKind <= MP_TOKEN_DEL_DBL_STAR_EQUAL)
       || tokenKind == MP_TOKEN_DEL_EQUAL
-      || tokenKind == MP_TOKEN_DEL_MINUS_MORE)
+      || tokenKind == MP_TOKEN_DEL_MINUS_MORE
+      || tokenKind == MP_TOKEN_OP_ASSIGN)
   {
     return OperatorColor;
   }
-  return DefaultColor;
+  return Palette::CodeText;
 }
 
 static inline size_t TokenLength(mp_lexer_t * lex, const char * tokenPosition) {
@@ -286,7 +291,7 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
       tokenEnd = tokenFrom + tokenLength;
 
       // If the token is being autocompleted, use DefaultColor
-      KDColor color = (tokenFrom <= autocompleteStart && autocompleteStart < tokenEnd) ? DefaultColor : TokenColor(lex->tok_kind);
+      KDColor color = (tokenFrom <= autocompleteStart && autocompleteStart < tokenEnd) ? Palette::CodeText : TokenColor(lex->tok_kind);
 
       LOG_DRAW("Draw \"%.*s\" for token %d\n", tokenLength, tokenFrom, lex->tok_kind);
       drawStringAt(ctx, line,
@@ -305,6 +310,10 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
 
     tokenFrom += tokenLength;
 
+    KDColor color = CommentColor;
+    if (!GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting()) {
+      color = Palette::CodeText;
+    }
     // Even if the token is being autocompleted, use CommentColor
     if (tokenFrom < text + byteLength) {
       LOG_DRAW("Draw comment \"%.*s\" from %d\n", byteLength - (tokenFrom - text), firstNonSpace, tokenFrom);
@@ -312,7 +321,7 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
           UTF8Helper::GlyphOffsetAtCodePoint(text, tokenFrom),
           tokenFrom,
           text + byteLength - tokenFrom,
-          CommentColor,
+          color,
           BackgroundColor,
           selectionStart,
           selectionEnd,
@@ -445,6 +454,11 @@ void PythonTextArea::addAutocompletion() {
 }
 
 bool PythonTextArea::addAutocompletionTextAtIndex(int nextIndex, int * currentIndexToUpdate) {
+  // If Autocomplete disable, skip this step
+  if(!GlobalPreferences::sharedGlobalPreferences()->autocomplete()) {
+    return false;
+  }
+
   // The variable box should be loaded at this point
   const char * autocompletionTokenBeginning = nullptr;
   const char * autocompletionLocation = const_cast<char *>(cursorLocation());

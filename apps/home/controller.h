@@ -2,19 +2,21 @@
 #define HOME_CONTROLLER_H
 
 #include <escher.h>
+#include "selectable_table_view_with_background.h"
 #include "app_cell.h"
 
 namespace Home {
 
 class Controller : public ViewController, public SimpleTableViewDataSource, public SelectableTableViewDelegate {
 public:
-  Controller(Responder * parentResponder, SelectableTableViewDataSource * selectionDataSource);
+  Controller(Responder * parentResponder, SelectableTableViewDataSource * selectionDataSource, App * app);
 
   View * view() override;
 
   bool handleEvent(Ion::Events::Event event) override;
   void didBecomeFirstResponder() override;
-  TELEMETRY_ID("");
+  void viewWillAppear() override;
+  void viewDidDisappear() override;
 
   int numberOfRows() const override;
   int numberOfColumns() const override;
@@ -34,11 +36,13 @@ private:
     SelectableTableView * selectableTableView();
     void drawRect(KDContext * ctx, KDRect rect) const override;
     void reloadBottomRow(SimpleTableViewDataSource * dataSource, int numberOfIcons, int numberOfColumns);
+    BackgroundView * backgroundView();
   private:
     int numberOfSubviews() const override;
     View * subviewAtIndex(int index) override;
     void layoutSubviews(bool force = false) override;
-    SelectableTableView m_selectableTableView;
+    SelectableTableViewWithBackground m_selectableTableView;
+    BackgroundView m_backgroundView;
   };
   static constexpr KDCoordinate k_sideMargin = 4;
   static constexpr KDCoordinate k_bottomMargin = 14;
@@ -49,6 +53,7 @@ private:
   static constexpr int k_cellWidth = 104;
   ContentView m_view;
   AppCell m_cells[k_maxNumberOfCells];
+  App * m_app;
 };
 
 }

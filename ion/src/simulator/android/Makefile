@@ -1,27 +1,26 @@
 ion_src += $(addprefix ion/src/simulator/android/src/cpp/, \
-  images.cpp \
   haptics_enabled.cpp \
+  platform_images.cpp \
+  platform_language.cpp \
 )
 
 ion_src += $(addprefix ion/src/simulator/shared/, \
-  dummy/callback.cpp \
-  dummy/language.cpp \
+  dummy/journal.cpp \
+  dummy/keyboard_callback.cpp \
+  dummy/window_callback.cpp \
   clipboard_helper.cpp \
   haptics.cpp \
+	store_script.cpp \
 )
 
 ion_src += ion/src/shared/collect_registers.cpp
-
-ifeq ($(EPSILON_TELEMETRY),1)
-ion_src += ion/src/simulator/android/src/cpp/telemetry.cpp
-endif
 
 $(call object_for,ion/src/simulator/shared/main.cpp) : SFLAGS += -DEPSILON_SDL_FULLSCREEN=1
 
 LDFLAGS += -ljnigraphics -llog
 
-# If ARCH is not defined, we will re-trigger a build for each avaialble ARCH.
-# This is used to build APKs, which needs to embbed a binary for each ARCH.
+# If ARCH is not defined, we will re-trigger a build for each available ARCH.
+# This is used to build APKs, which needs to embed a binary for each ARCH.
 
 ifndef ARCH
 
@@ -31,11 +30,11 @@ ifndef ARCH
 
 $(BUILD_DIR)/app/res/mipmap/ic_launcher.png: ion/src/simulator/assets/logo.svg | $$(@D)/.
 	$(call rule_label,CONVERT)
-	$(Q) convert -background "#FFB734" $< $@
+	$(Q) convert -background "#b1403b" $< $@
 
 $(BUILD_DIR)/app/res/mipmap-v26/ic_launcher_foreground.png: ion/src/simulator/assets/logo.svg | $$(@D)/.
 	$(call rule_label,CONVERT)
-	$(Q) convert -background none $< -resize 512x512 -gravity center -background none -extent 1024x1024 $@
+	$(Q) convert -background none $< -resize 1024x1024 -gravity center -background none -extent 1024x1024 $@
 
 $(BUILD_DIR)/app/res/%.xml: ion/src/simulator/android/src/res/%.xml | $$(@D)/.
 	$(call rule_label,COPY)
@@ -65,7 +64,7 @@ apk_deps += $(addprefix $(BUILD_DIR)/app/res/,mipmap/ic_launcher.png mipmap-v26/
 
 $(BUILD_DIR)/%.apk: $(apk_deps)
 	$(call rule_label,GRADLE)
-	$(Q) ANDROID_HOME=$(ANDROID_HOME) EPSILON_VERSION=$(EPSILON_VERSION) BUILD_DIR=$(BUILD_DIR) EPSILON_VARIANT=$* ion/src/simulator/android/gradlew -b ion/src/simulator/android/build.gradle assembleRelease
+	$(Q) ANDROID_HOME=$(ANDROID_HOME) EPSILON_VERSION=$(EPSILON_VERSION) OMEGA_VERSION=$(OMEGA_VERSION) BUILD_DIR=$(BUILD_DIR) EPSILON_VARIANT=$* ion/src/simulator/android/gradlew -b ion/src/simulator/android/build.gradle assembleRelease
 	$(Q) cp $(BUILD_DIR)/app/outputs/apk/release/android-release*.apk $@
 
 endif

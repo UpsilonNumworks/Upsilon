@@ -23,7 +23,7 @@ extern "C" {
 namespace Poincare {
 
 Expression EqualNode::shallowReduce(ReductionContext reductionContext) {
-  return Equal(this).shallowReduce();
+  return Equal(this).shallowReduce(reductionContext);
 }
 
 Layout EqualNode::createLayout(Preferences::PrintFloatMode floatDisplayMode, int numberOfSignificantDigits) const {
@@ -49,19 +49,45 @@ Expression Equal::standardEquation(Context * context, Preferences::ComplexFormat
   return sub.reduce(ExpressionNode::ReductionContext(context, complexFormat, angleUnit, unitFormat, reductionTarget));
 }
 
-Expression Equal::shallowReduce() {
-  {
-    Expression e = Expression::defaultShallowReduce();
-    if (e.isUndefined()) {
-      return e;
+Expression Equal::shallowReduce(ExpressionNode::ReductionContext reductionContext) {
+  
+  Expression e = Equal::Builder(Subtraction::Builder(childAtIndex(0).clone(), childAtIndex(1).clone()).shallowReduce(reductionContext), Rational::Builder(0));
+  
+  Expression leftSide = e.childAtIndex(0);
+  if (leftSide.isUndefined()) {
+    return leftSide; // <=> undefined
+  }
+  if (leftSide.type() == ExpressionNode::Type::Multiplication) { // Simplify multiplication
+    Multiplication m = static_cast<Multiplication&>(leftSide);
+    int i = 0;
+    while (i < m.numberOfChildren()) {
+      if (m.childAtIndex(i).nullStatus(reductionContext.context()) == ExpressionNode::NullStatus::NonNull) {
+        m.removeChildAtIndexInPlace(i);
+      }
+      else {
+        i++;
+      }
+    }
+
+    // Replace if 0 child
+    if (m.numberOfChildren() == 0) {
+      e.replaceChildAtIndexInPlace(0, Rational::Builder(0));
+    } else {
+      // Squash if one child 
+      Expression result = m.squashUnaryHierarchyInPlace();
+      if (result != *this) {
+        e.replaceChildAtIndexInPlace(0, result);
+      }
     }
   }
-  if (childAtIndex(0).isIdenticalTo(childAtIndex(1))) {
+  
+  if (leftSide.isIdenticalTo(e.childAtIndex(1))) {
     Expression result = Rational::Builder(1);
     replaceWithInPlace(result);
     return result;
   }
-  return *this;
+
+  return e;
 }
 
 }

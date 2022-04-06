@@ -7,10 +7,12 @@ namespace USB {
 
 void init();
 void shutdown();
+void initVbus();
 void initGPIO();
 void shutdownGPIO();
 void initOTG();
 void shutdownOTG();
+const char* stringDescriptor();
 
 }
 }

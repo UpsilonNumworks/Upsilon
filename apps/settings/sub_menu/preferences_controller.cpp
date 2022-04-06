@@ -7,6 +7,7 @@
 #include <poincare/code_point_layout.h>
 #include <poincare/fraction_layout.h>
 #include <poincare/vertical_offset_layout.h>
+#include <poincare/nth_root_layout.h>
 #include <algorithm>
 
 using namespace Poincare;
@@ -26,7 +27,7 @@ void PreferencesController::didBecomeFirstResponder() {
 }
 
 bool PreferencesController::handleEvent(Ion::Events::Event event) {
-  if (event == Ion::Events::OK || event == Ion::Events::EXE) {
+  if (event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) {
     /* Generic behaviour of preference menu*/
     assert(m_messageTreeModel->label() != I18n::Message::DisplayMode || selectedRow() != numberOfRows()-1); // In that case, events OK and EXE are handled by the cell
     setPreferenceWithValueIndex(m_messageTreeModel->label(), selectedRow());
@@ -106,6 +107,60 @@ Layout PreferencesController::layoutForPreferences(I18n::Message message) {
         );
     }
 
+    // Exam mode modes
+    case I18n::Message::ExamModeModeStandard:
+    {
+      const char * text = " ";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+    case I18n::Message::ExamModeModeNoSym:
+    {
+      const char * text = " ";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+    case I18n::Message::ExamModeModeNoSymNoText:
+    {
+      const char * text = " ";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+    case I18n::Message::ExamModeModeDutch:
+    {
+      const char * text = " ";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+
+
+    // Symbol controller
+    case I18n::Message::SymbolMultiplicationCross: // × and · aren't single characters, so they cannot be constructed into codepoints..?
+    {
+      const char * text = "×";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+    case I18n::Message::SymbolMultiplicationMiddleDot:
+    {
+      const char * text = "·";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
+    }
+    case I18n::Message::SymbolMultiplicationStar:
+      return CodePointLayout::Builder('*', k_layoutFont);
+    case I18n::Message::SymbolMultiplicationAutoSymbol:
+      return CodePointLayout::Builder(' ', k_layoutFont);
+
+
+    // Symbol function
+    case I18n::Message::SymbolDefaultFunction:
+    {
+      return NthRootLayout::Builder(CodePointLayout::Builder('x'));
+    }
+    case I18n::Message::SymbolArgDefaultFunction:
+    {
+      return NthRootLayout::Builder(CodePointLayout::Builder('x'), CodePointLayout::Builder('2'));
+    }
+    case I18n::Message::SymbolArgFunction:
+    {
+      return NthRootLayout::Builder(CodePointLayout::Builder('x'), CodePointLayout::Builder('y'));
+    }
+
     // Font size
     case I18n::Message::LargeFont:
     case I18n::Message::SmallFont:
@@ -113,6 +168,15 @@ Layout PreferencesController::layoutForPreferences(I18n::Message message) {
       const char * text = "abc";
       const KDFont * font = message == I18n::Message::LargeFont ? KDFont::LargeFont : KDFont::SmallFont;
       return LayoutHelper::String(text, strlen(text), font);
+    }
+
+    // DFU Protection level
+    case I18n::Message::USBDefaultLevel:
+    case I18n::Message::USBLowLevel:
+    case I18n::Message::USBParanoidLevel:
+    {
+      const char * text = " ";
+      return LayoutHelper::String(text, strlen(text), k_layoutFont);
     }
 
     default:
@@ -150,10 +214,17 @@ void PreferencesController::setPreferenceWithValueIndex(I18n::Message message, i
     preferences->setEditionMode((Preferences::EditionMode)valueIndex);
   } else if (message == I18n::Message::ComplexFormat) {
     preferences->setComplexFormat((Preferences::ComplexFormat)valueIndex);
+  } else if (message == I18n::Message::ExamModeMode) {
+    GlobalPreferences::sharedGlobalPreferences()->setTempExamMode((GlobalPreferences::ExamMode)((uint8_t)valueIndex + 1));
+  } else if (message == I18n::Message::SymbolMultiplication) {
+    preferences->setSymbolMultiplication((Preferences::SymbolMultiplication)valueIndex);
+  } else if (message == I18n::Message::SymbolFunction) {
+    preferences->setSymbolOfFunction((Preferences::SymbolFunction)valueIndex);
   } else if (message == I18n::Message::FontSizes) {
     GlobalPreferences::sharedGlobalPreferences()->setFont(valueIndex == 0 ? KDFont::LargeFont : KDFont::SmallFont);
+  } else if (message == I18n::Message::USBProtectionLevel) {
+    GlobalPreferences::sharedGlobalPreferences()->setDfuLevel(valueIndex);
   }
-
 }
 
 int PreferencesController::valueIndexForPreference(I18n::Message message) const {
@@ -170,8 +241,17 @@ int PreferencesController::valueIndexForPreference(I18n::Message message) const 
   if (message == I18n::Message::ComplexFormat) {
     return (int)preferences->complexFormat();
   }
+  if (message == I18n::Message::SymbolMultiplication) {
+    return (int)preferences->symbolOfMultiplication();
+  }
+  if (message == I18n::Message::SymbolFunction) {
+    return (int)preferences->symbolOfFunction();
+  }
   if (message == I18n::Message::FontSizes) {
     return GlobalPreferences::sharedGlobalPreferences()->font() == KDFont::LargeFont ? 0 : 1;
+  }
+  if (message == I18n::Message::USBProtectionLevel) {
+    return GlobalPreferences::sharedGlobalPreferences()->dfuLevel();
   }
   return 0;
 }

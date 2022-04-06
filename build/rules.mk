@@ -14,7 +14,7 @@ $(eval $(call rule_for, \
 
 $(eval $(call rule_for, \
   CPP, %, %.inc, \
-  $$(CPP) -P $$< $$@, \
+  $$(CPP) $$(addprefix -I,$$(dir $$^)) -P $$< $$@, \
   global \
 ))
 
@@ -32,13 +32,13 @@ $(eval $(call rule_for, \
 
 $(eval $(call rule_for, \
   OBJCOPY, %.hex, %.elf, \
-  $$(OBJCOPY) -O ihex $$< $$@, \
+  $$(OBJCOPY) -R .slot_info -O ihex $$< $$@, \
   local \
 ))
 
 $(eval $(call rule_for, \
   OBJCOPY, %.bin, %.elf, \
-  $$(OBJCOPY) -O binary $$< $$@, \
+  $$(OBJCOPY) -R .slot_info -O binary $$< $$@, \
   local \
 ))
 
@@ -57,6 +57,12 @@ $(eval $(call rule_for, \
 $(eval $(call rule_for, \
   WINDRES, %.o, %.rc, \
   $$(WINDRES) $$(WRFLAGS) $$< -O coff -o $$@, \
+  global \
+))
+
+$(eval $(call rule_for, \
+  ZIP, %.zip, , \
+  rm -rf $$(basename $$@) && mkdir -p $$(basename $$@) && cp $$^ $$(basename $$@) && zip -r -9 -j $$@ $$(basename $$@) > /dev/null && rm -rf $$(basename $$@), \
   global \
 ))
 

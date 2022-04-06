@@ -1,6 +1,7 @@
 #include <poincare/power.h>
 #include <poincare/addition.h>
 #include <poincare/arithmetic.h>
+#include <poincare/based_integer.h>
 #include <poincare/binomial_coefficient.h>
 #include <poincare/constant.h>
 #include <poincare/cosine.h>
@@ -68,18 +69,33 @@ int PowerNode::polynomialDegree(Context * context, const char * symbolName) cons
   if (op0Deg < 0) {
     return -1;
   }
+  Integer i;
+  bool foundInteger = false;
   if (childAtIndex(1)->type() == ExpressionNode::Type::Rational) {
     RationalNode * r = static_cast<RationalNode *>(childAtIndex(1));
     if (!r->isInteger() || Number(r).sign() == Sign::Negative) {
       return -1;
     }
-    Integer numeratorInt = r->signedNumerator();
-    if (!numeratorInt.isExtractable()) {
+    foundInteger = true;
+    i = r->signedNumerator();
+  }
+  else if(childAtIndex(1)->type() == ExpressionNode::Type::BasedInteger) {
+    BasedIntegerNode * b = static_cast<BasedIntegerNode *>(childAtIndex(1));
+    if (Number(b).sign() == Sign::Negative) {
       return -1;
     }
-    op0Deg *= numeratorInt.extractedInt();
+    foundInteger = true;
+    i = b->integer();
+  }
+
+  if (foundInteger) {
+    if (!i.isExtractable()) {
+      return -1;
+    }
+    op0Deg *= i.extractedInt();
     return op0Deg;
   }
+
   return -1;
 }
 
@@ -179,10 +195,10 @@ Complex<T> PowerNode::compute(const std::complex<T> c, const std::complex<T> d, 
    * avoid weird results as e(i*pi) = -1+6E-17*i, we compute the argument of
    * the result of c^d and if arg ~ 0 [Pi], we discard the residual imaginary
    * part and if arg ~ Pi/2 [Pi], we discard the residual real part.
-   * Let's determine when the arg [Pi] (or arg [Pi/2]) is negligeable:
+   * Let's determine when the arg [Pi] (or arg [Pi/2]) is negligible:
    * With c = r*e^(iθ) and d = x+iy, c^d = r^x*e^(yθ)*e^i(yln(r)+xθ)
    * so arg(c^d) = y*ln(r)+xθ.
-   * We consider that arg[π] is negligeable if it is negligeable compared to
+   * We consider that arg[π] is negligible if it is negligible compared to
    * norm(d) = sqrt(x^2+y^2) and ln(r) = ln(norm(c)).*/
   return Complex<T>::Builder(ApproximationHelper::NeglectRealOrImaginaryPartIfNeglectable(result, c, d, false));
 }
@@ -356,10 +372,9 @@ int Power::getPolynomialCoefficients(Context * context, const char * symbolName,
   }
   /* Here we only consider the case x^4 as privateGetPolynomialCoefficients is
    * supposed to be called after reducing the expression. */
-  if (childAtIndex(0).type() == ExpressionNode::Type::Symbol
-      && strcmp(childAtIndex(0).convert<Symbol>().name(), symbolName) == 0
-      && childAtIndex(1).type() == ExpressionNode::Type::Rational)
-  {
+  int n;
+  bool foundInteger = false;
+  if (childAtIndex(1).type() == ExpressionNode::Type::Rational) {
     Rational r = childAtIndex(1).convert<Rational>();
     if (!r.isInteger() || r.sign() == ExpressionNode::Sign::Negative) {
       return -1;
@@ -368,7 +383,26 @@ int Power::getPolynomialCoefficients(Context * context, const char * symbolName,
     if (!num.isExtractable()) {
       return -1;
     }
-    int n = num.extractedInt();
+    foundInteger = true;
+    n = num.extractedInt();
+  }
+  else if(childAtIndex(1).type() == ExpressionNode::Type::BasedInteger) {
+    BasedInteger b = childAtIndex(1).convert<BasedInteger>();
+    if (Number(b).sign() == ExpressionNode::Sign::Negative) {
+      return -1;
+    }
+    foundInteger = true;
+    Integer i = b.integer();
+    if (!i.isExtractable()) {
+      return -1;
+    }
+    n = i.extractedInt();
+  }
+  
+  if (childAtIndex(0).type() == ExpressionNode::Type::Symbol
+      && strcmp(childAtIndex(0).convert<Symbol>().name(), symbolName) == 0
+      && foundInteger)
+  {
     if (n <= k_maxPolynomialDegree) {
       for (int i = 0; i < n; i++) {
         coefficients[i] = Rational::Builder(0);

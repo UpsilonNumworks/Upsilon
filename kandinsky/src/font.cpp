@@ -155,7 +155,7 @@ KDFont::GlyphIndex KDFont::indexForCodePoint(CodePoint c) const {
     return endPair->glyphIndex();
   }
   NoMatchingGlyph:
-  assert(CodePoints[IndexForReplacementCharacterCodePoint] == 0xFFFD);
+  assert(ExtendedCodePoints[IndexForReplacementCharacterCodePoint] == 0xFFFD);
   return IndexForReplacementCharacterCodePoint;
 #endif
 }

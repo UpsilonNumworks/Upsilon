@@ -44,6 +44,9 @@ bool Parser::IsSpecialIdentifierName(const char * name, size_t nameLength) {
   return (
     Token::CompareNonNullTerminatedName(name, nameLength, Symbol::k_ans)     == 0 ||
     Token::CompareNonNullTerminatedName(name, nameLength, Infinity::Name())  == 0 ||
+    Token::CompareNonNullTerminatedName(name, nameLength, "inf")             == 0 ||
+    Token::CompareNonNullTerminatedName(name, nameLength, "infinity")        == 0 ||
+    Token::CompareNonNullTerminatedName(name, nameLength, "oo")              == 0 ||
     Token::CompareNonNullTerminatedName(name, nameLength, Undefined::Name()) == 0 ||
     Token::CompareNonNullTerminatedName(name, nameLength, Unreal::Name())    == 0 ||
     Token::CompareNonNullTerminatedName(name, nameLength, "u")               == 0 ||
@@ -68,7 +71,8 @@ Expression Parser::parseUntil(Token::Type stoppingType) {
     &Parser::parseTimes,           // Token::Times
     &Parser::parseSlash,           // Token::Slash
     &Parser::parseImplicitTimes,   // Token::ImplicitTimes
-    &Parser::parseCaret,           // Token::Power
+    &Parser::parseCaret,           // Token::Power,
+    &Parser::parseSingleQuote,     // Token::SingleQuote
     &Parser::parseBang,            // Token::Bang
     &Parser::parseCaretWithParenthesis, // Token::CaretWithParenthesis
     &Parser::parseMatrix,          // Token::LeftBracket
@@ -155,7 +159,7 @@ void Parser::parseNumber(Expression & leftHandSide, Token::Type stoppingType) {
   leftHandSide = m_currentToken.expression();
    // No implicit multiplication between two numbers
   if (m_nextToken.isNumber()
-       // No implicit multiplication between a hexadecimal number and an identifer (avoid parsing 0x2abch as 0x2ABC*h)
+       // No implicit multiplication between a hexadecimal number and an identifier (avoid parsing 0x2abch as 0x2ABC*h)
       || (m_currentToken.is(Token::Type::HexadecimalNumber) && m_nextToken.is(Token::Type::Identifier))) {
     m_status = Status::Error;
     return;
@@ -235,7 +239,7 @@ void Parser::parseCaret(Expression & leftHandSide, Token::Type stoppingType) {
 void Parser::parseCaretWithParenthesis(Expression & leftHandSide, Token::Type stoppingType) {
   /* When parsing 2^(4) ! (with system parentheses), the factorial should stay
    * out of the power. To do this, we tokenized ^( as one token that should be
-   * matched by a closing parenthesis. Otherwise, the ! would take precendence
+   * matched by a closing parenthesis. Otherwise, the ! would take precedence
    * over the power. */
   if (leftHandSide.isUninitialized()) {
     m_status = Status::Error; // Power must have a left operand
@@ -328,6 +332,15 @@ void Parser::parseLeftParenthesis(Expression & leftHandSide, Token::Type stoppin
 
 void Parser::parseLeftSystemParenthesis(Expression & leftHandSide, Token::Type stoppingType) {
   defaultParseLeftParenthesis(true, leftHandSide, stoppingType);
+}
+
+void Parser::parseSingleQuote(Expression & leftHandSide, Token::Type stoppingType) {
+  if (leftHandSide.isUninitialized()) {
+    m_status = Status::Error; // Left-hand side missing
+  } else {
+    leftHandSide = Derivative::Builder(leftHandSide, Symbol::Builder('x'), Symbol::Builder('x'));
+  }
+  isThereImplicitMultiplication();
 }
 
 void Parser::parseBang(Expression & leftHandSide, Token::Type stoppingType) {
@@ -426,7 +439,14 @@ void Parser::parseSequence(Expression & leftHandSide, const char * name, Token::
 void Parser::parseSpecialIdentifier(Expression & leftHandSide) {
   if (m_currentToken.compareTo(Symbol::k_ans) == 0) {
     leftHandSide = Symbol::Ans();
-  } else if (m_currentToken.compareTo(Infinity::Name()) == 0) {
+  } else if (m_currentToken.compareTo(Infinity::Name()) == 0 ||
+             m_currentToken.compareTo("inf")            == 0 ||
+             m_currentToken.compareTo("infinity")       == 0 ||
+             m_currentToken.compareTo("oo")             == 0
+    ) {
+
+    leftHandSide = Infinity::Builder(false);
+  } else if (m_currentToken.compareTo("inf") == 0) {
     leftHandSide = Infinity::Builder(false);
   } else if (m_currentToken.compareTo(Undefined::Name()) == 0) {
     leftHandSide = Undefined::Builder();

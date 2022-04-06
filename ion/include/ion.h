@@ -3,6 +3,7 @@
 
 #include <ion/backlight.h>
 #include <ion/battery.h>
+#include <ion/board.h>
 #include <ion/clipboard.h>
 #include <ion/console.h>
 #include <ion/display.h>
@@ -11,6 +12,7 @@
 #include <ion/keyboard.h>
 #include <ion/led.h>
 #include <ion/power.h>
+#include <ion/rtc.h>
 #include <ion/storage.h>
 #include <ion/timing.h>
 #include <ion/usb.h>
@@ -31,9 +33,14 @@ void ion_main(int argc, const char * const argv[]);
 namespace Ion {
 
 const char * serialNumber();
+const volatile char * username();
 const char * softwareVersion();
+const char * upsilonVersion();
+const char * omegaVersion();
 const char * patchLevel();
 const char * fccId();
+const char * pcbVersion();
+void updateSlotInfo();
 
 // CRC32 : non xor-ed, non reversed, direct, polynomial 4C11DB7
 uint32_t crc32Word(const uint32_t * data, size_t length); // Only accepts whole 32bit values

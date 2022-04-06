@@ -7,6 +7,38 @@
 #include <string.h>
 #include <setjmp.h>
 
+#ifdef __EMSCRIPTEN__
+#include <emscripten.h>
+
+void python_error_start(const char* type) {
+  EM_ASM({
+    Module.___temp_python_error = new Object();
+    Module.___temp_python_error["stacktrace"] = new Array();
+    Module.___temp_python_error["type"] = Module.UTF8ToString($0);
+  }, type);
+}
+
+void python_error_add_trace(const char* file, int line, const char* block) {
+  EM_ASM({
+    var temp_obj = new Object();
+    temp_obj["file"] = Module.UTF8ToString($0);
+    temp_obj["line"] = $1;
+    temp_obj["block"] = Module.UTF8ToString($2);
+    Module.___temp_python_error.stacktrace.push(temp_obj);
+  }, file, line, block);
+}
+
+void python_error_end() {
+  EM_ASM({
+    if (typeof Module.onPythonError === "function") {
+      Module.onPythonError(Module.___temp_python_error); 
+    }
+    delete Module.___temp_python_error;
+  });
+}
+#endif
+
+
 /* py/parsenum.h is a C header which uses C keyword restrict.
  * It does not exist in C++ so we define it here in order to be able to include
  * py/parsenum.h header. */
@@ -29,6 +61,9 @@ extern "C" {
 #include "mphalport.h"
 #include "mod/turtle/modturtle.h"
 #include "mod/matplotlib/pyplot/modpyplot.h"
+#if defined(INCLUDE_ULAB)
+#include "mod/ulab/ulab.h"
+#endif
 }
 
 #include <escher/palette.h>
@@ -65,6 +100,10 @@ bool MicroPython::ExecutionEnvironment::runCode(const char * str) {
      * because we want to print custom information, we copied and modified the
      * content of mp_obj_print_exception instead of calling it. */
     if (mp_obj_is_exception_instance((mp_obj_t)nlr.ret_val)) {
+#ifdef __EMSCRIPTEN__
+      mp_obj_exception_t* the_exception = (mp_obj_exception_t*) MP_OBJ_TO_PTR((mp_obj_t)nlr.ret_val);
+      python_error_start(qstr_str(the_exception->base.type->name));
+#endif
         size_t n, *values;
         mp_obj_exception_get_traceback((mp_obj_t)nlr.ret_val, &n, &values);
         if (n > 0) {
@@ -74,6 +113,9 @@ bool MicroPython::ExecutionEnvironment::runCode(const char * str) {
                 if (values[i] == 0) {
                   mp_printf(&mp_plat_print, "  Last command\n");
                 } else {
+#ifdef __EMSCRIPTEN__
+                  python_error_add_trace((const char*) qstr_str(values[i]), (int) values[i + 1], (const char*) qstr_str(values[i+2]));
+#endif
 #if MICROPY_ENABLE_SOURCE_LINE
                   mp_printf(&mp_plat_print, "  File \"%q\", line %d", values[i], (int)values[i + 1]);
 #else
@@ -90,6 +132,9 @@ bool MicroPython::ExecutionEnvironment::runCode(const char * str) {
               }
             }
         }
+#ifdef __EMSCRIPTEN__
+      python_error_end();
+#endif
     }
     mp_obj_print_helper(&mp_plat_print, (mp_obj_t)nlr.ret_val, PRINT_EXC);
     mp_print_str(&mp_plat_print, "\n");
@@ -118,10 +163,6 @@ extern "C" {
 }
 
 void MicroPython::init(void * heapStart, void * heapEnd) {
-#if __EMSCRIPTEN__
-  static mp_obj_t pystack[1024];
-  mp_pystack_init(pystack, &pystack[MP_ARRAY_SIZE(pystack)]);
-#endif
   /* We delimit the stack part that will be used by Python. The stackTop is the
    * address of the first object that can be allocated on Python stack. This
    * boundaries are used:
@@ -171,7 +212,7 @@ void MicroPython::collectRootsAtAddress(char * address, int byteLength) {
   uintptr_t alignedAddress = reinterpret_cast<uintptr_t>(address) & bitMaskZeros;
   /* Increase the length consequently with the new alignment
    * (We don't need to increase the byteLength to a sizeof(uintptr_t)-aligned
-   * lenght because no pointer can be stored on less than sizeof(uintptr_t)
+   * length because no pointer can be stored on less than sizeof(uintptr_t)
    * bytes.) */
   int alignedByteLength = byteLength;
   alignedByteLength += reinterpret_cast<uintptr_t>(address) & bitMaskOnes;

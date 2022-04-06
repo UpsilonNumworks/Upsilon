@@ -1,6 +1,8 @@
 #include <drivers/board.h>
 #include <drivers/cache.h>
+#include <drivers/internal_flash.h>
 #include <drivers/config/clocks.h>
+#include <drivers/config/internal_flash.h>
 #include <drivers/external_flash.h>
 #include <regs/regs.h>
 #include <ion.h>
@@ -22,13 +24,37 @@ namespace Board {
 
 using namespace Regs;
 
+void bootloaderMPU() {
+  // 1. Disable the MPU
+  // 1.1 Memory barrier
+  Cache::dmb();
+
+  // 1.3 Disable the MPU and clear the control register
+  MPU.CTRL()->setENABLE(false);
+
+  MPU.RNR()->setREGION(7);
+  MPU.RBAR()->setADDR(0x90000000);
+  MPU.RASR()->setXN(false);
+  MPU.RASR()->setENABLE(true);
+
+  // 2.3 Enable MPU
+  MPU.CTRL()->setENABLE(true);
+
+  // 3. Data/instruction synchronisation barriers to ensure that the new MPU configuration is used by subsequent instructions.
+  Cache::disable();
+  Cache::dsb();
+  Cache::isb();
+}
+
 void initMPU() {
   // 1. Disable the MPU
   // 1.1 Memory barrier
   Cache::dmb();
 
-  // 1.2 Disable fault exceptions
-  CORTEX.SHCRS()->setMEMFAULTENA(false);
+  // 1.2 Enable fault exceptions
+  CORTEX.SHCRS()->setMEMFAULTENA(true);
+  CORTEX.SHCRS()->setBUSFAULTENA(true);
+  CORTEX.SHCRS()->setUSGFAULTENA(true); 
 
   // 1.3 Disable the MPU and clear the control register
   MPU.CTRL()->setENABLE(false);
@@ -38,7 +64,7 @@ void initMPU() {
   /* This is needed for interfacing with the LCD
    * We define the whole FMC memory bank 1 as strongly ordered, non-executable
    * and not accessible. We define the FMC command and data addresses as
-   * writeable non-cachable, non-buffereable and non shareable. */
+   * writeable non-cacheable, non-buffereable and non shareable. */
   int sector = 0;
   MPU.RNR()->setREGION(sector++);
   MPU.RBAR()->setADDR(0x60000000);
@@ -80,7 +106,7 @@ void initMPU() {
    * then an AHB error is given (AN4760). To prevent this to happen, we
    * configure the MPU to define the whole Quad-SPI addressable space as
    * strongly ordered, non-executable and not accessible. Plus, we define the
-   * Quad-SPI region corresponding to the Expternal Chip as executable and
+   * Quad-SPI region corresponding to the External Chip as executable and
    * fully accessible (AN4861). */
   MPU.RNR()->setREGION(sector++);
   MPU.RBAR()->setADDR(0x90000000);
@@ -251,6 +277,8 @@ void initClocks() {
   // APB1 bus
   // We're using TIM3 for the LEDs
   RCC.APB1ENR()->setTIM3EN(true);
+  RCC.APB1ENR()->setPWREN(true);
+  RCC.APB1ENR()->setRTCAPB(true);
 
   // APB2 bus
   class RCC::APB2ENR apb2enr(0); // Reset value
@@ -368,6 +396,44 @@ void shutdownClocks(bool keepLEDAwake) {
   }
   RCC.APB1ENR()->set(apb1enr);
   RCC.AHB1ENR()->set(ahb1enr);
+}
+
+constexpr int k_pcbVersionOTPIndex = 0;
+
+/* As we want the PCB versions to be in ascending order chronologically, and
+ * because the OTP are initialized with 1s, we store the bitwise-not of the
+ * version number. This way, devices with blank OTP are considered version 0. */
+
+PCBVersion pcbVersion() {
+#if IN_FACTORY
+  /* When flashing for the first time, we want all systems that depend on the
+   * PCB version to function correctly before flashing the PCB version. This
+   * way, flashing the PCB version can be done last. */
+  return PCB_LATEST;
+#else
+  PCBVersion version = readPCBVersionInMemory();
+  return (version == k_alternateBlankVersion ? 0 : version);
+#endif
+}
+
+PCBVersion readPCBVersionInMemory() {
+  return ~(*reinterpret_cast<const PCBVersion *>(InternalFlash::Config::OTPAddress(k_pcbVersionOTPIndex)));
+}
+
+void writePCBVersion(PCBVersion version) {
+  uint8_t * destination = reinterpret_cast<uint8_t *>(InternalFlash::Config::OTPAddress(k_pcbVersionOTPIndex));
+  PCBVersion formattedVersion = ~version;
+  InternalFlash::WriteMemory(destination, reinterpret_cast<uint8_t *>(&formattedVersion), sizeof(formattedVersion));
+}
+
+void lockPCBVersion() {
+  uint8_t * destination = reinterpret_cast<uint8_t *>(InternalFlash::Config::OTPLockAddress(k_pcbVersionOTPIndex));
+  uint8_t zero = 0;
+  InternalFlash::WriteMemory(destination, &zero, sizeof(zero));
+}
+
+bool pcbVersionIsLocked() {
+  return *reinterpret_cast<const uint8_t *>(InternalFlash::Config::OTPLockAddress(k_pcbVersionOTPIndex)) == 0;
 }
 
 }

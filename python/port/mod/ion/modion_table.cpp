@@ -4,7 +4,7 @@ extern "C" {
 
 #include <ion.h>
 
-/* We cannot use C99-style struct initizalition in C++. As a result, we cannot
+/* We cannot use C99-style struct initialization in C++. As a result, we cannot
  * use the macros that micropython recommends, and we have to hand build those
  * structs. To avoid errors, we drop in a few static_asserts. */
 
@@ -16,9 +16,45 @@ const mp_obj_fun_builtin_fixed_t modion_keyboard_keydown_obj = {
   {(mp_fun_0_t)modion_keyboard_keydown}
 };
 
-STATIC const mp_rom_map_elem_t modion_module_globals_table[] = {
+const mp_obj_fun_builtin_fixed_t modion_get_keys_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_get_keys}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_battery_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_battery}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_battery_level_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_battery_level}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_battery_ischarging_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_battery_ischarging}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_set_brightness_obj = {
+  {&mp_type_fun_builtin_1},
+  {(mp_fun_0_t)modion_set_brightness}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_get_brightness_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_get_brightness}
+};
+
+extern "C" const mp_rom_map_elem_t modion_module_globals_table[] = {
   { MP_ROM_QSTR(MP_QSTR___name__), MP_ROM_QSTR(MP_QSTR_ion) },
+  { MP_ROM_QSTR(MP_QSTR_battery), MP_ROM_PTR(&modion_battery_obj) },
+  { MP_ROM_QSTR(MP_QSTR_battery_level), MP_ROM_PTR(&modion_battery_level_obj) },
+  { MP_ROM_QSTR(MP_QSTR_battery_ischarging), MP_ROM_PTR(&modion_battery_ischarging_obj) },
   { MP_ROM_QSTR(MP_QSTR_keydown), MP_ROM_PTR(&modion_keyboard_keydown_obj) },
+  { MP_ROM_QSTR(MP_QSTR_get_keys), MP_ROM_PTR(&modion_get_keys_obj) },
+  { MP_ROM_QSTR(MP_QSTR_set_brightness), MP_ROM_PTR(&modion_set_brightness_obj) },
+  { MP_ROM_QSTR(MP_QSTR_get_brightness), MP_ROM_PTR(&modion_get_brightness_obj) },
   { MP_ROM_QSTR(MP_QSTR_KEY_LEFT), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::Left) },
   { MP_ROM_QSTR(MP_QSTR_KEY_UP), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::Up) },
   { MP_ROM_QSTR(MP_QSTR_KEY_DOWN), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::Down) },
@@ -65,6 +101,8 @@ STATIC const mp_rom_map_elem_t modion_module_globals_table[] = {
   { MP_ROM_QSTR(MP_QSTR_KEY_EE), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::EE) },
   { MP_ROM_QSTR(MP_QSTR_KEY_ANS), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::Ans) },
   { MP_ROM_QSTR(MP_QSTR_KEY_EXE), MP_OBJ_NEW_SMALL_INT(Ion::Keyboard::Key::EXE) },
+  
+  { MP_ROM_QSTR(MP_QSTR_file), (mp_obj_t)&file_type}
 };
 
 STATIC MP_DEFINE_CONST_DICT(modion_module_globals, modion_module_globals_table);

@@ -3,6 +3,7 @@
 
 #include <stddef.h>
 #include <assert.h>
+#include <drivers/usb.h>
 #include <drivers/config/usb.h>
 #include "dfu_interface.h"
 #include "stack/device.h"
@@ -25,7 +26,7 @@ namespace USB {
 
 class Calculator : public Device {
 public:
-  static void PollAndReset(bool exitWithKeyboard)
+  static void PollAndReset(bool exitWithKeyboard, bool unlocked, int level)
     __attribute__((section(".dfu_entry_point"))) // Needed to pinpoint this symbol in the linker script
     __attribute__((used)) // Make sure this symbol is not discarded at link time
     ; // Return true if reset is needed
@@ -94,12 +95,12 @@ public:
     m_manufacturerStringDescriptor("NumWorks"),
     m_productStringDescriptor("NumWorks Calculator"),
     m_serialNumberStringDescriptor(serialNumber),
-    m_interfaceStringDescriptor(Config::InterfaceStringDescriptor),
+    m_interfaceStringDescriptor(stringDescriptor()),
     //m_interfaceStringDescriptor("@SRAM/0x20000000/01*256Ke"),
     /* Switch to this descriptor to use dfu-util to write in the SRAM.
      * FIXME Should be an alternate Interface. */
     m_microsoftOSStringDescriptor(k_microsoftOSVendorCode),
-    m_workshopURLDescriptor(URLDescriptor::Scheme::HTTPS, "workshop.numworks.com"),
+    m_workshopURLDescriptor(URLDescriptor::Scheme::HTTPS, "getomega.dev"),
     m_extendedCompatIdDescriptor("WINUSB"),
     m_descriptors{
       &m_deviceDescriptor,             // Type = Device, Index = 0
@@ -154,7 +155,7 @@ private:
   ExtendedCompatIDDescriptor m_extendedCompatIdDescriptor;
 
   Descriptor * m_descriptors[8];
-  /* m_descriptors contains only descriptors that sould be returned via the
+  /* m_descriptors contains only descriptors that should be returned via the
    * method descriptor(uint8_t type, uint8_t index), so do not count descriptors
    * included in other descriptors or returned by other functions. */
 

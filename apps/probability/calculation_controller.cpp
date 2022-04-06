@@ -26,7 +26,7 @@ namespace Probability {
 constexpr int CalculationController::k_titleBufferSize;
 
 CalculationController::ContentView::ContentView(SelectableTableView * selectableTableView, Distribution * distribution, Calculation * calculation) :
-  m_titleView(KDFont::SmallFont, I18n::Message::ComputeProbability, 0.5f, 0.5f, Palette::GrayDark, Palette::WallScreen),
+  m_titleView(KDFont::SmallFont, I18n::Message::ComputeProbability, 0.5f, 0.5f, Palette::SecondaryText, Palette::BackgroundApps),
   m_selectableTableView(selectableTableView),
   m_distributionCurveView(distribution, calculation)
 {
@@ -68,7 +68,7 @@ CalculationController::CalculationController(Responder * parentResponder, InputE
   m_selectableTableView.setMargins(k_tableMargin);
   m_selectableTableView.setVerticalCellOverlap(0);
   m_selectableTableView.setDecoratorType(ScrollView::Decorator::Type::None);
-  m_selectableTableView.setBackgroundColor(KDColorWhite);
+  m_selectableTableView.setBackgroundColor(Palette::BackgroundHard);
 
 
   for (int i = 0; i < k_numberOfCalculationCells; i++) {
@@ -183,7 +183,7 @@ void CalculationController::willDisplayCellAtLocation(HighlightCell * cell, int 
     constexpr int precision = Preferences::LargeNumberOfSignificantDigits;
     constexpr int bufferSize = PrintFloat::charSizeForFloatsWithPrecision(precision);
     char buffer[bufferSize];
-    // FIXME: Leo has not decided yet if we should use the prefered mode instead of always using scientific mode
+    // FIXME: Leo has not decided yet if we should use the preferred mode instead of always using scientific mode
     PoincareHelpers::ConvertFloatToTextWithDisplayMode<double>(m_calculation->parameterAtIndex(i-1), buffer, bufferSize, precision, Preferences::PrintFloatMode::Decimal);
     field->setText(buffer);
   }

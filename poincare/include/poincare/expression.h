@@ -152,6 +152,7 @@ public:
   bool isOfType(ExpressionNode::Type * types, int length) const { return node()->isOfType(types, length); }
   ExpressionNode::Sign sign(Context * context) const { return node()->sign(context); }
   ExpressionNode::NullStatus nullStatus(Context * context) const { return node()->nullStatus(context); }
+  ExpressionNode::IntegerStatus integerStatus(Context * context) const { return node()->integerStatus(context); }
   bool isStrictly(ExpressionNode::Sign s, Context * context) const { return s == node()->sign(context) && node()->nullStatus(context) == ExpressionNode::NullStatus::NonNull;  }
   bool isUndefined() const { return node()->type() == ExpressionNode::Type::Undefined ||  node()->type() == ExpressionNode::Type::Unreal; }
   bool isNumber() const { return node()->isNumber(); }
@@ -338,7 +339,7 @@ protected:
      * Float to Symbol for instance).
      *
      * We could have overriden the operator T(). However, even with the
-     * 'explicit' keyword (which prevents implicit casts), direct initilization
+     * 'explicit' keyword (which prevents implicit casts), direct initialization
      * are enable which can lead to weird code:
      * ie, you can write: 'Rational a(2); AbsoluteValue b(a);'
      * */
@@ -407,7 +408,7 @@ private:
   static constexpr int k_maxSymbolReplacementsCount = 10;
   static bool sSymbolReplacementsCountLock;
 
-  /* Add missing parenthesis will add parentheses that easen the reading of the
+  /* Add missing parenthesis will add parentheses that ease the reading of the
    * expression or that are required by math rules. For example:
    * 2+-1 --> 2+(-1)
    * *(+(2,1),3) --> (2+1)*3

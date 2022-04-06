@@ -7,9 +7,9 @@
 class MathToolbox : public Toolbox {
 public:
   MathToolbox();
-protected:
-  bool selectLeaf(int selectedRow) override;
   const ToolboxMessageTree * rootModel() const override;
+protected:
+  bool selectLeaf(int selectedRow, bool quitToolbox) override;
   MessageTableCellWithMessage * leafCellAtIndex(int index) override;
   MessageTableCellWithChevron* nodeCellAtIndex(int index) override;
   int maxNumberOfDisplayedRows() override;

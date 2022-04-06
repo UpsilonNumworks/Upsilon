@@ -17,7 +17,7 @@ StoreController::ContentView::ContentView(DoublePairStore * store, Responder * p
   m_formulaInputView(this, inputEventHandlerDelegate, textFieldDelegate),
   m_displayFormulaInputView(false)
 {
-  m_dataView.setBackgroundColor(Palette::WallScreenDark);
+  m_dataView.setBackgroundColor(Palette::BackgroundAppsSecondary);
   m_dataView.setVerticalCellOverlap(0);
   m_dataView.setMargins(k_margin, k_scrollBarMargin, k_scrollBarMargin, k_margin);
 }
@@ -232,7 +232,7 @@ bool StoreController::privateFillColumnWithFormula(Expression formula, Expressio
   variables[0][0] = 0;
   AppsContainer * appsContainer = AppsContainer::sharedAppsContainer();
   int nbOfVariables = formula.getVariables(appsContainer->globalContext(), isVariable, (char *)variables, k_maxSizeOfStoreSymbols);
-  (void) nbOfVariables; // Remove compilation warning of nused variable
+  (void) nbOfVariables; // Remove compilation warning of unused variable
   assert(nbOfVariables >= 0);
   int numberOfValuesToCompute = -1;
   int index = 0;

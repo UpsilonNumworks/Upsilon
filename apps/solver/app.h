@@ -17,6 +17,7 @@ public:
     public:
       I18n::Message name() override;
       I18n::Message upperName() override;
+      App::Descriptor::ExaminationLevel examinationLevel() override;
       const Image * icon() override;
   };
   class Snapshot : public ::SharedApp::Snapshot {
@@ -46,9 +47,6 @@ public:
   void willBecomeInactive() override;
   TELEMETRY_ID("Solver");
 private:
-  // TextFieldDelegateApp
-  bool isAcceptableExpression(const Poincare::Expression expression) override;
-
   App(Snapshot * snapshot);
   SolutionsController m_solutionsController;
   IntervalController m_intervalController;

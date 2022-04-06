@@ -8,7 +8,7 @@ namespace Shared {
 
 AbstractScrollableMultipleExpressionsView::ContentCell::ContentCell() :
   m_rightExpressionView(),
-  m_approximateSign(k_font, k_defaultApproximateMessage, 0.5f, 0.5f, Palette::GrayVeryDark),
+  m_approximateSign(k_font, k_defaultApproximateMessage, 0.5f, 0.5f, Palette::SecondaryText),
   m_centeredExpressionView(),
   m_selectedSubviewPosition(SubviewPosition::Center),
   m_displayCenter(true)
@@ -16,7 +16,7 @@ AbstractScrollableMultipleExpressionsView::ContentCell::ContentCell() :
 }
 
 KDColor AbstractScrollableMultipleExpressionsView::ContentCell::backgroundColor() const {
-  KDColor background = m_even ? KDColorWhite : Palette::WallScreen;
+  KDColor background = m_even ? Palette::CalculationBackgroundEven : Palette::CalculationBackgroundOdd;
   return background;
 }
 
@@ -48,9 +48,9 @@ void AbstractScrollableMultipleExpressionsView::ContentCell::setEven(bool even) 
 
 void AbstractScrollableMultipleExpressionsView::ContentCell::reloadTextColor() {
   if (displayCenter()) {
-    m_rightExpressionView.setTextColor(Palette::GrayVeryDark);
+    m_rightExpressionView.setTextColor(Palette::SecondaryText);
   } else {
-    m_rightExpressionView.setTextColor(KDColorBlack);
+    m_rightExpressionView.setTextColor(Palette::PrimaryText);
   }
 }
 

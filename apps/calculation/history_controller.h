@@ -8,6 +8,7 @@
 #include "additional_outputs/complex_list_controller.h"
 #include "additional_outputs/integer_list_controller.h"
 #include "additional_outputs/rational_list_controller.h"
+#include "additional_outputs/second_degree_list_controller.h"
 #include "additional_outputs/trigonometry_list_controller.h"
 #include "additional_outputs/unit_list_controller.h"
 #include "additional_outputs/matrix_list_controller.h"
@@ -34,6 +35,7 @@ public:
   int typeAtLocation(int i, int j) override;
   void setSelectedSubviewType(SubviewType subviewType, bool sameCell, int previousSelectedX = -1, int previousSelectedY = -1) override;
   void tableViewDidChangeSelectionAndDidScroll(SelectableTableView * t, int previousSelectedCellX, int previousSelectedCellY, bool withinTemporarySelection = false) override;
+  void reinsertTrash() { m_calculationStore->reinsertTrash(); }
 private:
   int storeIndex(int i) { return numberOfRows() - i - 1; }
   Shared::ExpiringPointer<Calculation> calculationAtIndex(int i);
@@ -47,6 +49,7 @@ private:
   ComplexListController m_complexController;
   IntegerListController m_integerController;
   RationalListController m_rationalController;
+  SecondDegreeListController m_secondDegreeController;
   TrigonometryListController m_trigonometryController;
   UnitListController m_unitController;
   MatrixListController m_matrixController;

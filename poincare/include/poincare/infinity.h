@@ -39,7 +39,7 @@ public:
   int serialize(char * buffer, int bufferSize, Preferences::PrintFloatMode floatDisplayMode = Preferences::PrintFloatMode::Decimal, int numberOfSignificantDigits = 0) const override;
 
   /* Derivation
-   * Unlike Numbers that derivate to 0, Infinity derivates to Undefined. */
+   * Unlike Numbers that derivate to 0, Infinity derivatives to Undefined. */
   bool derivate(ReductionContext reductionContext, Expression symbol, Expression symbolValue) override;
 
 private:
@@ -56,7 +56,7 @@ public:
   static Infinity Builder(bool negative);
   Expression setSign(ExpressionNode::Sign s);
   static const char * Name() {
-    return "inf";
+    return "∞";
   }
   static int NameSize() {
     return 4;

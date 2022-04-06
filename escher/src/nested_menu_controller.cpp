@@ -89,7 +89,7 @@ void NestedMenuController::ListController::setFirstSelectedRow(int firstSelected
 /* NestedMenuController */
 
 NestedMenuController::NestedMenuController(Responder * parentResponder, I18n::Message title) :
-  StackViewController(parentResponder, &m_listController, KDColorWhite, Palette::PurpleBright, Palette::PurpleDark),
+  StackViewController(parentResponder, &m_listController, Palette::ToolboxHeaderText, Palette::ToolboxHeaderBackground, Palette::ToolboxHeaderBorder),
   m_selectableTableView(&m_listController, this, this, this),
   m_listController(this, &m_selectableTableView, title),
   m_sender(nullptr)
@@ -144,14 +144,23 @@ bool NestedMenuController::handleEventForRow(Ion::Events::Event event, int rowIn
   if ((event == Ion::Events::Back || event == Ion::Events::Left) && depth > 0) {
     return returnToPreviousMenu();
   }
+  if ((event == Ion::Events::ShiftLeft || event == Ion::Events::AlphaLeft) && depth > 0) {
+    for (int i = depth; i > 0; i--) {
+      returnToPreviousMenu();
+    }
+    return true;
+  }
   if (selectedRow() < 0) {
     return false;
   }
   if ((event == Ion::Events::OK || event == Ion::Events::EXE || event == Ion::Events::Right) && typeAtLocation(0, selectedRow()) == NodeCellType) {
     return selectSubMenu(rowIndex);
   }
+  if (canStayInMenu() && ((event == Ion::Events::ShiftOK || event == Ion::Events::ShiftEXE) && typeAtLocation(0, selectedRow()) == LeafCellType)) {
+    return selectLeaf(rowIndex, false);
+  }
   if ((event == Ion::Events::OK || event == Ion::Events::EXE) && typeAtLocation(0, selectedRow()) == LeafCellType) {
-    return selectLeaf(rowIndex);
+    return selectLeaf(rowIndex, true);
   }
   return false;
 }

@@ -23,6 +23,7 @@ class LayoutCursor final {
   friend class MatrixLayoutNode;
   friend class NthRootLayoutNode;
   friend class SequenceLayoutNode;
+  friend class VectorLayoutNode;
   friend class VerticalOffsetLayoutNode;
 public:
   constexpr static KDCoordinate k_cursorWidth = 1;
@@ -105,11 +106,19 @@ public:
   void addEmptyExponentialLayout();
   void addEmptyMatrixLayout();
   void addEmptyPowerLayout();
+  void addRoot();
+  void addLog();
+  void addEmptyLog();
+  void addEmpty10Log();
+  void addEmptyArgLog();
   void addEmptySquareRootLayout();
+  void addEmptyRootLayout();
+  void addEmptyArgSquareRootLayout();
   void addEmptySquarePowerLayout();
   void addEmptyTenPowerLayout();
   void addFractionLayoutAndCollapseSiblings();
   void addXNTCodePointLayout();
+  void addMultiplicationPointLayout();
   void insertText(const char * text, bool forceCursorRightOfText = false);
   void addLayoutAndMoveCursor(Layout l);
   bool showEmptyLayoutIfNeeded() { return privateShowHideEmptyLayoutIfNeeded(true); }

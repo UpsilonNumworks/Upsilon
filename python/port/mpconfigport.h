@@ -5,7 +5,6 @@
 /* MicroPython configuration options
  * We're not listing the default options as defined in mpconfig.h */
 
-#if __EMSCRIPTEN__
 // Enable a PyStack where most objects are allocated instead of always using the heap
 /* This enables to allocate and free memory in a scope (thus, Python can call
  * Python) but also has the collateral effect of removing bugs regarding
@@ -15,8 +14,7 @@
  * collecting roots the transpiled C code is denied access to Javascript
  * variables that can store pointers to the Python heap. The pointed objects
  * are therefore erased prematurely. */
-#define MICROPY_ENABLE_PYSTACK (1)
-#endif
+#define MICROPY_ENABLE_PYSTACK (0)
 
 // Maximum length of a path in the filesystem
 #define MICROPY_ALLOC_PATH_MAX (32)
@@ -54,14 +52,17 @@
 // Support for async/await/async for/async with
 #define MICROPY_PY_ASYNC_AWAIT (0)
 
+// Support for literal string interpolation, f-strings (see PEP 498, Python 3.6+)
+#define MICROPY_PY_FSTRINGS (1)
+
 // Whether to support bytearray object
-#define MICROPY_PY_BUILTINS_BYTEARRAY (0)
+#define MICROPY_PY_BUILTINS_BYTEARRAY (1)
 
 // Whether to support frozenset object
 #define MICROPY_PY_BUILTINS_FROZENSET (1)
 
 // Whether to support property object
-#define MICROPY_PY_BUILTINS_PROPERTY (0)
+#define MICROPY_PY_BUILTINS_PROPERTY (1)
 
 // Whether to support unicode strings
 #define MICROPY_PY_BUILTINS_STR_UNICODE (1)
@@ -83,6 +84,12 @@
 
 // Whether to provide special math functions: math.{erf,erfc,gamma,lgamma}
 #define MICROPY_PY_MATH_SPECIAL_FUNCTIONS (1)
+
+// Whether to provide math.factorial function
+#define MICROPY_PY_MATH_FACTORIAL (1)
+
+// Whether math.factorial is large, fast and recursive (1) or small and slow (0).
+#define MICROPY_OPT_MATH_FACTORIAL (0)
 
 // Whether to provide "cmath" module
 #define MICROPY_PY_CMATH (1)
@@ -107,6 +114,9 @@
 
 // Whether to support rounding of integers (incl bignum); eg round(123,-1)=120
 #define MICROPY_PY_BUILTINS_ROUND_INT (1)
+
+// Wheter to support all the special methods for custom classes
+#define MICROPY_PY_ALL_SPECIAL_METHODS (1)
 
 // Function to seed URANDOM with on init
 #define MICROPY_PY_URANDOM_SEED_INIT_FUNC micropython_port_random()
@@ -134,7 +144,10 @@ extern const struct _mp_obj_module_t modkandinsky_module;
 extern const struct _mp_obj_module_t modmatplotlib_module;
 extern const struct _mp_obj_module_t modpyplot_module;
 extern const struct _mp_obj_module_t modtime_module;
+extern const struct _mp_obj_module_t modos_module;
 extern const struct _mp_obj_module_t modturtle_module;
+
+#if !defined(INCLUDE_ULAB)
 
 #define MICROPY_PORT_BUILTIN_MODULES \
     { MP_ROM_QSTR(MP_QSTR_ion), MP_ROM_PTR(&modion_module) }, \
@@ -142,5 +155,29 @@ extern const struct _mp_obj_module_t modturtle_module;
     { MP_ROM_QSTR(MP_QSTR_matplotlib), MP_ROM_PTR(&modmatplotlib_module) }, \
     { MP_ROM_QSTR(MP_QSTR_matplotlib_dot_pyplot), MP_ROM_PTR(&modpyplot_module) }, \
     { MP_ROM_QSTR(MP_QSTR_time), MP_ROM_PTR(&modtime_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_os), MP_ROM_PTR(&modos_module) }, \
     { MP_ROM_QSTR(MP_QSTR_turtle), MP_ROM_PTR(&modturtle_module) }, \
+
+#else
+extern const struct _mp_obj_module_t ulab_user_cmodule;
+
+#define MICROPY_PORT_BUILTIN_MODULES \
+    { MP_ROM_QSTR(MP_QSTR_ion), MP_ROM_PTR(&modion_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_kandinsky), MP_ROM_PTR(&modkandinsky_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_matplotlib), MP_ROM_PTR(&modmatplotlib_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_matplotlib_dot_pyplot), MP_ROM_PTR(&modpyplot_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_time), MP_ROM_PTR(&modtime_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_os), MP_ROM_PTR(&modos_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_turtle), MP_ROM_PTR(&modturtle_module) }, \
+    { MP_ROM_QSTR(MP_QSTR_ulab), MP_ROM_PTR(&ulab_user_cmodule) },        \
+
+#endif
+
+
+// Enable setjmp in debug mode. This is to avoid some optimizations done
+// specifically for x86_64 using inline assembly, which makes the debug binary
+// crash with an illegal instruction
+#ifndef NDEBUG
+  #define MICROPY_NLR_SETJMP 1
+#endif
 

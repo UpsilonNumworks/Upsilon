@@ -7,6 +7,7 @@
 #include <drivers/external_flash.h>
 #include <drivers/keyboard.h>
 #include <drivers/led.h>
+#include <drivers/rtc.h>
 #include <drivers/swd.h>
 #include <drivers/timing.h>
 #include <drivers/usb.h>
@@ -91,5 +92,28 @@ void setClockFrequency(Frequency f) {
 }
 
 }
+}
+}
+
+namespace Ion {
+namespace Board {
+
+using namespace Device::Board;
+
+void lockUnlockedPCBVersion() {
+  if (pcbVersionIsLocked()) {
+    return;
+  }
+  /* PCB version is unlocked : the device is a N0110 that has been
+   * produced prior to the pcb revision 3.43. */
+  PCBVersion version = pcbVersion();
+  if (version != 0) {
+    /* Some garbage has been written in OTP0. We overwrite it fully, which is
+     * interepreted as blank. */
+    writePCBVersion(k_alternateBlankVersion);
+  }
+  lockPCBVersion();
+}
+
 }
 }

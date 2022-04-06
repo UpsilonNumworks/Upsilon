@@ -121,6 +121,7 @@ void initClocks() {
   // We're using TIM3 for the LEDs
   RCC.APB1ENR()->setTIM3EN(true);
   RCC.APB1ENR()->setPWREN(true);
+  RCC.APB1ENR()->setRTCAPB(true);
 
   // APB2 bus
   class RCC::APB2ENR apb2enr(0x00008000); // Reset value
@@ -229,6 +230,23 @@ void shutdownClocks(bool keepLEDAwake) {
   RCC.APB1ENR()->set(apb1enr);
   RCC.AHB1ENR()->set(ahb1enr);
 }
+
+/* The following methods regarding PCB version are dummy implementations.
+ * Handling the PCB version is only necessary on the N0110. */
+
+PCBVersion pcbVersion() {
+  return PCB_LATEST;
+}
+
+PCBVersion readPCBVersionInMemory() {
+  return PCB_LATEST;
+}
+
+void writePCBVersion(PCBVersion) {}
+
+void lockPCBVersion() {}
+
+bool pcbVersionIsLocked() { return true; }
 
 }
 }

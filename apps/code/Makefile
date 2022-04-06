@@ -1,6 +1,8 @@
 apps += Code::App
 app_headers += apps/code/app.h
 
+SFLAGS += -DHAS_CODE
+
 app_code_src = $(addprefix apps/code/,\
   app.cpp \
   console_controller.cpp \
@@ -15,6 +17,7 @@ app_code_src = $(addprefix apps/code/,\
   sandbox_controller.cpp \
   script_name_cell.cpp \
   script_parameter_controller.cpp \
+  toolbox_ion_keys.cpp \
 )
 
 app_code_test_src = $(addprefix apps/code/,\
@@ -29,6 +32,7 @@ app_code_test_src = $(addprefix apps/code/,\
 
 tests_src += $(addprefix apps/code/test/,\
   variable_box_controller.cpp\
+  toolbox_ion_keys_dummy.cpp \
 )
 
 app_code_src += $(app_code_test_src)

@@ -17,6 +17,7 @@ public:
   public:
     I18n::Message name() override;
     I18n::Message upperName() override;
+    App::Descriptor::ExaminationLevel examinationLevel() override;
     const Image * icon() override;
   };
   class Snapshot : public Shared::FunctionApp::Snapshot {
@@ -30,11 +31,13 @@ public:
     Shared::Interval * intervalForType(Shared::ContinuousFunction::PlotType plotType) {
       return m_interval + static_cast<size_t>(plotType);
     }
+    bool * shouldDisplayDerivative() { return &m_shouldDisplayDerivative; }
   private:
     void tidy() override;
     ContinuousFunctionStore m_functionStore;
     Shared::InteractiveCurveViewRange m_graphRange;
     Shared::Interval m_interval[Shared::ContinuousFunction::k_numberOfPlotTypes];
+    bool m_shouldDisplayDerivative;
   };
   static App * app() {
     return static_cast<App *>(Container::activeApp());

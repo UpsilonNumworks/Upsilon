@@ -27,7 +27,7 @@ private:
   // Layout
   Layout createLayout(Preferences::PrintFloatMode floatDisplayMode, int numberOfSignificantDigits) const override;
   int serialize(char * buffer, int bufferSize, Preferences::PrintFloatMode floatDisplayMode, int numberOfSignificantDigits) const override;
-  // Evalutation
+  // Evaluation
   Evaluation<float> approximate(SinglePrecision p, ApproximationContext approximationContext) const override { return templatedApproximate<float>(approximationContext); }
   Evaluation<double> approximate(DoublePrecision p, ApproximationContext approximationContext) const override { return templatedApproximate<double>(approximationContext); }
   template<typename T> Evaluation<T> templatedApproximate(ApproximationContext approximationContext) const;
@@ -41,7 +41,7 @@ public:
   // For the equation A = B, create the reduced expression A-B
   Expression standardEquation(Context * context, Preferences::ComplexFormat complexFormat, Preferences::AngleUnit angleUnit, Preferences::UnitFormat unitFormat, ExpressionNode::ReductionTarget reductionTarget) const;
   // Expression
-  Expression shallowReduce();
+  Expression shallowReduce(ExpressionNode::ReductionContext reductionContext);
 };
 
 }

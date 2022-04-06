@@ -41,7 +41,7 @@ protected:
     int depth() const;
     void resetStack();
   private:
-    constexpr static int k_maxModelTreeDepth = 3;
+    constexpr static int k_maxModelTreeDepth = 4;
     State m_statesStack[k_maxModelTreeDepth];
   };
 
@@ -65,7 +65,8 @@ protected:
   bool handleEventForRow(Ion::Events::Event event, int selectedRow);
   virtual bool selectSubMenu(int selectedRow);
   virtual bool returnToPreviousMenu();
-  virtual bool selectLeaf(int selectedRow) = 0;
+  virtual bool selectLeaf(int selectedRow, bool quitToolbox) = 0;
+  virtual bool canStayInMenu() { return false; };
   virtual int stackRowOffset() const { return 0; }
   InputEventHandler * sender() { return m_sender; }
   virtual HighlightCell * leafCellAtIndex(int index) = 0;

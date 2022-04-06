@@ -9,7 +9,7 @@
 """This module implements enough functionality to program the STM32F4xx over
 DFU, without requiring dfu-util.
 See app note AN3156 for a description of the DFU protocol.
-See document UM0391 for a dscription of the DFuse file.
+See document UM0391 for a description of the DFuse file.
 """
 
 from __future__ import print_function
@@ -47,6 +47,7 @@ __DFU_GETSTATUS = 3
 __DFU_CLRSTATUS = 4
 __DFU_GETSTATE  = 5
 __DFU_ABORT     = 6
+__DFU_UNLOCK    = 11
 
 # DFU status
 __DFU_STATE_APP_IDLE                 = 0x00
@@ -143,6 +144,15 @@ def init():
 def abort_request():
     """Sends an abort request."""
     __dev.ctrl_transfer(0x21, __DFU_ABORT, 0, __DFU_INTERFACE, None, __TIMEOUT)
+
+
+def unlock_request():
+    """Deactivate the protection"""
+    try:
+        __dev.ctrl_transfer(0x21, __DFU_UNLOCK, 0, __DFU_INTERFACE, None, 
+                            __TIMEOUT)
+    except usb.core.USBError:
+        print("Error when disabling protection, ignoring", file=sys.stderr)
 
 
 def clr_status():
@@ -587,6 +597,7 @@ def main():
         elements = read_dfu_file(args.path)
         if not elements:
             return
+        unlock_request()
         print("Writing memory...")
         write_elements(elements, args.mass_erase, progress=cli_progress)
 
