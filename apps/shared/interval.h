@@ -23,10 +23,10 @@ public:
     double m_end;
     double m_step;
   };
-  bool hasSameParameters(IntervalParameters parameters);
+  bool hasSameParameters(const IntervalParameters &parameters);
   double element(int i);
   IntervalParameters * parameters() { return &m_parameters; }
-  void setParameters(IntervalParameters parameters) { m_parameters = parameters; }
+  void setParameters(const IntervalParameters &parameters) { m_parameters = parameters; }
   void setElement(int i, double f);
   void forceRecompute(){ m_needCompute = true;}
   void reset();
