@@ -1,28 +1,20 @@
-#include <drivers/battery.h>
-#include <drivers/cache.h>
-#include <drivers/external_flash.h>
-#include <drivers/led.h>
-#include <drivers/power.h>
+#include <stdint.h>
+#include <string.h>
+#include <boot/isr.h>
+#include <drivers/board.h>
+#include <drivers/rtc.h>
 #include <drivers/reset.h>
-#include <drivers/usb.h>
+#include <drivers/timing.h>
+#include <drivers/power.h>
 #include <drivers/wakeup.h>
+#include <drivers/battery.h>
+#include <drivers/usb.h>
+#include <drivers/led.h>
 #include <ion.h>
-#include <ion/battery.h>
-#include <ion/led.h>
-#include <ion/rtc.h>
-#include <ion/usb.h>
 #include <kandinsky.h>
 #include <regs/config/pwr.h>
 #include <regs/config/rcc.h>
 #include <regs/regs.h>
-#include <stdint.h>
-#include <string.h>
-
-#include "../drivers/board.h"
-#include "../drivers/reset.h"
-#include "../drivers/rtc.h"
-#include "../drivers/timing.h"
-#include "isr.h"
 
 typedef void (*cxx_constructor)();
 

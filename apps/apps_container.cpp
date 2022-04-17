@@ -243,15 +243,18 @@ bool AppsContainer::processEvent(Ion::Events::Event event) {
     }
     return true;
   }
+  // If key home or key back is pressed, we switch to the home app.
   if (event == Ion::Events::Home || event == Ion::Events::Back) {
     switchTo(appSnapshotAtIndex(0));
     return true;
   }
+  // If shift + Home are pressed, we switch to the first app.
   if (event == Ion::Events::ShiftHome) {
     switchTo(appSnapshotAtIndex(1));
     return true;
   }
 
+  // Iterate through the switch events to find the one that matches the event, if one match, switch to the app at the index of the switch event.
   for(int i = 0; i < std::min((int) (sizeof(switch_events) / sizeof(Ion::Events::Event)), APPS_CONTAINER_SNAPSHOT_COUNT); i++) {
     if (event == switch_events[i]) {
       m_window.redraw(true);
@@ -260,13 +263,20 @@ bool AppsContainer::processEvent(Ion::Events::Event event) {
     }
   }
 
+  // Add EE shortcut to go to the settings (app number 12)
+  if (event == Ion::Events::EE) {
+    switchTo(appSnapshotAtIndex(12));
+    return true;
+  }
+
   if (event == Ion::Events::OnOff) {
     suspend(true);
     return true;
   }
   if (event == Ion::Events::BrightnessPlus || event == Ion::Events::BrightnessMinus) {
       int delta = Ion::Backlight::MaxBrightness/GlobalPreferences::NumberOfBrightnessStates;
-      int direction = (event == Ion::Events::BrightnessPlus) ? Ion::Backlight::NumberOfStepsPerShortcut*delta : -delta*Ion::Backlight::NumberOfStepsPerShortcut;
+      int NumberOfStepsPerShortcut = GlobalPreferences::sharedGlobalPreferences()->brightnessShortcut();
+      int direction = (event == Ion::Events::BrightnessPlus) ? NumberOfStepsPerShortcut*delta : -delta*NumberOfStepsPerShortcut;
       GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(GlobalPreferences::sharedGlobalPreferences()->brightnessLevel()+direction);
   }
   return false;
@@ -353,6 +363,8 @@ bool AppsContainer::updateBatteryState() {
 }
 
 void AppsContainer::refreshPreferences() {
+  m_suspendTimer.reset(GlobalPreferences::sharedGlobalPreferences()->idleBeforeSuspendSeconds()*1000/Timer::TickDuration);
+  m_backlightDimmingTimer.reset(GlobalPreferences::sharedGlobalPreferences()->idleBeforeDimmingSeconds()*1000/Timer::TickDuration);
   m_window.refreshPreferences();
 }
 
