@@ -22,7 +22,7 @@ public:
   bool textFieldShouldFinishEditing(TextField * textField, Ion::Events::Event event) override;
   bool textFieldDidReceiveEvent(TextField * textField, Ion::Events::Event event) override;
 protected:
-  virtual const char * recordExtension() const override { return Ion::Storage::funcExtension; }
+  virtual const char * recordExtension() const { return Ion::Storage::funcExtension; }
 private:
   constexpr static int k_maxNumberOfDisplayableRows = 5;
   Shared::ListParameterController * parameterController() override;
