@@ -549,6 +549,7 @@ retry:;
     } else if (dest[0] != MP_OBJ_NULL) {
         dest[2] = rhs_in;
         res = mp_call_method_n_kw(1, 0, dest);
+        res = op == MP_BINARY_OP_CONTAINS ? mp_obj_new_bool(mp_obj_is_true(res)) : res;
     } else {
         // If this was an inplace method, fallback to normal method
         // https://docs.python.org/3/reference/datamodel.html#object.__iadd__ :
@@ -579,6 +580,7 @@ STATIC void mp_obj_instance_load_attr(mp_obj_t self_in, qstr attr, mp_obj_t *des
     assert(mp_obj_is_instance_type(mp_obj_get_type(self_in)));
     mp_obj_instance_t *self = MP_OBJ_TO_PTR(self_in);
 
+    // Note: This is fast-path'ed in the VM for the MP_BC_LOAD_ATTR operation.
     mp_map_elem_t *elem = mp_map_lookup(&self->members, MP_OBJ_NEW_QSTR(attr), MP_MAP_LOOKUP);
     if (elem != NULL) {
         // object member, always treated as a value

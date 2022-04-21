@@ -35,6 +35,10 @@
 
 #include "genhdr/moduledefs.h"
 
+#if MICROPY_MODULE_BUILTIN_INIT
+STATIC void mp_module_call_init(mp_obj_t module_name, mp_obj_t module_obj);
+#endif
+
 STATIC void module_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind) {
     (void)kind;
     mp_obj_module_t *self = MP_OBJ_TO_PTR(self_in);
@@ -58,6 +62,21 @@ STATIC void module_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kin
     mp_printf(print, "<module '%s'>", module_name);
 }
 
+STATIC void module_attr_try_delegation(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
+    #if MICROPY_MODULE_ATTR_DELEGATION
+    // Delegate lookup to a module's custom attr method (found in last lot of globals dict).
+    mp_obj_module_t *self = MP_OBJ_TO_PTR(self_in);
+    mp_map_t *map = &self->globals->map;
+    if (map->table[map->alloc - 1].key == MP_OBJ_NEW_QSTR(MP_QSTRnull)) {
+        ((mp_attr_fun_t)MP_OBJ_TO_PTR(map->table[map->alloc - 1].value))(self_in, attr, dest);
+    }
+    #else
+    (void)self_in;
+    (void)attr;
+    (void)dest;
+    #endif
+}
+
 STATIC void module_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
     mp_obj_module_t *self = MP_OBJ_TO_PTR(self_in);
     if (dest[0] == MP_OBJ_NULL) {
@@ -70,8 +89,12 @@ STATIC void module_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
             elem = mp_map_lookup(&self->globals->map, MP_OBJ_NEW_QSTR(MP_QSTR___getattr__), MP_MAP_LOOKUP);
             if (elem != NULL) {
                 dest[0] = mp_call_function_1(elem->value, MP_OBJ_NEW_QSTR(attr));
+            } else {
+                module_attr_try_delegation(self_in, attr, dest);
             }
         #endif
+        } else {
+            module_attr_try_delegation(self_in, attr, dest);
         }
     } else {
         // delete/store attribute
@@ -87,6 +110,7 @@ STATIC void module_attr(mp_obj_t self_in, qstr attr, mp_obj_t *dest) {
             #endif
             {
                 // can't delete or store to fixed map
+                module_attr_try_delegation(self_in, attr, dest);
                 return;
             }
         }
@@ -108,6 +132,7 @@ const mp_obj_type_t mp_type_module = {
     .attr = module_attr,
 };
 
+#include "py/bc.h"
 mp_obj_t mp_obj_new_module(qstr module_name) {
     mp_map_t *mp_loaded_modules_map = &MP_STATE_VM(mp_loaded_modules_dict).map;
     mp_map_elem_t *el = mp_map_lookup(mp_loaded_modules_map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP_ADD_IF_NOT_FOUND);
@@ -118,12 +143,12 @@ mp_obj_t mp_obj_new_module(qstr module_name) {
     }
 
     // create new module object
-    mp_obj_module_t *o = m_new_obj(mp_obj_module_t);
-    o->base.type = &mp_type_module;
-    o->globals = MP_OBJ_TO_PTR(mp_obj_new_dict(MICROPY_MODULE_DICT_SIZE));
+    mp_module_context_t *o = m_new_obj(mp_module_context_t);
+    o->module.base.type = &mp_type_module;
+    o->module.globals = MP_OBJ_TO_PTR(mp_obj_new_dict(MICROPY_MODULE_DICT_SIZE));
 
     // store __name__ entry in the module
-    mp_obj_dict_store(MP_OBJ_FROM_PTR(o->globals), MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(module_name));
+    mp_obj_dict_store(MP_OBJ_FROM_PTR(o->module.globals), MP_OBJ_NEW_QSTR(MP_QSTR___name__), MP_OBJ_NEW_QSTR(module_name));
 
     // store the new module into the slot in the global dict holding all modules
     el->value = MP_OBJ_FROM_PTR(o);
@@ -185,6 +210,9 @@ STATIC const mp_rom_map_elem_t mp_builtin_module_table[] = {
     #if MICROPY_PY_UJSON
     { MP_ROM_QSTR(MP_QSTR_ujson), MP_ROM_PTR(&mp_module_ujson) },
     #endif
+    #if MICROPY_PY_UOS
+    { MP_ROM_QSTR(MP_QSTR_uos), MP_ROM_PTR(&mp_module_uos) },
+    #endif
     #if MICROPY_PY_URE
     { MP_ROM_QSTR(MP_QSTR_ure), MP_ROM_PTR(&mp_module_ure) },
     #endif
@@ -215,6 +243,9 @@ STATIC const mp_rom_map_elem_t mp_builtin_module_table[] = {
     #if MICROPY_PY_LWIP
     { MP_ROM_QSTR(MP_QSTR_lwip), MP_ROM_PTR(&mp_module_lwip) },
     #endif
+    #if MICROPY_PY_MACHINE
+    { MP_ROM_QSTR(MP_QSTR_umachine), MP_ROM_PTR(&mp_module_machine) },
+    #endif
     #if MICROPY_PY_UWEBSOCKET
     { MP_ROM_QSTR(MP_QSTR_uwebsocket), MP_ROM_PTR(&mp_module_uwebsocket) },
     #endif
@@ -230,6 +261,9 @@ STATIC const mp_rom_map_elem_t mp_builtin_module_table[] = {
     #if MICROPY_PY_BLUETOOTH
     { MP_ROM_QSTR(MP_QSTR_ubluetooth), MP_ROM_PTR(&mp_module_ubluetooth) },
     #endif
+    #if MICROPY_PY_UPLATFORM
+    { MP_ROM_QSTR(MP_QSTR_uplatform), MP_ROM_PTR(&mp_module_uplatform) },
+    #endif
 
     // extra builtin modules as defined by a port
     MICROPY_PORT_BUILTIN_MODULES
@@ -242,47 +276,56 @@ STATIC const mp_rom_map_elem_t mp_builtin_module_table[] = {
 
 MP_DEFINE_CONST_MAP(mp_builtin_module_map, mp_builtin_module_table);
 
-// returns MP_OBJ_NULL if not found
-mp_obj_t mp_module_get(qstr module_name) {
-    mp_map_t *mp_loaded_modules_map = &MP_STATE_VM(mp_loaded_modules_dict).map;
-    // lookup module
-    mp_map_elem_t *el = mp_map_lookup(mp_loaded_modules_map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP);
+// Tries to find a loaded module, otherwise attempts to load a builtin, otherwise MP_OBJ_NULL.
+mp_obj_t mp_module_get_loaded_or_builtin(qstr module_name) {
+    // First try loaded modules.
+    mp_map_elem_t *elem = mp_map_lookup(&MP_STATE_VM(mp_loaded_modules_dict).map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP);
 
-    if (el == NULL) {
-        // module not found, look for builtin module names
-        el = mp_map_lookup((mp_map_t *)&mp_builtin_module_map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP);
-        if (el == NULL) {
+    if (!elem) {
+        #if MICROPY_MODULE_WEAK_LINKS
+        return mp_module_get_builtin(module_name);
+        #else
+        // Otherwise try builtin.
+        elem = mp_map_lookup((mp_map_t *)&mp_builtin_module_map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP);
+        if (!elem) {
             return MP_OBJ_NULL;
         }
-        mp_module_call_init(module_name, el->value);
+
+        #if MICROPY_MODULE_BUILTIN_INIT
+        // If found, it's a newly loaded built-in, so init it.
+        mp_module_call_init(MP_OBJ_NEW_QSTR(module_name), elem->value);
+        #endif
+        #endif
     }
 
-    // module found, return it
-    return el->value;
-}
-
-void mp_module_register(qstr qst, mp_obj_t module) {
-    mp_map_t *mp_loaded_modules_map = &MP_STATE_VM(mp_loaded_modules_dict).map;
-    mp_map_lookup(mp_loaded_modules_map, MP_OBJ_NEW_QSTR(qst), MP_MAP_LOOKUP_ADD_IF_NOT_FOUND)->value = module;
+    return elem->value;
 }
 
 #if MICROPY_MODULE_WEAK_LINKS
-// Search for u"foo" in built-in modules, return MP_OBJ_NULL if not found
-mp_obj_t mp_module_search_umodule(const char *module_str) {
-    for (size_t i = 0; i < MP_ARRAY_SIZE(mp_builtin_module_table); ++i) {
-        const mp_map_elem_t *entry = (const mp_map_elem_t *)&mp_builtin_module_table[i];
-        const char *key = qstr_str(MP_OBJ_QSTR_VALUE(entry->key));
-        if (key[0] == 'u' && strcmp(&key[1], module_str) == 0) {
-            return (mp_obj_t)entry->value;
-        }
-
+// Tries to find a loaded module, otherwise attempts to load a builtin, otherwise MP_OBJ_NULL.
+mp_obj_t mp_module_get_builtin(qstr module_name) {
+    // Try builtin.
+    mp_map_elem_t *elem = mp_map_lookup((mp_map_t *)&mp_builtin_module_map, MP_OBJ_NEW_QSTR(module_name), MP_MAP_LOOKUP);
+    if (!elem) {
+        return MP_OBJ_NULL;
     }
-    return MP_OBJ_NULL;
+
+    #if MICROPY_MODULE_BUILTIN_INIT
+    // If found, it's a newly loaded built-in, so init it.
+    mp_module_call_init(MP_OBJ_NEW_QSTR(module_name), elem->value);
+    #endif
+
+    return elem->value;
 }
 #endif
 
 #if MICROPY_MODULE_BUILTIN_INIT
-void mp_module_call_init(qstr module_name, mp_obj_t module_obj) {
+STATIC void mp_module_register(mp_obj_t module_name, mp_obj_t module) {
+    mp_map_t *mp_loaded_modules_map = &MP_STATE_VM(mp_loaded_modules_dict).map;
+    mp_map_lookup(mp_loaded_modules_map, module_name, MP_MAP_LOOKUP_ADD_IF_NOT_FOUND)->value = module;
+}
+
+STATIC void mp_module_call_init(mp_obj_t module_name, mp_obj_t module_obj) {
     // Look for __init__ and call it if it exists
     mp_obj_t dest[2];
     mp_load_method_maybe(module_obj, MP_QSTR___init__, dest);
@@ -296,3 +339,19 @@ void mp_module_call_init(qstr module_name, mp_obj_t module_obj) {
     }
 }
 #endif
+
+void mp_module_generic_attr(qstr attr, mp_obj_t *dest, const uint16_t *keys, mp_obj_t *values) {
+    for (size_t i = 0; keys[i] != MP_QSTRnull; ++i) {
+        if (attr == keys[i]) {
+            if (dest[0] == MP_OBJ_NULL) {
+                // load attribute (MP_OBJ_NULL returned for deleted items)
+                dest[0] = values[i];
+            } else {
+                // delete or store (delete stores MP_OBJ_NULL)
+                values[i] = dest[1];
+                dest[0] = MP_OBJ_NULL; // indicate success
+            }
+            return;
+        }
+    }
+}
