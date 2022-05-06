@@ -1,11 +1,12 @@
 extern "C" {
 #include "modkandinsky.h"
 #include <py/runtime.h>
-//#include <apps/global_preferences.h>
 }
+#include <escher/palette.h>
 #include <kandinsky.h>
 #include <ion.h>
 #include "port.h"
+#include <py/obj.h>
 
 
 static mp_obj_t TupleForKDColor(KDColor c) {
@@ -55,6 +56,7 @@ mp_obj_t modkandinsky_set_pixel(mp_obj_t x, mp_obj_t y, mp_obj_t input) {
   KDIonContext::sharedContext()->setPixel(point, kdColor);
   return mp_const_none;
 }
+
 mp_obj_t modkandinsky_set_led(mp_obj_t color) {
   
   if (Ion::LED::getColor() == KDColorBlack){
@@ -63,13 +65,13 @@ mp_obj_t modkandinsky_set_led(mp_obj_t color) {
   return mp_const_none;
 }
 
-//TODO Use good colors
+
 mp_obj_t modkandinsky_draw_string(size_t n_args, const mp_obj_t * args) {
   const char * text = mp_obj_str_get_str(args[0]);
   KDPoint point(mp_obj_get_int(args[1]), mp_obj_get_int(args[2]));
-  KDColor textColor = (n_args >= 4) ? MicroPython::Color::Parse(args[3]) : KDColorBlack;
-  KDColor backgroundColor = (n_args >= 5) ? MicroPython::Color::Parse(args[4]) : KDColorWhite;
-  const KDFont * font = (n_args >= 6) ? ((mp_obj_get_int(args[5]) == 2) ? KDFont::ItalicLargeFont : (mp_obj_is_true(args[5])) ? KDFont::SmallFont : KDFont::LargeFont) : KDFont::LargeFont;
+  KDColor textColor = (n_args >= 4) ? MicroPython::Color::Parse(args[3]) : Palette::PrimaryText;
+  KDColor backgroundColor = (n_args >= 5) ? MicroPython::Color::Parse(args[4]) : Palette::HomeBackground;
+  const KDFont * font = (n_args >= 6) ? ((mp_obj_is_true(args[5])) ? KDFont::SmallFont : KDFont::LargeFont) : KDFont::LargeFont;
   MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
   KDIonContext::sharedContext()->drawString(text, point, font, textColor, backgroundColor);
   return mp_const_none;
@@ -85,6 +87,21 @@ mp_obj_t modkandinsky_draw_line(size_t n_args, const mp_obj_t * args) {
   KDColor color = MicroPython::Color::Parse(args[4]);
   MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
   KDIonContext::sharedContext()->drawLine(p1, p2, color);
+  return mp_const_none;
+}
+
+mp_obj_t modkandinsky_draw_circle(size_t n_args, const mp_obj_t * args) {
+  mp_int_t cx = mp_obj_get_int(args[0]);
+  mp_int_t cy = mp_obj_get_int(args[1]);
+  mp_int_t r = mp_obj_get_int(args[2]);
+  if(r<0)
+  {
+    r = -r;
+  }
+  KDPoint center = KDPoint(cx, cy);
+  KDColor color = MicroPython::Color::Parse(args[3]);
+  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+  KDIonContext::sharedContext()->drawCircle(center, r, color);
   return mp_const_none;
 }
 
@@ -108,87 +125,61 @@ mp_obj_t modkandinsky_fill_rect(size_t n_args, const mp_obj_t * args) {
   return mp_const_none;
 }
 
+mp_obj_t modkandinsky_fill_circle(size_t n_args, const mp_obj_t * args) {
+  mp_int_t cx = mp_obj_get_int(args[0]);
+  mp_int_t cy = mp_obj_get_int(args[1]);
+  mp_int_t r = mp_obj_get_int(args[2]);
+  if(r<0)
+  {
+    r = -r;
+  }
+  KDPoint center = KDPoint(cx, cy);
+  KDColor color = MicroPython::Color::Parse(args[3]);
+  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+  KDIonContext::sharedContext()->fillCircle(center, r, color);
+  return mp_const_none;
+}
+
+mp_obj_t modkandinsky_fill_polygon(size_t n_args, const mp_obj_t * args) {
+  size_t itemLength;
+  mp_obj_t * items;
+
+  mp_obj_get_array(args[0], &itemLength, &items);
+
+  KDCoordinate pointsX[itemLength];
+  KDCoordinate pointsY[itemLength];
+
+  if (itemLength < 3) {
+    mp_raise_ValueError("polygon must have at least 3 points");
+  }
+
+  for(int i=0; i<itemLength; i++) {
+    mp_obj_t * coordinates;
+    mp_obj_get_array_fixed_n(items[i], 2, &coordinates);
+
+    pointsX[i] = mp_obj_get_int(coordinates[0]);
+    pointsY[i] = mp_obj_get_int(coordinates[1]);
+  }
+
+  KDColor color = MicroPython::Color::Parse(args[1]);
+  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+  KDIonContext::sharedContext()->fillPolygon(pointsX, pointsY, itemLength, color);
+  return mp_const_none;
+} 
+
 mp_obj_t modkandinsky_wait_vblank() {
   micropython_port_interrupt_if_needed();
   Ion::Display::waitForVBlank();
   return mp_const_none;
 }
 
-struct key2mp
-{
-    Ion::Keyboard::Key key;
-    mp_obj_t string;
-};
+mp_obj_t modkandinsky_get_palette() {
+  mp_obj_t modkandinsky_palette_table = mp_obj_new_dict(0);
+  mp_obj_dict_store(modkandinsky_palette_table, MP_ROM_QSTR(MP_QSTR_PrimaryText), TupleForKDColor(Palette::PrimaryText));
+  mp_obj_dict_store(modkandinsky_palette_table, MP_ROM_QSTR(MP_QSTR_SecondaryText), TupleForKDColor(Palette::SecondaryText));
+  mp_obj_dict_store(modkandinsky_palette_table, MP_ROM_QSTR(MP_QSTR_AccentText), TupleForKDColor(Palette::AccentText));
+  mp_obj_dict_store(modkandinsky_palette_table, MP_ROM_QSTR(MP_QSTR_Toolbar), TupleForKDColor(Palette::Toolbar));
+  mp_obj_dict_store(modkandinsky_palette_table, MP_ROM_QSTR(MP_QSTR_HomeBackground), TupleForKDColor(Palette::HomeBackground));
 
-const static key2mp keyMapping[] =
-{
-    { Ion::Keyboard::Key::Left, MP_ROM_QSTR(MP_QSTR_left) },
-    { Ion::Keyboard::Key::Right, MP_ROM_QSTR(MP_QSTR_right) },
-    { Ion::Keyboard::Key::Down, MP_ROM_QSTR(MP_QSTR_down) },
-    { Ion::Keyboard::Key::Up, MP_ROM_QSTR(MP_QSTR_up) },
-    { Ion::Keyboard::Key::OK, MP_ROM_QSTR(MP_QSTR_OK) },
-    { Ion::Keyboard::Key::Back, MP_ROM_QSTR(MP_QSTR_back) },
-
-    { Ion::Keyboard::Key::Home, MP_ROM_QSTR(MP_QSTR_home) },
-    { Ion::Keyboard::Key::OnOff, MP_ROM_QSTR(MP_QSTR_onOff) },
-
-    { Ion::Keyboard::Key::Shift, MP_ROM_QSTR(MP_QSTR_shift) },
-    { Ion::Keyboard::Key::Alpha, MP_ROM_QSTR(MP_QSTR_alpha) },
-    { Ion::Keyboard::Key::XNT, MP_ROM_QSTR(MP_QSTR_xnt) },
-    { Ion::Keyboard::Key::Var, MP_ROM_QSTR(MP_QSTR_var) },
-    { Ion::Keyboard::Key::Toolbox, MP_ROM_QSTR(MP_QSTR_toolbox) },
-    { Ion::Keyboard::Key::Backspace, MP_ROM_QSTR(MP_QSTR_backspace) },
-
-    { Ion::Keyboard::Key::Exp, MP_ROM_QSTR(MP_QSTR_exp) },
-    { Ion::Keyboard::Key::Ln, MP_ROM_QSTR(MP_QSTR_ln) },
-    { Ion::Keyboard::Key::Log, MP_ROM_QSTR(MP_QSTR_log) },
-    { Ion::Keyboard::Key::Imaginary, MP_ROM_QSTR(MP_QSTR_imaginary) },
-    { Ion::Keyboard::Key::Comma, MP_ROM_QSTR(MP_QSTR_comma) },
-    { Ion::Keyboard::Key::Power, MP_ROM_QSTR(MP_QSTR_power) },
-
-    { Ion::Keyboard::Key::Sine, MP_ROM_QSTR(MP_QSTR_sin) },
-    { Ion::Keyboard::Key::Cosine, MP_ROM_QSTR(MP_QSTR_cos) },
-    { Ion::Keyboard::Key::Tangent, MP_ROM_QSTR(MP_QSTR_tan) },
-    { Ion::Keyboard::Key::Pi, MP_ROM_QSTR(MP_QSTR_pi) },
-    { Ion::Keyboard::Key::Sqrt, MP_ROM_QSTR(MP_QSTR_sqrt) },
-    { Ion::Keyboard::Key::Square, MP_ROM_QSTR(MP_QSTR_square) },
-
-    { Ion::Keyboard::Key::Seven, MP_ROM_QSTR(MP_QSTR_7) },
-    { Ion::Keyboard::Key::Eight, MP_ROM_QSTR(MP_QSTR_8) },
-    { Ion::Keyboard::Key::Nine, MP_ROM_QSTR(MP_QSTR_9) },
-    { Ion::Keyboard::Key::RightParenthesis, MP_ROM_QSTR(MP_QSTR__paren_open_) },
-    { Ion::Keyboard::Key::LeftParenthesis, MP_ROM_QSTR(MP_QSTR__paren_close_) },
-
-    { Ion::Keyboard::Key::Four, MP_ROM_QSTR(MP_QSTR_4) },
-    { Ion::Keyboard::Key::Five, MP_ROM_QSTR(MP_QSTR_5) },
-    { Ion::Keyboard::Key::Six, MP_ROM_QSTR(MP_QSTR_6) },
-    { Ion::Keyboard::Key::Multiplication, MP_ROM_QSTR(MP_QSTR__star_) },
-    { Ion::Keyboard::Key::Division, MP_ROM_QSTR(MP_QSTR__slash_) },
-
-    { Ion::Keyboard::Key::One, MP_ROM_QSTR(MP_QSTR_1) },
-    { Ion::Keyboard::Key::Two, MP_ROM_QSTR(MP_QSTR_2) },
-    { Ion::Keyboard::Key::Three, MP_ROM_QSTR(MP_QSTR_3) },
-    { Ion::Keyboard::Key::Plus, MP_ROM_QSTR(MP_QSTR__plus_) },
-    { Ion::Keyboard::Key::Minus, MP_ROM_QSTR(MP_QSTR__hyphen_) },
-
-    { Ion::Keyboard::Key::Zero, MP_ROM_QSTR(MP_QSTR_0) },
-    { Ion::Keyboard::Key::Dot, MP_ROM_QSTR(MP_QSTR__dot_) },
-    { Ion::Keyboard::Key::EE, MP_ROM_QSTR(MP_QSTR_EE) },
-    { Ion::Keyboard::Key::Ans, MP_ROM_QSTR(MP_QSTR_Ans) },
-    { Ion::Keyboard::Key::EXE, MP_ROM_QSTR(MP_QSTR_EXE) },
-};
-
-mp_obj_t modkandinsky_get_keys() {
-  micropython_port_interrupt_if_needed();
-
-  Ion::Keyboard::State keys = Ion::Keyboard::scan();
-  mp_obj_t result = mp_obj_new_set(0, nullptr);
-
-  for (unsigned i = 0; i < sizeof(keyMapping)/sizeof(key2mp); i++) {
-      if (keys.keyDown(keyMapping[i].key)) {
-          mp_obj_set_store(result, keyMapping[i].string);
-      }
-  }
-
-  return result;
+  return modkandinsky_palette_table;
 }
