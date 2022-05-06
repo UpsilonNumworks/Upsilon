@@ -3,6 +3,7 @@
 #include <apps/i18n.h>
 #include "helpers.h"
 #include <ion/unicode/utf8_helper.h>
+#include <apps/global_preferences.h>
 
 namespace Code {
 
@@ -111,6 +112,7 @@ bool App::handleEvent(Ion::Events::Event event) {
     if (m_modalViewController.isDisplayingModal()) {
       m_modalViewController.dismissModalViewController();
     }
+    
     return true;
   }
   return false;
@@ -148,7 +150,12 @@ void App::deinitPython() {
   if (m_pythonUser) {
     MicroPython::deinit();
     m_pythonUser = nullptr;
+    
+    if (Ion::LED::getColor() != KDColorBlack && ! GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) {
+      Ion::LED::setColor(KDColorBlack);
+    } 
   }
+
 }
 
 }
