@@ -112,7 +112,6 @@ bool App::handleEvent(Ion::Events::Event event) {
     if (m_modalViewController.isDisplayingModal()) {
       m_modalViewController.dismissModalViewController();
     }
-    
     return true;
   }
   return false;
@@ -150,12 +149,9 @@ void App::deinitPython() {
   if (m_pythonUser) {
     MicroPython::deinit();
     m_pythonUser = nullptr;
-    
     if (Ion::LED::getColor() != KDColorBlack && ! GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) {
-      Ion::LED::setColor(KDColorBlack);
+        Ion::LED::setColor(KDColorBlack);
     } 
   }
-
 }
-
 }
