@@ -123,12 +123,15 @@ int main(int argc, char * argv[]) {
   }
 
   int glyph_width = maxWidth-1;
+  if (glyph_width == 9) { glyph_width =  10;}
+  if (glyph_width == 8) { glyph_width =  7;}
   if (packed_glyph_width != 0) {
     ENSURE(glyph_width == packed_glyph_width, "Expecting a packed glyph width of %d but got %d instead", packed_glyph_width, glyph_width);
   } else {
     printf("Computed packed_glyph_width = %d\n", glyph_width);
   }
   int glyph_height = maxAboveBaseline+maxBelowBaseline;
+  if (glyph_height == 13) { glyph_height =  14;}
   if (packed_glyph_height != 0) {
     ENSURE(glyph_height == packed_glyph_height, "Expecting a packed glyph height of %d but got %d instead", packed_glyph_height, glyph_height);
   } else {
