@@ -12,7 +12,7 @@ namespace Reader {
     "Mu", "Nu", "Xi", "Omicron", "Pi", "Rho", "Sigma", "Tau", "Upsilon", "Phi", "Chi", "Psi","Omega",
     "alpha", "beta", "gamma", "delta", "epsilon", "zeta", "eta", "theta", "iota", "kappa", "lambda",
     "mu", "nu", "xi", "omicron", "pi", "rho", "sigma", "tau", "upsilon", "phi", "chi", "psi", "omega",
-    "sim",
+    "sim", "i",
   };
 
   static constexpr int const k_NumberOfSymbols = sizeof(k_SymbolsCommands) / sizeof(char *);
@@ -26,7 +26,7 @@ namespace Reader {
     0x39c, 0x39d, 0x39e, 0x39f, 0x3a0, 0x3a1, 0x3a3, 0x3a4, 0x3a5, 0x3a6, 0x3a7, 0x3a8, 0x3a9,
     0x3b1, 0x3b2, 0x3b3, 0x3b4, 0x3b5, 0x3b6, 0x3b7, 0x3b8, 0x3b9, 0x3ba, 0x3bb,
     0x3bc, 0x3bd, 0x3be, 0x3bf, 0x3c0, 0x3c1, 0x3c3, 0x3c4, 0x3c5, 0x3c6, 0x3c7, 0x3c8, 0x3c9,
-    0x7e,
+    0x7e, 0x1d422,
   };
 
   static_assert(sizeof(k_SymbolsCodePoints) / sizeof(uint32_t) == k_NumberOfSymbols);
@@ -190,6 +190,12 @@ Layout TexParser::popCommand() {
       return popOverrightarrowCommand();
     }
   }
+  if (strncmp(k_overlineCommand, m_text, strlen(k_overlineCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_overlineCommand)))) {
+      m_text += strlen(k_overlineCommand);
+      return popOverlineCommand();
+    }
+  }
 
   for (int i = 0; i < k_NumberOfSymbols; i++) {
     if (strncmp(k_SymbolsCommands[i], m_text, strlen(k_SymbolsCommands[i])) == 0) {
@@ -262,6 +268,11 @@ Layout TexParser::popSpaceCommand() {
 
 Layout TexParser::popOverrightarrowCommand() {
   return VectorLayout::Builder(popBlock());
+}
+
+Layout TexParser::popOverlineCommand() {
+  Layout overline = popBlock();
+  return ConjugateLayout::Builder(overline);
 }
 
 Layout TexParser::popSymbolCommand(int SymbolIndex) {
