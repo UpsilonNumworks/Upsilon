@@ -161,7 +161,7 @@ jobs:
       - uses: actions/checkout@v2
         with:
           submodules: 'recursive'
-      - run: make -j2 bootloader.dfu
+      - run: make -j2 MODEL=n0110 bootloader.dfu
       - run: make -j2 epsilon.A.dfu epsilon.B.dfu
       - run: make -j2 epsilon.onboarding.A.dfu
       - run: make -j2 epsilon.onboarding.B.dfu
