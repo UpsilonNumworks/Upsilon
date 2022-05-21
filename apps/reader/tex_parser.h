@@ -23,6 +23,7 @@ private:
   Layout popCeilCommand();
   Layout popFloorCommand();
   Layout popFracCommand();
+  Layout popIntsetCommand();
   Layout popLeftCommand();
   Layout popRightCommand();
   Layout popSqrtCommand();
@@ -43,6 +44,7 @@ private:
   static constexpr char const * k_ceilCommand = "ceil";
   static constexpr char const * k_floorCommand = "floor";
   static constexpr char const * k_fracCommand = "frac";
+  static constexpr char const * k_intsetCommand = "intset";
   static constexpr char const * k_leftCommand = "left";
   static constexpr char const * k_rightCommand = "right";
   static constexpr char const * k_sqrtCommand = "sqrt";

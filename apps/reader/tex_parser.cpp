@@ -196,6 +196,12 @@ Layout TexParser::popCommand() {
       return popOverlineCommand();
     }
   }
+  if (strncmp(k_intsetCommand, m_text, strlen(k_intsetCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_intsetCommand)))) {
+      m_text += strlen(k_intsetCommand);
+      return popIntsetCommand();
+    }
+  }
 
   for (int i = 0; i < k_NumberOfSymbols; i++) {
     if (strncmp(k_SymbolsCommands[i], m_text, strlen(k_SymbolsCommands[i])) == 0) {
@@ -235,6 +241,14 @@ Layout TexParser::popFracCommand() {
   Layout denominator = popBlock();
   FractionLayout l = FractionLayout::Builder(numerator, denominator);
   return l;
+}
+
+Layout TexParser::popIntsetCommand() {
+  HorizontalLayout intset = HorizontalLayout::Builder();
+  intset.addOrMergeChildAtIndex(CodePointLayout::Builder(0x27e6), 0, false);
+  intset.addOrMergeChildAtIndex(popBlock(), intset.numberOfChildren(), false);
+  intset.addOrMergeChildAtIndex(CodePointLayout::Builder(0x27e7), intset.numberOfChildren(), false);
+  return intset;
 }
 
 Layout TexParser::popLeftCommand() {
