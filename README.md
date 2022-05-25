@@ -176,7 +176,7 @@ This one allows virtual machines developed by Microsoft.
 
 ```powershell
 wsl --set-default-version 2
-        ```
+```
 5. Download [Ubuntu](https://www.microsoft.com/store/apps/9n6svws3rx71) from Microsoft store.
 
 WSL is now installed.
