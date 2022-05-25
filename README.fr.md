@@ -183,7 +183,7 @@ wsl --set-default-version 2
 
 WSL est maintenant installé.
 
-6. Installez maintenant la version ARM de GCC
+6. Installez maintenant la version pour ARM de GCC.
 ```bash
 sudo apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
 ```
