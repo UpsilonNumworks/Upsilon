@@ -171,7 +171,7 @@ Cette commande permet d'autoriser le démarrage des machines signées par Micros
 
 2. Redémarrez votre ordinateur.
 
-3. Téléchargez ce fichier [this file](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi) et suivez les instructions d'installation.
+3. Téléchargez [ce fichier](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi) et suivez les instructions d'installation.
 
 4. Ouvrez votre fenêtre powershell comme avant et tapez:
 
