@@ -183,6 +183,11 @@ wsl --set-default-version 2
 
 WSL est maintenant installé.
 
+6. Installez maintenant la version ARM de GCC
+```bash
+sudo apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+```
+
 ### Installation d'usbipd pour connecter la calculatrice à WSL (facultatif)
 
 Pour connecter la calculatrice, il faut installer cet [outil](https://github.com/dorssel/usbipd-win/releases/download/v1.3.0/usbipd-win_1.3.0.msi). Il permet de connecter deperiphériques USpar internet.Suivez les instructions pour installer.
