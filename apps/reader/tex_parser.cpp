@@ -141,6 +141,12 @@ Layout TexParser::popText(char stop) {
 
 Layout TexParser::popCommand() {
   // TODO: Factorize this code
+  if (strncmp(k_binomCommand, m_text, strlen(k_binomCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_binomCommand)))) {
+      m_text += strlen(k_binomCommand);
+      return popBinomCommand();
+    }
+  }
   if (strncmp(k_ceilCommand, m_text, strlen(k_ceilCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_ceilCommand)))) {
       m_text += strlen(k_ceilCommand);
@@ -202,7 +208,6 @@ Layout TexParser::popCommand() {
       return popIntsetCommand();
     }
   }
-
   for (int i = 0; i < k_NumberOfSymbols; i++) {
     if (strncmp(k_SymbolsCommands[i], m_text, strlen(k_SymbolsCommands[i])) == 0) {
       if (isCommandEnded(*(m_text + strlen(k_SymbolsCommands[i])))) {
@@ -226,6 +231,13 @@ Layout TexParser::popCommand() {
 }
 
 // Expressions
+Layout TexParser::popBinomCommand() {
+  Layout numerator = popBlock();
+  Layout denominator = popBlock();
+  BinomialCoefficientLayout b = BinomialCoefficientLayout::Builder(numerator, denominator);
+  return b;
+}  
+  
 Layout TexParser::popCeilCommand() {
   Layout ceil = popBlock();
   return CeilingLayout::Builder(ceil);
