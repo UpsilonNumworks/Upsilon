@@ -34,8 +34,6 @@ private:
   Layout popSqrtCommand();
   Layout popSumCommand();
   Layout popSpaceCommand();
-  Layout popOverrightarrowCommand();
-  Layout popOverlineCommand();
 
   //Symbols
   Layout popSymbolCommand(int SymbolIndex);
