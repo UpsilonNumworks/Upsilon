@@ -35,8 +35,7 @@ public:
   static constexpr const KDFont * LargeFont = &privateLargeFont;
   static constexpr const KDFont * ItalicLargeFont = &privateItalicLargeFont;
   static constexpr const KDFont * SmallFont = &privateSmallFont;
-    static constexpr const KDFont * ItalicSmallFont = &privateItalicSmallFont;
-
+  static constexpr const KDFont * ItalicSmallFont = &privateItalicSmallFont;
 
   static bool CanBeWrittenWithGlyphs(const char * text);
 
