@@ -266,6 +266,8 @@ uint32_t ExtendedCodePoints[] = {
   0xf8, // ø // LATIN SMALL LETTER O WITH STROKE
   0xfe, // þ // LATIN SMALL LETTER THORN
 
+  0x192, // ƒ // LATIN SMALL LETTER F WITH HOOK
+
   0x300, //  ̀ // COMBINING GRAVE ACCENT
   0x301, //  ́ // COMBINING ACUTE ACCENT
   0x302, //  ̂ // COMBINING CIRCUMFLEX ACCENT
@@ -324,7 +326,7 @@ uint32_t ExtendedCodePoints[] = {
   0x3c7,   // χ // GREEK SMALL LETTER KHI
   0x3c8,   // ψ // GREEK SMALL LETTER PSI
   0x3c9,   // ω // GREEK SMALL LETTER OMEGA
-  0x454,   // є // CYRILLIC SMALL LETTER UKRAINIAN LE
+  0x454,   // є // CYRILLIC SMALL LETTER UKRAINIAN LE  - SMALL IN (in)
   0x1d07,  // ᴇ // LATIN LETTER SMALL CAPITAL E
   0x2026,  // … // HORIZONTAL ELLIPSIS
   0x212f,  // ℯ // SCRIPT SMALL E
@@ -344,17 +346,28 @@ uint32_t ExtendedCodePoints[] = {
   0x21d3,  // ⇓ // DOUBLE BOTTOM ARROW (Downarrow)
   0x2200,  // ∀ // FORALL
   0x2202,  // ∂ // PARTIAL
-  0x2203,  // ∃ // EXIST
+  0x2203,  // ∃ // EXISTS (exists)
+  0x2204,  // ∄ // NOT EXISTS (nexists)
+  0x2208,  // ∈ // BIG IN (In)
+  0x2209,  // ∉ // BIG NOT IN (Notin)
   0x2211,  // ∑ // N-ARY SUMMATION
   0x221a,  // √ // SQUARE ROOT
   0x221e,  // ∞ // INFINITY
+  0x2229,  // ∩ // SMALL INTERSECTION (cap)
+  0x222a,  // ∪ // SMALL UNION (cup)
   0x222b,  // ∫ // INTEGRAL
   0x2248,  // ≈ // ALMOST EQUAL TO
   0x2260,  // ≠ // NOT EQUAL TO
   0x2261,  // ≡ // IS CONGRUENT TO
   0x2264,  // ≤ // LESS-THAN OR EQUAL TO
   0x2265,  // ≥ // GREATER-THAN OR EQUAL TO
+  0x2282,  // ⊂ // IS INCLUDED (subset)
+  0x2284,  // ⊄ // IS NOT INCLUDED (nsubset)
+  0x22c2,  // ⋂ // BIG INTERSECTION (Cap)
+  0x22c3,  // ⋃ // BIG UNION (Cup)
   0x2505,  // ┅ // BOX DRAWING EQU HEAVY DASH HORIZONTAL
+  0x27e6,  // ⟦ // MATHEMATICAL LEFT INT BRACKET SET
+  0x27e7,  // ⟧ // MATHEMATICAL RIGHT INT BRACKET SET
   0xFFFD,  // � // REPLACEMENT CHARACTER
   0x1d422, // 𝐢 // MATHEMATICAL BOLD SMALL I"
 };
