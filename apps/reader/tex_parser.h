@@ -59,8 +59,6 @@ private:
   static constexpr char const * k_productCommand = "prod";
   static constexpr char const * k_rightCommand = "right";
   static constexpr char const * k_spaceCommand = "space";
-  static constexpr char const * k_overrightArrowCommand = "overrightarrow";
-  static constexpr char const * k_overlineCommand = "overline";
   static constexpr char const * k_sqrtCommand = "sqrt";
   static constexpr char const * k_sumCommand = "sum";
 };
