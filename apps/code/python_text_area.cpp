@@ -4,6 +4,7 @@
 #include <ion/unicode/utf8_helper.h>
 #include <python/port/port.h>
 #include "../global_preferences.h"
+
 extern "C" {
 #include "py/nlr.h"
 #include "py/lexer.h"
