@@ -155,6 +155,18 @@ Layout TexParser::popCommand() {
       return popCeilCommand();
     }
   }
+  if (strncmp(k_integralCommand, m_text, strlen(k_integralCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_integralCommand)))) {
+      m_text += strlen(k_integralCommand);
+      return popIntegralCommand();
+    }
+  }
+  if (strncmp(k_intsetCommand, m_text, strlen(k_intsetCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_intsetCommand)))) {
+      m_text += strlen(k_intsetCommand);
+      return popIntsetCommand();
+    }
+  }
   if (strncmp(k_floorCommand, m_text, strlen(k_floorCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_floorCommand)))) {
       m_text += strlen(k_floorCommand);
@@ -173,10 +185,34 @@ Layout TexParser::popCommand() {
       return popLeftCommand();
     }
   }
+  if (strncmp(k_overrightArrowCommand, m_text, strlen(k_overrightArrowCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_overrightArrowCommand)))) {
+      m_text += strlen(k_overrightArrowCommand);
+      return popOverrightarrowCommand();
+    }
+  }
+  if (strncmp(k_overlineCommand, m_text, strlen(k_overlineCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_overlineCommand)))) {
+      m_text += strlen(k_overlineCommand);
+      return popOverlineCommand();
+    }
+  }
+  if (strncmp(k_productCommand, m_text, strlen(k_productCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_productCommand)))) {
+      m_text += strlen(k_productCommand);
+      return popProductCommand();
+    }
+  }
   if (strncmp(k_rightCommand, m_text, strlen(k_rightCommand)) == 0) {
     if (isCommandEnded(*(m_text + strlen(k_rightCommand)))) {
       m_text += strlen(k_rightCommand);
       return popRightCommand();
+    }
+  }
+  if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_spaceCommand)))) {
+      m_text += strlen(k_spaceCommand);
+      return popSpaceCommand();
     }
   }
   if (strncmp(k_sqrtCommand, m_text, strlen(k_sqrtCommand)) == 0) {
@@ -185,17 +221,10 @@ Layout TexParser::popCommand() {
       return popSqrtCommand();
     }
   }
-
-  if (strncmp(k_spaceCommand, m_text, strlen(k_spaceCommand)) == 0) {
-    if (isCommandEnded(*(m_text + strlen(k_spaceCommand)))) {
-      m_text += strlen(k_spaceCommand);
-      return popSpaceCommand();
-    }
-  }
-  if (strncmp(k_overrightArrowCommand, m_text, strlen(k_overrightArrowCommand)) == 0) {
-    if (isCommandEnded(*(m_text + strlen(k_overrightArrowCommand)))) {
-      m_text += strlen(k_overrightArrowCommand);
-      return popOverrightarrowCommand();
+  if (strncmp(k_sumCommand, m_text, strlen(k_sumCommand)) == 0) {
+    if (isCommandEnded(*(m_text + strlen(k_sumCommand)))) {
+      m_text += strlen(k_sumCommand);
+      return popSumCommand();
     }
   }
   if (strncmp(k_overlineCommand, m_text, strlen(k_overlineCommand)) == 0) {
@@ -257,6 +286,14 @@ Layout TexParser::popFracCommand() {
   return l;
 }
 
+Layout TexParser::popIntegralCommand() {
+  Layout arg = popBlock();
+  Layout var = popBlock();
+  Layout start = popBlock();
+  Layout end = popBlock();
+  return IntegralLayout::Builder(arg, var, start, end);
+}
+
 Layout TexParser::popIntsetCommand() {
   HorizontalLayout intset = HorizontalLayout::Builder();
   intset.addOrMergeChildAtIndex(CodePointLayout::Builder(0x27e6), 0, false);
@@ -269,6 +306,15 @@ Layout TexParser::popLeftCommand() {
   m_text++;
   return LeftParenthesisLayout::Builder();
 }
+
+Layout TexParser::popProductCommand() {
+  Layout arg = popBlock();
+  Layout var = popBlock();
+  Layout start = popBlock();
+  Layout end = popBlock();
+  return ProductLayout::Builder(arg, var, start, end);
+}
+
 
 Layout TexParser::popRightCommand() {
   m_text++;
@@ -288,6 +334,14 @@ Layout TexParser::popSqrtCommand() {
   else {
     return NthRootLayout::Builder(popBlock());
   }
+}
+
+Layout TexParser::popSumCommand() {
+  Layout arg = popBlock();
+  Layout var = popBlock();
+  Layout start = popBlock();
+  Layout end = popBlock();
+  return SumLayout::Builder(arg, var, start, end);
 }
 
 Layout TexParser::popSpaceCommand() {

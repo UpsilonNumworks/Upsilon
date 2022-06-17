@@ -24,10 +24,15 @@ private:
   Layout popCeilCommand();
   Layout popFloorCommand();
   Layout popFracCommand();
+  Layout popIntegralCommand();
   Layout popIntsetCommand();
   Layout popLeftCommand();
+  Layout popOverrightarrowCommand();
+  Layout popOverlineCommand();
+  Layout popProductCommand();
   Layout popRightCommand();
   Layout popSqrtCommand();
+  Layout popSumCommand();
   Layout popSpaceCommand();
   Layout popOverrightarrowCommand();
   Layout popOverlineCommand();
@@ -46,13 +51,18 @@ private:
   static constexpr char const * k_ceilCommand = "ceil";
   static constexpr char const * k_floorCommand = "floor";
   static constexpr char const * k_fracCommand = "frac";
+  static constexpr char const * k_integralCommand = "int";
   static constexpr char const * k_intsetCommand = "intset";
   static constexpr char const * k_leftCommand = "left";
+  static constexpr char const * k_overrightArrowCommand = "overrightarrow";
+  static constexpr char const * k_overlineCommand = "overline";
+  static constexpr char const * k_productCommand = "prod";
   static constexpr char const * k_rightCommand = "right";
-  static constexpr char const * k_sqrtCommand = "sqrt";
   static constexpr char const * k_spaceCommand = "space";
   static constexpr char const * k_overrightArrowCommand = "overrightarrow";
   static constexpr char const * k_overlineCommand = "overline";
+  static constexpr char const * k_sqrtCommand = "sqrt";
+  static constexpr char const * k_sumCommand = "sum";
   
 };
 
