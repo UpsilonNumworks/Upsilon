@@ -63,7 +63,6 @@ private:
   static constexpr char const * k_overlineCommand = "overline";
   static constexpr char const * k_sqrtCommand = "sqrt";
   static constexpr char const * k_sumCommand = "sum";
-  
 };
 
 }
