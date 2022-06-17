@@ -21,7 +21,6 @@ private:
   View * subviewAtIndex(int index) override = 0;
   void layoutSubviews(bool force = false) override;
   int numberOfLinesGivenWidth(KDCoordinate width) const;
-  
 };
 
 }
