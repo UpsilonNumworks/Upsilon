@@ -533,7 +533,6 @@ void TextArea::ContentView::drawStringAt(KDContext * ctx, int line, int column, 
       backgroundColor,
       drawSelection ? (selectionStart >= text ? std::min<KDCoordinate>(length, selectionStart - text) : 0) : length
     );
-//  KDPoint nextPoint = isItalic ? ctx->drawString(text,KDPoint(column*(glyphSize.height()), line*glyphSize.height()),usedFont,textColor,backgroundColor,drawSelection ? (selectionStart >= text ? std::min<KDCoordinate>(length, selectionStart - text) : 0) : length) : ctx->drawString(text,KDPoint(column*(11), line*glyphSize.height()),usedFont,textColor,backgroundColor,drawSelection ? (selectionStart >= text ? std::min<KDCoordinate>(length, selectionStart - text) : 0) : length);
   
   
   
