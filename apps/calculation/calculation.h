@@ -40,7 +40,8 @@ public:
     Integer,
     Rational,
     SecondDegree,
-    Trigonometry,
+    TrigonometryInput,
+    TrigonometryOutput,
     Unit,
     Matrix,
     Complex

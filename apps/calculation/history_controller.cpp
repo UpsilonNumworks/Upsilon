@@ -103,12 +103,12 @@ bool HistoryController::handleEvent(Ion::Events::Event event) {
         vc = &m_complexController;
       } else if (additionalInfoType == Calculation::AdditionalInformationType::SecondDegree) {
         vc = &m_secondDegreeController;
-      } else if (additionalInfoType == Calculation::AdditionalInformationType::Trigonometry) {
+      } else if (additionalInfoType == Calculation::AdditionalInformationType::TrigonometryInput) {
         vc = &m_trigonometryController;
-        // Find which of the input or output is the cosine/sine
-        ExpressionNode::Type t = e.type();
-        e = t == ExpressionNode::Type::Cosine || t == ExpressionNode::Type::Sine ? e : calculationAtIndex(focusRow)->input();
-      } else if (additionalInfoType == Calculation::AdditionalInformationType::Integer) {
+        e = calculationAtIndex(focusRow)->input();
+      } else if (additionalInfoType == Calculation::AdditionalInformationType::TrigonometryOutput) {
+        vc = &m_trigonometryController;
+      }  else if (additionalInfoType == Calculation::AdditionalInformationType::Integer) {
         vc = &m_integerController;
       } else if (additionalInfoType == Calculation::AdditionalInformationType::Rational) {
         vc = &m_rationalController;

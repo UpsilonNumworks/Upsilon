@@ -251,8 +251,11 @@ Calculation::AdditionalInformationType Calculation::additionalInformationType(Co
    * - > input: 2cos(2) - cos(2)
    *   > output: cos(2)
    */
-  if (input().isDefinedCosineOrSine(context, complexFormat, preferences->angleUnit()) || o.isDefinedCosineOrSine(context, complexFormat, preferences->angleUnit())) {
-    return AdditionalInformationType::Trigonometry;
+   if (i.isDefinedCosineOrSineOrTangent(context, complexFormat, preferences->angleUnit())) {
+    return AdditionalInformationType::TrigonometryInput;
+  }
+  if (o.isDefinedCosineOrSineOrTangent(context, complexFormat, preferences->angleUnit())) {
+    return AdditionalInformationType::TrigonometryOutput;
   }
   if (o.hasUnit()) {
     Expression unit;

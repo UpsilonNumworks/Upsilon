@@ -260,9 +260,9 @@ bool Expression::getLinearCoefficients(char * variables, int maxVariableSize, Ex
   return !isMultivariablePolynomial;
 }
 
-bool Expression::isDefinedCosineOrSine(Context * context, Preferences::ComplexFormat complexFormat, Preferences::AngleUnit angleUnit) const {
+bool Expression::isDefinedCosineOrSineOrTangent(Context * context, Preferences::ComplexFormat complexFormat, Preferences::AngleUnit angleUnit) const {
   ExpressionNode::Type t = type();
-  if (t == ExpressionNode::Type::Cosine || t == ExpressionNode::Type::Sine) {
+  if (t == ExpressionNode::Type::Cosine || t == ExpressionNode::Type::Sine || t == ExpressionNode::Type::Tangent) {
     float r = childAtIndex(0).approximateToScalar<float>(context, complexFormat, angleUnit);
     if (!std::isnan(r)) {
       return true;
