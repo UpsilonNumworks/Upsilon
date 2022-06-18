@@ -123,8 +123,8 @@ int main(int argc, char * argv[]) {
   }
 
   int glyph_width = maxWidth-1;
-  if (glyph_width == 9) { glyph_width =  10 } /* This was made to avoid a problem, the ratio of the width by the height was not */
-  if (glyph_width == 8) { glyph_width =  7;}  /* adequate and the fonts couldn't be compiled, this is useless with other fonts */
+  if (glyph_width == 9) { glyph_width =  10; } /* This was made to avoid a problem, the ratio of the width by the height was not */
+  if (glyph_width == 8) { glyph_width =  7; }  /* adequate and the fonts couldn't be compiled, this is useless with other fonts */
   if (packed_glyph_width != 0) {
     ENSURE(glyph_width == packed_glyph_width, "Expecting a packed glyph width of %d but got %d instead", packed_glyph_width, glyph_width);
   } else {
