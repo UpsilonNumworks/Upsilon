@@ -131,7 +131,7 @@ int main(int argc, char * argv[]) {
     printf("Computed packed_glyph_width = %d\n", glyph_width);
   }
   int glyph_height = maxAboveBaseline+maxBelowBaseline;
-  if (glyph_height == 13) { glyph_height =  14;} /* Same probleme */
+  if (glyph_height == 13) { glyph_height =  14;} /* Same problem */
   if (packed_glyph_height != 0) {
     ENSURE(glyph_height == packed_glyph_height, "Expecting a packed glyph height of %d but got %d instead", packed_glyph_height, glyph_height);
   } else {
