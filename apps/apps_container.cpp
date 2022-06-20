@@ -2,6 +2,7 @@
 #include "apps_container_storage.h"
 #include "global_preferences.h"
 #include "exam_mode_configuration.h"
+#include "shared/function_active_function_toggle.h"
 #include <ion.h>
 #include <poincare/init.h>
 #include <poincare/exception_checkpoint.h>
@@ -37,7 +38,8 @@ AppsContainer::AppsContainer() :
   m_homeSnapshot(),
   m_onBoardingSnapshot(),
   m_hardwareTestSnapshot(),
-  m_usbConnectedSnapshot()
+  m_usbConnectedSnapshot(),
+  m_activeFunctionTooggle(nullptr)
 {
   m_emptyBatteryWindow.setFrame(KDRect(0, 0, Ion::Display::Width, Ion::Display::Height), false);
 // #if __EMSCRIPTEN__
@@ -470,4 +472,8 @@ Timer * AppsContainer::containerTimerAtIndex(int i) {
 void AppsContainer::resetShiftAlphaStatus() {
   Ion::Events::setShiftAlphaStatus(Ion::Events::ShiftAlphaStatus::Default);
   updateAlphaLock();
+}
+
+FunctionActiveFunctionToggle *AppsContainer::getActiveFunctionToggle() {
+  return &m_activeFunctionTooggle;
 }

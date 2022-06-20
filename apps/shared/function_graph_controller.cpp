@@ -47,8 +47,9 @@ void FunctionGraphController::viewWillAppear() {
 }
 
 bool FunctionGraphController::handleEnter() {
-  Ion::Storage::Record record = functionStore()->activeRecordAtIndex(indexFunctionSelectedByCursor());
-  curveParameterController()->setRecord(record);
+  AppsContainer::sharedAppsContainer()->getActiveFunctionToggle()->setFunctionStorePtr(functionStore());
+  AppsContainer::sharedAppsContainer()->getActiveFunctionToggle()->setCurrentIndex(indexFunctionSelectedByCursor());
+  curveParameterController()->setRecordDelegate(AppsContainer::sharedAppsContainer()->getActiveFunctionToggle());
   StackViewController * stack = stackController();
   stack->push(curveParameterController());
   return true;

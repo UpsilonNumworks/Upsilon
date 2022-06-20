@@ -12,10 +12,9 @@ CalculationParameterController::CalculationParameterController(Responder * paren
   ViewController(parentResponder),
   m_preimageCell(I18n::Message::Preimage),
   m_selectableTableView(this),
-  m_record(),
+  m_recordDelegate(nullptr),
   m_preimageParameterController(nullptr, inputEventHandlerDelegate, range, cursor, &m_preimageGraphController),
   m_preimageGraphController(nullptr, graphView, bannerView, range, cursor),
-  m_tangentGraphController(nullptr, graphView, bannerView, range, cursor),
   m_integralGraphController(nullptr, inputEventHandlerDelegate, graphView, range, cursor),
   m_minimumGraphController(nullptr, graphView, bannerView, range, cursor),
   m_maximumGraphController(nullptr, graphView, bannerView, range, cursor),
@@ -45,18 +44,16 @@ void CalculationParameterController::didBecomeFirstResponder() {
 bool CalculationParameterController::handleEvent(Ion::Events::Event event) {
   int row = selectedRow();
   if (event == Ion::Events::OK || event == Ion::Events::EXE || (event == Ion::Events::Right && row == 0)) {
-    static ViewController * controllers[] = {&m_preimageParameterController, &m_intersectionGraphController, &m_maximumGraphController, &m_minimumGraphController, &m_rootGraphController, &m_tangentGraphController, &m_integralGraphController};
+    static ViewController * controllers[] = {&m_preimageParameterController, &m_intersectionGraphController, &m_maximumGraphController, &m_minimumGraphController, &m_rootGraphController, &m_integralGraphController};
     int displayIntersection = shouldDisplayIntersection();
     int indexController = row == 0 ? 0 : row + !displayIntersection;
     ViewController * controller = controllers[indexController];
     if (row == 0) {
-      m_preimageParameterController.setRecord(m_record);
+      m_preimageParameterController.setRecord(m_recordDelegate->getRecord());
     } else if (row == 4 + displayIntersection) {
-      m_tangentGraphController.setRecord(m_record);
-    } else if (row == 5 + displayIntersection) {
-      m_integralGraphController.setRecord(m_record);
+      m_integralGraphController.setRecord(m_recordDelegate->getRecord());
     } else {
-      static_cast<CalculationGraphController *>(controller)->setRecord(m_record);
+      static_cast<CalculationGraphController *>(controller)->setRecord(m_recordDelegate->getRecord());
     }
     StackViewController * stack = static_cast<StackViewController *>(parentResponder());
     if (row > 0) {
@@ -108,13 +105,13 @@ int CalculationParameterController::typeAtLocation(int i, int j) {
 void CalculationParameterController::willDisplayCellForIndex(HighlightCell * cell, int index) {
   assert(index >= 0 && index <= numberOfRows());
   if (cell != &m_preimageCell) {
-    I18n::Message titles[] = {I18n::Message::Intersection, I18n::Message::Maximum, I18n::Message::Minimum, I18n::Message::Zeros, I18n::Message::Tangent, I18n::Message::Integral};
+    I18n::Message titles[] = {I18n::Message::Intersection, I18n::Message::Maximum, I18n::Message::Minimum, I18n::Message::Zeros, I18n::Message::Integral};
     static_cast<MessageTableCell *>(cell)->setMessage(titles[index - 1 + !shouldDisplayIntersection()]);
   }
 }
 
-void CalculationParameterController::setRecord(Ion::Storage::Record record) {
-  m_record = record;
+void CalculationParameterController::setRecordDelegate(Shared::FunctionActiveFunctionToggle * record) {
+  m_recordDelegate = record;
 }
 
 bool CalculationParameterController::shouldDisplayIntersection() const {

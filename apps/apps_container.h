@@ -18,6 +18,7 @@
 #include "shared/global_context.h"
 #include "clock_timer.h"
 #include "on_boarding/prompt_controller.h"
+#include "shared/function_active_function_toggle.h"
 
 #include <ion/events.h>
 
@@ -55,6 +56,7 @@ public:
   // Ion::StorageDelegate
   void storageDidChangeForRecord(const Ion::Storage::Record record) override;
   void storageIsFull() override;
+  Shared::FunctionActiveFunctionToggle * getActiveFunctionToggle();
 protected:
   Home::App::Snapshot * homeAppSnapshot() { return &m_homeSnapshot; }
 private:
@@ -84,6 +86,10 @@ private:
   OnBoarding::App::Snapshot m_onBoardingSnapshot;
   HardwareTest::App::Snapshot m_hardwareTestSnapshot;
   USB::App::Snapshot m_usbConnectedSnapshot;
+
+  // Shared Class that need to be initialized at the beginning
+
+  Shared::FunctionActiveFunctionToggle m_activeFunctionTooggle;
 };
 
 #endif

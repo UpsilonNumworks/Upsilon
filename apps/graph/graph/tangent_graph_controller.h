@@ -6,6 +6,7 @@
 #include "graph_controller_helper.h"
 #include "../../shared/simple_interactive_curve_view_controller.h"
 #include "../../shared/function_banner_delegate.h"
+#include "apps/shared/function_active_function_toggle.h"
 
 namespace Graph {
 
@@ -17,7 +18,7 @@ public:
   void didBecomeFirstResponder() override;
   TELEMETRY_ID("Tangent");
   bool textFieldDidFinishEditing(TextField * textField, const char * text, Ion::Events::Event event) override;
-  void setRecord(Ion::Storage::Record record);
+  void setRecordDelegate(Shared::FunctionActiveFunctionToggle * record);
 private:
   float cursorBottomMarginRatio() override { return 0.22f; }
   Shared::InteractiveCurveViewRange * interactiveCurveViewRange() override { return m_graphRange; }
@@ -25,11 +26,16 @@ private:
   BannerView * bannerView() override { return m_bannerView; };
   void reloadBannerView() override;
   bool moveCursorHorizontally(int direction, int scrollSpeed = 1) override;
+
+public:
+  bool handleEvent(Ion::Events::Event event) override;
+
+private:
   bool handleEnter() override;
   GraphView * m_graphView;
   BannerView * m_bannerView;
   Shared::InteractiveCurveViewRange * m_graphRange;
-  Ion::Storage::Record m_record;
+  Shared::FunctionActiveFunctionToggle * m_recordDelegate;
 };
 
 }

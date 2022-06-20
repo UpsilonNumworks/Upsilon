@@ -14,7 +14,7 @@ TangentGraphController::TangentGraphController(Responder * parentResponder, Grap
   m_graphView(graphView),
   m_bannerView(bannerView),
   m_graphRange(curveViewRange),
-  m_record()
+  m_recordDelegate(nullptr)
 {
 }
 
@@ -47,7 +47,7 @@ bool TangentGraphController::textFieldDidFinishEditing(TextField * textField, co
   if (myApp->hasUndefinedValue(text, floatBody)) {
     return false;
   }
-  ExpiringPointer<ContinuousFunction> function = App::app()->functionStore()->modelForRecord(m_record);
+  ExpiringPointer<ContinuousFunction> function = App::app()->functionStore()->modelForRecord(m_recordDelegate->getRecord());
   assert(function->plotType() == Shared::ContinuousFunction::PlotType::Cartesian);
   double y = function->evaluate2DAtParameter(floatBody, myApp->localContext()).x2();
   m_cursor->moveTo(floatBody, floatBody, y);
@@ -57,17 +57,17 @@ bool TangentGraphController::textFieldDidFinishEditing(TextField * textField, co
   return true;
 }
 
-void TangentGraphController::setRecord(Ion::Storage::Record record) {
-  m_graphView->selectRecord(record);
-  m_record = record;
+void TangentGraphController::setRecordDelegate(Shared::FunctionActiveFunctionToggle * record) {
+  m_graphView->selectRecord(record->getRecord());
+  m_recordDelegate = record;
 }
 
 void TangentGraphController::reloadBannerView() {
-  if (m_record.isNull()) {
+  if (m_recordDelegate->getRecord().isNull()) {
     return;
   }
-  FunctionBannerDelegate::reloadBannerViewForCursorOnFunction(m_cursor, m_record, Shared::FunctionApp::app()->functionStore(), AppsContainer::sharedAppsContainer()->globalContext());
-  GraphControllerHelper::reloadDerivativeInBannerViewForCursorOnFunction(m_cursor, m_record);
+  FunctionBannerDelegate::reloadBannerViewForCursorOnFunction(m_cursor, m_recordDelegate->getRecord(), Shared::FunctionApp::app()->functionStore(), AppsContainer::sharedAppsContainer()->globalContext());
+  GraphControllerHelper::reloadDerivativeInBannerViewForCursorOnFunction(m_cursor, m_recordDelegate->getRecord());
   constexpr size_t bufferSize = FunctionBannerDelegate::k_maxNumberOfCharacters + PrintFloat::charSizeForFloatsWithPrecision(Preferences::LargeNumberOfSignificantDigits);
   char buffer[bufferSize];
   Poincare::Context * context = textFieldDelegateApp()->localContext();
@@ -75,7 +75,7 @@ void TangentGraphController::reloadBannerView() {
   constexpr int precision = Preferences::MediumNumberOfSignificantDigits;
   const char * legend = "a=";
   int legendLength = strlcpy(buffer, legend, bufferSize);
-  ExpiringPointer<ContinuousFunction> function = App::app()->functionStore()->modelForRecord(m_record);
+  ExpiringPointer<ContinuousFunction> function = App::app()->functionStore()->modelForRecord(m_recordDelegate->getRecord());
   double y = function->approximateDerivative(m_cursor->x(), context);
   PoincareHelpers::ConvertFloatToText<double>(y, buffer + legendLength, bufferSize - legendLength, precision);
   m_bannerView->aView()->setText(buffer);
@@ -91,13 +91,40 @@ void TangentGraphController::reloadBannerView() {
 }
 
 bool TangentGraphController::moveCursorHorizontally(int direction, int scrollSpeed) {
-  return privateMoveCursorHorizontally(m_cursor, direction, m_graphRange, k_numberOfCursorStepsInGradUnit, m_record);
+  return privateMoveCursorHorizontally(m_cursor, direction, m_graphRange, k_numberOfCursorStepsInGradUnit, m_recordDelegate->getRecord());
 }
 
 bool TangentGraphController::handleEnter() {
   StackViewController * stack = static_cast<StackViewController *>(parentResponder());
   stack->pop();
   return true;
+}
+
+bool TangentGraphController::handleEvent(Ion::Events::Event event) {
+  if (event == Ion::Events::Up) {
+    m_recordDelegate->moveUp();
+    m_graphView->selectRecord(m_recordDelegate->getRecord());
+    // TODO maybe do: Very ugly workaround... Needs something better to reload the data banner
+    moveCursorHorizontally(1);
+    moveCursorHorizontally(-1);
+
+    m_graphView->reload();
+    reloadBannerView();
+    viewWillAppear();
+    return true;
+  } else if (event == Ion::Events::Down) {
+    m_recordDelegate->moveDown();
+    m_graphView->selectRecord(m_recordDelegate->getRecord());
+
+    moveCursorHorizontally(1);
+    moveCursorHorizontally(-1);
+
+    m_graphView->reload();
+    reloadBannerView();
+    viewWillAppear();
+    return true;
+  }
+  return SimpleInteractiveCurveViewController::handleEvent(event);
 }
 
 }

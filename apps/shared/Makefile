@@ -47,6 +47,7 @@ app_shared_src = $(addprefix apps/shared/,\
   function_store.cpp \
   function_title_cell.cpp \
   function_zoom_and_pan_curve_view_controller.cpp \
+  function_active_function_toggle.cpp \
   go_to_parameter_controller.cpp \
   hideable_even_odd_buffer_text_cell.cpp \
   hideable_even_odd_cell.cpp \

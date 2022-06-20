@@ -7,6 +7,7 @@
 #include "function_store.h"
 #include "function_graph_view.h"
 #include "function_curve_parameter_controller.h"
+#include "function_active_function_toggle.h"
 
 namespace Shared {
 

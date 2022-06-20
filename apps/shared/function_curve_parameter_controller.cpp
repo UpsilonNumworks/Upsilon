@@ -7,7 +7,7 @@ FunctionCurveParameterController::FunctionCurveParameterController() :
   ViewController(nullptr),
   m_goToCell(I18n::Message::Goto),
   m_selectableTableView(this, this, this),
-  m_record()
+  m_recordDelegate(nullptr)
 {
 }
 
@@ -19,10 +19,13 @@ void FunctionCurveParameterController::didBecomeFirstResponder() {
 }
 
 bool FunctionCurveParameterController::handleGotoSelection() {
-  if (m_record.isNull()) {
+  if (m_recordDelegate == nullptr) {
     return false;
   }
-  goToParameterController()->setRecord(m_record);
+  if (m_recordDelegate->getRecord().isNull()) {
+    return false;
+  }
+  goToParameterController()->setRecord(m_recordDelegate->getRecord());
   StackViewController * stack = (StackViewController *)parentResponder();
   stack->push(goToParameterController());
   return true;

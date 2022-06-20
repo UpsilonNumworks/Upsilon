@@ -15,10 +15,7 @@ GraphView::GraphView(InteractiveCurveViewRange * graphRange,
 }
 
 void GraphView::reload() {
-  if (m_tangent) {
-    KDRect dirtyZone(KDRect(0, 0, bounds().width(), bounds().height()-m_bannerView->bounds().height()));
-    markRectAsDirty(dirtyZone);
-  }
+  markRectAsDirty(bounds());
   return FunctionGraphView::reload();
 }
 

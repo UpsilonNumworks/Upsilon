@@ -28,6 +28,8 @@ private:
   MessageTableCellWithChevron m_calculationCell;
   MessageTableCellWithSwitch m_derivativeCell;
   CalculationParameterController m_calculationParameterController;
+  MessageTableCell m_tangenteCell;
+  TangentGraphController m_tangentGraphController;
 };
 
 }
