@@ -452,11 +452,12 @@ void assert_additional_results_compute_to(const char * expression, const char * 
   Expression e = parse_expression(expression, &globalContext, false).reduceAndRemoveUnit(reductionContext, &units);
   double value = e.approximateToScalar<double>(&globalContext, Cartesian, Degree);
 
-  if (!Unit::ShouldDisplayAdditionalOutputs(value, units, unitFormat)) {
+  if (!Unit::HaveAdditionalOutputs(value, units, unitFormat)) {
     quiz_assert(length == 0);
     return;
   }
-  const int numberOfResults = Unit::SetAdditionalExpressions(units, value, additional, maxNumberOfResults, reductionContext);
+  I18n::Message unitMessage;
+  const int numberOfResults = Unit::SetAdditionalExpressionsAndMessage(units, value, additional, maxNumberOfResults, reductionContext, &unitMessage);
 
   quiz_assert(numberOfResults == length);
   for (int i = 0; i < length; i++) {

@@ -128,7 +128,7 @@ void VariableBoxController::willDisplayCellForIndex(HighlightCell * cell, int in
     I18n::Message::BuiltinsAndKeywords,
     I18n::Message::ImportedModulesAndScripts
   };
-  static_cast<MessageTableCell *>(cell)->setMessage(subtitleMessages[(int)cellOrigin]);
+  static_cast<MessageTableCell<> *>(cell)->setMessage(subtitleMessages[(int)cellOrigin]);
 }
 
 void VariableBoxController::tableViewDidChangeSelection(SelectableTableView * t, int previousSelectedCellX, int previousSelectedCellY, bool withinTemporarySelection) {
@@ -823,7 +823,7 @@ bool VariableBoxController::importationSourceIsModule(const char * sourceName, c
     return true;
   }
   // The sourceName might be a module that is not in the toolbox
-  return mp_module_get(qstr_from_str(sourceName)) != MP_OBJ_NULL;
+  return mp_module_get_loaded_or_builtin(qstr_from_str(sourceName)) != MP_OBJ_NULL;
 }
 
 bool VariableBoxController::importationSourceIsScript(const char * sourceName, const char * * scriptFullName, Script * retrievedScript) {
