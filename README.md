@@ -270,7 +270,7 @@ make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Your name, max 15 characters}"
 Now, run either:
 
 ```bash
-make MODEL=n0100 epsilon_flash
+make MODEL=n0100 epsilon.onboarding_flash
 ```
 
 to directly flash the calculator after pressing simultaneously `reset` and `6` buttons and plugging in.
@@ -307,7 +307,7 @@ make OMEGA_USERNAME="{Your name, max 15 characters}" -j4
 Now, run either:
 
 ```bash
-make epsilon.A_flash
+make epsilon.onboarding.A_flash
 ```
 
 to directly flash the calculator into the current slot, or thought bootloader's slot flasher with RESET, then 4 (flash), and 1 (flash slots) for other slots.
@@ -336,7 +336,7 @@ make MODEL=n0110 OMEGA_USERNAME="{Your name, max 15 characters}" -j4
 Now, run either:
 
 ```bash
-make MODEL=n0110 epsilon_flash
+make MODEL=n0110 epsilon.onboarding_flash
 ```
 
 to directly flash the calculator after pressing simultaneously `reset` and `6` buttons and plugging in.
