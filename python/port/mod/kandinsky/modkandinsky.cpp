@@ -140,9 +140,6 @@ mp_obj_t modkandinsky_image_size(size_t n_args, const mp_obj_t * args) {
     External::Archive::File image;
     External::Archive::fileAtIndex(index, image);
     OBMHeader* h = (OBMHeader*)image.data;
-    mp_obj_t sizeList = mp_obj_new_list(0, NULL);
-    mp_obj_list_append(sizeList, &(h->width));
-    mp_obj_list_append(sizeList, &(h->height));
     mp_obj_t size[2];
     size[0] = mp_obj_new_int((h->width));
     size[1] = mp_obj_new_int((h->height));
