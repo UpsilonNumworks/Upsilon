@@ -1,14 +1,23 @@
 extern "C" {
 #include "modkandinsky.h"
 #include <py/runtime.h>
+#include <assert.h>
 }
-#include <escher/palette.h>
+
+#include <apps/external/archive.h>
+#include <escher.h>
 #include <kandinsky.h>
 #include <ion.h>
 #include "port.h"
 #include <py/obj.h>
 
-
+struct OBMHeader
+{
+  uint32_t signature; //Normally it is 32145
+  int32_t width;
+  int32_t height;
+  const KDColor image_data;
+};
 static mp_obj_t TupleForKDColor(KDColor c) {
   mp_obj_tuple_t * t = static_cast<mp_obj_tuple_t *>(MP_OBJ_TO_PTR(mp_obj_new_tuple(3, NULL)));
   t->items[0] = MP_OBJ_NEW_SMALL_INT(c.red());
@@ -95,6 +104,54 @@ mp_obj_t modkandinsky_draw_circle(size_t n_args, const mp_obj_t * args) {
   KDIonContext::sharedContext()->drawCircle(center, r, color);
   return mp_const_none;
 }
+mp_obj_t modkandinsky_draw_image(size_t n_args, const mp_obj_t * args) {
+  const char * image = mp_obj_str_get_str(args[0]);
+  mp_int_t x = mp_obj_get_int(args[1]);
+  mp_int_t y = mp_obj_get_int(args[2]);
+  mp_int_t width = mp_obj_get_int(args[3]);
+  mp_int_t height = mp_obj_get_int(args[4]);
+
+  
+  if (width < 0) {
+    width = -width;
+    x = x - width;
+  }
+  if (height < 0) {
+    height = -height;
+    y = y - height;
+  }
+    int index = External::Archive::indexFromName(image);
+    if (index > -1) {
+      External::Archive::File image;
+      External::Archive::fileAtIndex(index, image);
+      OBMHeader* h = (OBMHeader*)image.data;
+  
+  
+      MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+      KDIonContext::sharedContext()->fillRectWithPixels(KDRect(x, y, width, height), &(h->image_data), nullptr);
+    }
+  return mp_const_none;      
+}
+
+mp_obj_t modkandinsky_image_size(size_t n_args, const mp_obj_t * args) {
+  const char * image = mp_obj_str_get_str(args[0]);
+  int index = External::Archive::indexFromName(image);
+  if (index > -1) {
+    External::Archive::File image;
+    External::Archive::fileAtIndex(index, image);
+    OBMHeader* h = (OBMHeader*)image.data;
+    mp_obj_t sizeList = mp_obj_new_list(0, NULL);
+    mp_obj_list_append(sizeList, &(h->width));
+    mp_obj_list_append(sizeList, &(h->height));
+    mp_obj_t size[2];
+    size[0] = mp_obj_new_int((h->width));
+    size[1] = mp_obj_new_int((h->height));
+    return mp_obj_new_tuple(2, size);
+  }
+  return mp_const_none;
+  
+}
+
 
 mp_obj_t modkandinsky_fill_rect(size_t n_args, const mp_obj_t * args) {
   mp_int_t x = mp_obj_get_int(args[0]);
