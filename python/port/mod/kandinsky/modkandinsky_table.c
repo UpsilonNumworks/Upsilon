@@ -8,7 +8,6 @@ STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_draw_line_obj, 5, 5, mod
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_draw_circle_obj, 4, 4, modkandinsky_draw_circle);
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_fill_rect_obj, 5, 5, modkandinsky_fill_rect);
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_fill_circle_obj, 4, 4, modkandinsky_fill_circle);
-STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_fill_rect_obj, 5, 5, modkandinsky_fill_rect);
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_draw_image_obj, 5, 5, modkandinsky_draw_image);
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_image_size_obj, 1, 1, modkandinsky_image_size);
 STATIC MP_DEFINE_CONST_FUN_OBJ_VAR_BETWEEN(modkandinsky_fill_polygon_obj, 2, 2, modkandinsky_fill_polygon);
