@@ -150,8 +150,9 @@ mp_obj_t modkandinsky_image_size(size_t n_args, const mp_obj_t * args) {
     size[1] = mp_obj_new_int((h->height));
     return mp_obj_new_tuple(2, size);
   }
-  return mp_const_none;
   #endif
+  return mp_const_none;
+  
 }
 
 
