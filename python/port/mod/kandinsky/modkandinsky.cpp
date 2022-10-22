@@ -3,8 +3,9 @@ extern "C" {
 #include <py/runtime.h>
 #include <assert.h>
 }
-
+#ifdef HOME_DISPLAY_EXTERNALS
 #include <apps/external/archive.h>
+#endif
 #include <escher.h>
 #include <kandinsky.h>
 #include <ion.h>
@@ -105,6 +106,7 @@ mp_obj_t modkandinsky_draw_circle(size_t n_args, const mp_obj_t * args) {
   return mp_const_none;
 }
 mp_obj_t modkandinsky_draw_image(size_t n_args, const mp_obj_t * args) {
+  #ifdef HOME_DISPLAY_EXTERNALS
   const char * image = mp_obj_str_get_str(args[0]);
   mp_int_t x = mp_obj_get_int(args[1]);
   mp_int_t y = mp_obj_get_int(args[2]);
@@ -125,28 +127,31 @@ mp_obj_t modkandinsky_draw_image(size_t n_args, const mp_obj_t * args) {
       External::Archive::File image;
       External::Archive::fileAtIndex(index, image);
       OBMHeader* h = (OBMHeader*)image.data;
-  
-  
       MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
       KDIonContext::sharedContext()->fillRectWithPixels(KDRect(x, y, width, height), &(h->image_data), nullptr);
     }
+  #endif
   return mp_const_none;      
 }
 
 mp_obj_t modkandinsky_image_size(size_t n_args, const mp_obj_t * args) {
+  #ifdef HOME_DISPLAY_EXTERNALS
   const char * image = mp_obj_str_get_str(args[0]);
   int index = External::Archive::indexFromName(image);
   if (index > -1) {
     External::Archive::File image;
     External::Archive::fileAtIndex(index, image);
     OBMHeader* h = (OBMHeader*)image.data;
+    mp_obj_t sizeList = mp_obj_new_list(0, NULL);
+    mp_obj_list_append(sizeList, &(h->width));
+    mp_obj_list_append(sizeList, &(h->height));
     mp_obj_t size[2];
     size[0] = mp_obj_new_int((h->width));
     size[1] = mp_obj_new_int((h->height));
     return mp_obj_new_tuple(2, size);
   }
   return mp_const_none;
-  
+  #endif
 }
 
 
