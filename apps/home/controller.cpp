@@ -11,7 +11,7 @@ extern "C" {
 
 #ifdef HOME_DISPLAY_EXTERNALS
 #include "../external/external_icon.h"
-#include <ion/archive.h>
+#include "../external/archive.h"
 #include <string.h>
 #endif
 
