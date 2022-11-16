@@ -1,0 +1,6 @@
+TOOLCHAIN = sh3eb-elf-gcc
+EXE = bin
+
+EPSILON_TELEMETRY ?= 0
+
+HANDY_TARGETS_EXTENSIONS = bin
