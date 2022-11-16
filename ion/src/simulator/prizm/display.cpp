@@ -1,5 +1,7 @@
 #include "display.h"
 #include "framebuffer.h"
+#include "kandinsky/color.h"
+#include <cstdint>
 #include <ion/display.h>
 #include <string.h>
 
@@ -38,6 +40,19 @@ void draw() {
 
   if (draw_count == 60) {
     printf("draw_count == 60\n");
+
+    const KDColor* pixels = Framebuffer::address();
+    // Loop over all the pixels excluding the status bar
+    // It is 18 pixels high
+    // Add all their values to a counter as some kind of hash
+    uint64_t hash = 0;
+    for (int y = 18; y < 240; y++) {
+      for (int x = 0; x < 320; x++) {
+        hash += pixels[y * 320 + x];
+      }
+    }
+    printf("hash: %lu\n", hash);
+
     Framebuffer::writeToFile("test.bin");
   }
 }
