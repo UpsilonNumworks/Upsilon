@@ -43,5 +43,5 @@ ion_src := $(filter-out $(sdl_simu_needs_to_be_removed),$(ion_src))
 
 SFLAGS := $(filter-out -Iion/src/simulator/external/sdl/include,$(SFLAGS))
 
-SFLAGS += -fno-stack-protector
-LDFLAGS += -nodefaultlibs
+# SFLAGS += -fno-stack-protector
+# LDFLAGS += -nodefaultlibs

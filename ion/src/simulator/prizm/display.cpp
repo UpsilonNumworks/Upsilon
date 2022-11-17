@@ -38,8 +38,8 @@ void draw() {
   // printf("draw\n");
   draw_count++;
 
-  if (draw_count == 60) {
-    printf("draw_count == 60\n");
+  if (draw_count == 10) {
+    printf("draw_count == 10\n");
 
     const KDColor* pixels = Framebuffer::address();
     // Loop over all the pixels excluding the status bar
@@ -52,8 +52,13 @@ void draw() {
       }
     }
     printf("hash: %lu\n", hash);
+    if (hash == 4352844898) {
+      printf("SUCCESS\n");
+    } else {
+      printf("FAILURE\n");
+    }
 
-    Framebuffer::writeToFile("test.bin");
+    // Framebuffer::writeToFile("test.bin");
   }
 }
 
