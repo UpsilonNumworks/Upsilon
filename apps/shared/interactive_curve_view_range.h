@@ -78,7 +78,7 @@ protected:
    * So normalizedYHalfRange = 43.2mm * 170/240 * 1 unit / 10.0mm */
   constexpr static float NormalizedYHalfRange(float unit) {  return 3.06f * unit; }
   bool shouldBeNormalized() const;
-  virtual bool hasDefaultRange() const { return (xMin() == std::round(xMin())) && (xMax() == std::round(xMax())); }
+  virtual bool hasDefaultRange() const { return (xMin() == round(xMin())) && (xMax() == round(xMax())); }
 
   InteractiveCurveViewRangeDelegate * m_delegate;
 private:

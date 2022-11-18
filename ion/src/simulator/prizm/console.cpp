@@ -11,6 +11,8 @@ char readChar() {
 }
 
 void writeChar(char c) {
+  // fxlibc conflicts with this
+  #undef putchar
   KDIonContext::putchar(c);
 }
 

@@ -10,6 +10,11 @@
 #include <iostream>
 #endif
 
+#include <gint/display.h>
+#include <gint/keyboard.h>
+// snprntf
+#include <stdio.h>
+
 namespace Poincare {
 
 class TreeHandle;
@@ -20,7 +25,25 @@ class TreePool final {
   friend class ExceptionCheckpoint;
 public:
   static TreePool * sharedPool() { assert(SharedStaticPool != nullptr); return SharedStaticPool; }
-  static void RegisterPool(TreePool * pool) {  assert(SharedStaticPool == nullptr); SharedStaticPool = pool; }
+  static void __attribute__ ((noinline)) RegisterPool(TreePool * pool) {  assert(SharedStaticPool == nullptr); SharedStaticPool = pool; }
+  // static void RegisterPool(TreePool * pool) {
+  //   // return;
+  //   // dclear(C_WHITE); dtext(1, 16, C_BLACK, "Real class call"); dupdate(); getkey();
+  //   dclear(C_WHITE); dtext(1, 16, C_BLACK, "Registering pool"); dupdate(); getkey();
+  //   // Print the address of SharedStaticPool in hex
+  //   char buf[16];
+  //   snprintf(buf, 16, "%x", (int) &SharedStaticPool);
+  //   dclear(C_WHITE); dtext(1, 16, C_BLACK, buf); dupdate(); getkey();
+  //   if (SharedStaticPool == nullptr) {
+  //     dclear(C_WHITE); dtext(1, 16, C_BLACK, "SharedStaticPool null"); dupdate(); getkey();
+  //   } else {
+  //     dclear(C_WHITE); dtext(1, 16, C_BLACK, "SharedStaticPool not null"); dupdate(); getkey();
+  //   }
+  //   assert(SharedStaticPool == nullptr);
+  //   dclear(C_WHITE); dtext(1, 16, C_BLACK, "Asserted"); dupdate(); getkey();
+  //   SharedStaticPool = pool;
+  //   dclear(C_WHITE); dtext(1, 16, C_BLACK, "Set pool"); dupdate(); getkey();
+  // }
 
   TreePool() : m_cursor(buffer()) {}
 
@@ -138,7 +161,7 @@ private:
   private:
     uint16_t m_currentIndex;
     uint16_t m_availableIdentifiers[MaxNumberOfNodes];
-    static_assert(MaxNumberOfNodes < INT16_MAX && sizeof(m_availableIdentifiers[0] == sizeof(uint16_t)), "Tree node identifiers do not have the right data size.");
+    static_assert(MaxNumberOfNodes < INT16_MAX && sizeof(m_availableIdentifiers[0]) == sizeof(uint16_t), "Tree node identifiers do not have the right data size.");
   };
 
   void freePoolFromNode(TreeNode * firstNodeToDiscard);
