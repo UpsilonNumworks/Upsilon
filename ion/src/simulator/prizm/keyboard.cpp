@@ -1,10 +1,15 @@
 
+#include <gint/keycodes.h>
 #include <ion/keyboard.h>
 // #include <libndls.h>
 // #include <n2DLib.h>
 
 #include "keyboard.h"
+#include "layout_keyboard.h"
 #include "main.h"
+
+#include <gint/keyboard.h>
+#include <gint/gint.h>
 
 using namespace Ion::Keyboard;
 
@@ -103,23 +108,68 @@ namespace Keyboard {
 
 State scan() {
   State state;
-  // t_key result;
 
   // Grab this opportunity to refresh the display if needed
   Simulator::Main::refresh();
 
-  // // Catch the physical keyboard events
-  // if (get_key_pressed(&result) || getTPArrow(&result)) {
-  //   for (int i = 0; i < sNumberOfKeyPairs; i++) {
-  //     if (isKey(result, sKeyPairs[i].ndlessKey())) {
-  //       state.setKey(sKeyPairs[i].key());
-	//     }
-  //   }
-  // } else {
-  //   if (on_key_pressed()) {
-  //     state.setKey(Key::OnOff);
-  //   }
-  // }
+  clearevents();
+  if (keydown(KEY_MENU)) {
+    gint_osmenu();
+  }
+
+  if (keydown(KEY_DOWN)) {
+    state.setKey(Key::Down);
+  } else if (keydown(KEY_UP)) {
+    state.setKey(Key::Up);
+  } else if (keydown(KEY_LEFT)) {
+    state.setKey(Key::Left);
+  } else if (keydown(KEY_RIGHT)) {
+    state.setKey(Key::Right);
+  } else if (keydown(KEY_SHIFT)) {
+    state.setKey(Key::Shift);
+  } else if (keydown(KEY_EXE)) {
+    state.setKey(Key::EXE);
+  } else if (keydown(KEY_DEL)) {
+    state.setKey(Key::Backspace);
+  } else if (keydown(KEY_PLUS)) {
+    state.setKey(Key::Plus);
+  } else if (keydown(KEY_MINUS)) {
+    state.setKey(Key::Minus);
+  } else if (keydown(KEY_MUL)) {
+    state.setKey(Key::Multiplication);
+  } else if (keydown(KEY_DIV)) {
+    state.setKey(Key::Division);
+  } else if (keydown(KEY_LEFTPAR)) {
+    state.setKey(Key::LeftParenthesis);
+  } else if (keydown(KEY_RIGHTPAR)) {
+    state.setKey(Key::RightParenthesis);
+  } else if (keydown(KEY_X2)) {
+    state.setKey(Key::Square);
+  } else if (keydown(KEY_1)) {
+    state.setKey(Key::One);
+  } else if (keydown(KEY_2)) {
+    state.setKey(Key::Two);
+  } else if (keydown(KEY_3)) {
+    state.setKey(Key::Three);
+  } else if (keydown(KEY_4)) {
+    state.setKey(Key::Four);
+  } else if (keydown(KEY_5)) {
+    state.setKey(Key::Five);
+  } else if (keydown(KEY_6)) {
+    state.setKey(Key::Six);
+  } else if (keydown(KEY_7)) {
+    state.setKey(Key::Seven);
+  } else if (keydown(KEY_8)) {
+    state.setKey(Key::Eight);
+  } else if (keydown(KEY_9)) {
+    state.setKey(Key::Nine);
+  } else if (keydown(KEY_0)) {
+    state.setKey(Key::Zero);
+  } else if (keydown(KEY_DOT)) {
+    state.setKey(Key::Dot);
+  } else if (keydown(KEY_ALPHA)) {
+    state.setKey(Key::Home);
+  }
 
   return state;
 }

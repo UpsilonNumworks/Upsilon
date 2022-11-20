@@ -3,6 +3,7 @@
 #include "platform.h"
 
 #include <cstddef>
+#include <gint/display-cg.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -22,27 +23,7 @@ extern "C" {
 int main() {
   // printf("Hello, world!\n");
   dclear(C_WHITE);
-  dtext(1, 1, C_BLACK, "Hello from Omega!");
-  dupdate();
-
-  getkey();
-
-
   Ion::Simulator::Main::init();
-
-  dtext(1, 16, C_BLACK, "Simulator init done!");
-  dupdate();
-  getkey();
-
-            // std::vector<const char *> arguments(argv, argv + argc);
-
-            // const char * language = "en";
-            // if (language != nullptr) {
-            //   arguments.push_back("--language");
-            //   arguments.push_back(language);
-            // }
-
-            // ion_main(arguments.size(), &arguments[0]);
   ion_main(0, NULL);
 
   dtext(1, 32, C_BLACK, "Simulator done!");

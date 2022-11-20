@@ -1,3 +1,10 @@
+// Don't optimize this file
+#include <ios>
+// #pragma GCC push_options
+// #pragma GCC optimize ("O0")
+
+#include <cstdio>
+#include <gint/display-cg.h>
 #include <poincare/integer.h>
 #include <poincare/code_point_layout.h>
 #include <poincare/ieee754.h>
@@ -21,6 +28,77 @@ extern "C" {
 #include <assert.h>
 }
 #include <algorithm>
+
+#ifdef _PRIZM
+#include <gint/display.h>
+#include <gint/keyboard.h>
+#else
+#include <stdio.h>
+#endif
+
+void debugLog(const char* message) {
+  #ifdef _PRIZM
+  // dclear(C_WHITE); dtext(1, 1, C_BLACK, message); dupdate(); getkey();
+  #else
+  printf("%s\n", message);
+  #endif
+}
+
+void debugLog2(const char* message) {
+  #ifdef _PRIZM
+  // dclear(C_WHITE); dtext(1, 1, C_BLACK, message); dupdate(); getkey();
+  #else
+  printf("%s\n", message);
+  #endif
+}
+
+void debugLogInteger(const char* message, const Poincare::Integer & i) {
+  // long long i2;
+  // if (i.numberOfDigits() == 1) {
+  //   i2 = i.digits()[0];
+  // } else {
+  //   i2 = i.digits()[0] + (i.digits()[1] * (1LL << 32));
+  // }
+  // if (i.isNegative()) {
+  //   i2 = -i2;
+  // }
+  // char buffer2[100];
+  // snprintf(buffer2, 100, message, i2);
+  // debugLog(buffer2);
+}
+
+void debugLogInteger2(const char* message, const Poincare::Integer & i) {
+  // long long i2;
+  // if (i.numberOfDigits() == 1) {
+  //   i2 = i.digits()[0];
+  // } else {
+  //   i2 = i.digits()[0] + (i.digits()[1] * (1LL << 32));
+  // }
+  // if (i.isNegative()) {
+  //   i2 = -i2;
+  // }
+  // char buffer2[100];
+  // snprintf(buffer2, 100, message, i2);
+  // debugLog2(buffer2);
+}
+
+void debugLogInt(const char* message, const int i) {
+  // char buffer2[100];
+  // snprintf(buffer2, 100, message, i);
+  // debugLog(buffer2);
+}
+
+void debugLogInt2(const char* message, const int i) {
+  // char buffer2[100];
+  // snprintf(buffer2, 100, message, i);
+  // debugLog2(buffer2);
+}
+
+void debugLogPointer(const char* message, const void * p) {
+  // char buffer[100];
+  // snprintf(buffer, 100, message, p);
+  // debugLog(buffer);
+}
 
 namespace Poincare {
 
@@ -57,6 +135,7 @@ static inline int8_t sign(bool negative) {
 IntegerNode::IntegerNode(const native_uint_t * digits, uint8_t numberOfDigits) :
   m_numberOfDigits(numberOfDigits)
 {
+  debugLog("IntegerNode::IntegerNode");
   memcpy(m_digits, digits, numberOfDigits*sizeof(native_uint_t));
 }
 
@@ -95,12 +174,15 @@ void IntegerNode::log(std::ostream & stream) const {
 // Constructor
 
 Integer Integer::BuildInteger(native_uint_t * digits, uint16_t numberOfDigits, bool negative, bool enableOverflow) {
+  // debugLog("Integer::BuildInteger");
   if ((!digits || !enableOverflow) && numberOfDigits >= k_maxNumberOfDigits+1) {
     return Overflow(negative);
   }
   // 0 can't be negative
   negative = numberOfDigits == 0 ? false : negative;
   if (numberOfDigits <= 1) {
+    // debugLog("Integer::BuildInteger: numberOfDigits <= 1");
+    debugLogInt("numberOfDigits: %d", numberOfDigits);
     Integer i(TreeNode::NoNodeIdentifier, negative);
     i.m_digit = numberOfDigits == 0 ? 0 : digits[0];
     return i;
@@ -111,6 +193,7 @@ Integer Integer::BuildInteger(native_uint_t * digits, uint16_t numberOfDigits, b
 // Private constructor
 
 Integer::Integer(native_uint_t * digits, uint16_t numberOfDigits, bool negative) {
+  debugLog("Integer::Integer");
   void * bufferNode = TreePool::sharedPool()->alloc(IntegerSize(numberOfDigits));
   IntegerNode * node = new (bufferNode) IntegerNode(digits, numberOfDigits);
   TreeHandle h = TreeHandle::BuildWithGhostChildren(node);
@@ -127,7 +210,10 @@ Integer::Integer(native_int_t i) : TreeHandle(TreeNode::NoNodeIdentifier) {
 
 Integer::Integer(double_native_int_t i) {
   double_native_uint_t j = i < 0 ? -i : i;
-  native_uint_t * d = (native_uint_t *)&j;
+  native_uint_t d[2] = {
+    static_cast<native_uint_t>(j & 0xFFFFFFFF),
+    static_cast<native_uint_t>(j >> 32)
+  };
   native_uint_t leastSignificantDigit = *d;
   native_uint_t mostSignificantDigit = *(d+1);
   uint8_t numberOfDigits = (mostSignificantDigit == 0) ? 1 : 2;
@@ -156,6 +242,7 @@ int integerFromCharDigit(char c) {
 Integer::Integer(const char * digits, size_t length, bool negative, Base b) :
   Integer(0)
 {
+  debugLog2("Creating Integer from string:"); debugLog2(digits);
   if (digits != nullptr && UTF8Helper::CodePointIs(digits, '-')) {
     negative = true;
     digits++;
@@ -164,8 +251,12 @@ Integer::Integer(const char * digits, size_t length, bool negative, Base b) :
   if (digits != nullptr) {
     Integer base((int)b);
     for (size_t i = 0; i < length; i++) {
+      debugLog2("Before multiplication");
       *this = Multiplication(*this, base);
-      *this = Addition(*this, Integer(integerFromCharDigit(*digits)));
+      debugLog2("After multiplication");
+      Integer toAdd = Integer(integerFromCharDigit(*digits));
+      debugLogInteger("toAdd: ", toAdd);
+      *this = Addition(*this, toAdd);
       digits++;
     }
   }
@@ -455,6 +546,7 @@ Integer Integer::Factorial(const Integer & i) {
 Integer Integer::addition(const Integer & a, const Integer & b, bool inverseBNegative, bool oneDigitOverflow) {
   bool bNegative = (inverseBNegative ? !b.m_negative : b.m_negative);
   if (a.m_negative == bNegative) {
+    // debugLogInt2("usum -1 caller: %p", (int) __builtin_return_address(0));
     Integer us = usum(a, b, false, oneDigitOverflow);
     us.setNegative(a.m_negative);
     return us;
@@ -495,7 +587,10 @@ Integer Integer::multiplication(const Integer & a, const Integer & b, bool oneDi
        * otherwise the product might end up being computed on single_native size
        * and then zero-padded. */
       double_native_uint_t p = aDigit*bDigit + carry + (double_native_uint_t)(s_workingBuffer[i+j]); // TODO: Prove it cannot overflow double_native type
-      native_uint_t * l = (native_uint_t *)&p;
+      native_uint_t l[2] = {
+        static_cast<native_uint_t>(p & 0xFFFFFFFF),
+        static_cast<native_uint_t>(p >> 32)
+      };
       if (i+j < (uint8_t) k_maxNumberOfDigits+oneDigitOverflow) {
         s_workingBuffer[i+j] = l[0];
       } else {
@@ -545,7 +640,18 @@ int8_t Integer::ucmp(const Integer & a, const Integer & b) {
   return 0;
 }
 
+static int depth;
+
 Integer Integer::usum(const Integer & a, const Integer & b, bool subtract, bool oneDigitOverflow) {
+  depth++;
+
+  // debugLogInt2("usum at depth %d", depth);
+  // debugLogInteger2("a %d", a);
+  // debugLogInteger2("b %d", b);
+
+  // Use __builtin_return_address() to get the caller address
+  // debugLogInt2("usum caller: %p", (int) __builtin_return_address(0));
+
   if (a.isOverflow() || b.isOverflow()) {
     return Overflow(a.m_negative != b.m_negative);
   }
@@ -578,7 +684,10 @@ Integer Integer::usum(const Integer & a, const Integer & b, bool subtract, bool 
   while (size>0 && s_workingBuffer[size-1] == 0) {
     size--;
   }
-  return BuildInteger(s_workingBuffer, size, false, oneDigitOverflow);
+  // return BuildInteger(s_workingBuffer, size, false, oneDigitOverflow);
+  Integer result = BuildInteger(s_workingBuffer, size, false, oneDigitOverflow);
+  depth--;
+  return result;
 }
 
 Integer Integer::multiplyByPowerOf2(uint8_t pow) const {
@@ -604,31 +713,76 @@ Integer Integer::divideByPowerOf2(uint8_t pow) const {
 
 // return this*(2^16)^pow
 Integer Integer::multiplyByPowerOfBase(uint8_t pow) const {
+  /*
+  This was not standards-compliant, as it casted a native_uint_t pointer to a
+  half_native_uint_t pointer. It did not work if the CPU was not little-endian.
+  
+  Old implementation:
+
   int nbOfHalfDigits = numberOfHalfDigits();
   half_native_uint_t * digits = reinterpret_cast<half_native_uint_t *>(s_workingBuffer);
-  /* The number of half digits of the built integer is nbOfHalfDigits+pow.
-   * Still, we set an extra half digit to 0 to easily convert half digits to
-   * digits. */
+  // * The number of half digits of the built integer is nbOfHalfDigits+pow.
+  // * Still, we set an extra half digit to 0 to easily convert half digits to
+  // * digits.
   memset(digits, 0, sizeof(half_native_uint_t)*(nbOfHalfDigits+pow+1));
   for (uint8_t i = 0; i < nbOfHalfDigits; i++) {
     digits[i+pow] = halfDigit(i);
   }
   nbOfHalfDigits += pow;
   return BuildInteger((native_uint_t *)digits, nbOfHalfDigits%2 == 1 ? nbOfHalfDigits/2+1 : nbOfHalfDigits/2, false, true);
+  */
+
+  // toSet: 40960
+  // index: 1
+
+  // New implementation:
+  int nbOfHalfDigits = numberOfHalfDigits();
+  debugLogInt("half digits: %d", nbOfHalfDigits);
+  native_uint_t * digits = s_workingBuffer;
+  /* The number of half digits of the built integer is nbOfHalfDigits+pow.
+   * Still, we set an extra half digit to 0 to easily convert half digits to
+   * digits. */
+  memset(digits, 0, (sizeof(native_uint_t)/2)*(nbOfHalfDigits+pow+1));
+  for (uint8_t i = 0; i < nbOfHalfDigits; i += 2) {
+    native_uint_t toSet = halfDigit(i);
+    if (i+1 < nbOfHalfDigits) {
+      toSet |= (native_uint_t)halfDigit(i+1) << 16;
+    }
+    // digits[(i+pow)/2] |= toSet;
+    int index = i+pow;
+    debugLogInt("toSet: %d", toSet);
+    debugLogInt("index: %d", index);
+    // If it's on an even index, we can just set the value
+    if (index % 2 == 0) {
+      digits[index/2] = toSet;
+    } else {
+      // If it's on an odd index, we need to shift the value
+      digits[index/2] |= toSet << 16;
+      digits[index/2+1] |= toSet >> 16;
+    }
+  }
+  debugLogInt("digits[0]: %d", digits[0]);
+  debugLogInt("digits[1]: %d", digits[1]);
+  nbOfHalfDigits += pow;
+  return BuildInteger(digits, nbOfHalfDigits%2 == 1 ? nbOfHalfDigits/2+1 : nbOfHalfDigits/2, false, true);
 }
 
+
 IntegerDivision Integer::udiv(const Integer & numerator, const Integer & denominator) {
-  if (denominator.isOverflow()) {
-    return {.quotient = Overflow(false), .remainder = Integer::Overflow(false)};
-  }
-  if (numerator.isOverflow()) {
-    return {.quotient = Overflow(false), .remainder = Integer::Overflow(false)};
-  }
+  debugLog("Entering udiv");
+  // Print the memory addresses of the numerator and denominator
+  // debugLogPointer("&numerator: %p", &numerator);
+  // debugLogPointer("&denominator: %p", &denominator);
+  // Print the numerator and denominator
+  debugLogInteger("Numerator: %lld", numerator);
+  debugLogInteger("Denominator: %lld", denominator);
   /* Modern Computer Arithmetic, Richard P. Brent and Paul Zimmermann
    * (Algorithm 1.6) */
   assert(!denominator.isZero());
+  // debugLog("udiv: denominator is not zero");
   if (ucmp(numerator,denominator) < 0) {
     IntegerDivision div = {.quotient = Integer(0), .remainder = Integer(numerator)};
+    debugLog("udiv: Early return");
     return div;
   }
   /* Let's call beta = 1 << 16 */
@@ -639,50 +793,92 @@ IntegerDivision Integer::udiv(const Integer & numerator, const Integer & denomin
   half_native_uint_t halfBase = 1 << (16-1);
   int pow = 0;
   assert(b != 0);
+  if (b == 0) {
+    debugLog("udiv: b == 0... oh no!");
+    debugLog("udiv: Will probably hang now");
+  }
+  // debugLogInt("udiv: b: %d", b);
+  // debugLogInt("udiv: halfBase: %d", halfBase);
   while (!(b & halfBase)) {
     b = b << 1;
     pow++;
+    // debugLogInt("udiv: loop: b: %d", b);
   }
   Integer A = numerator.multiplyByPowerOf2(pow);
   Integer B = denominator.multiplyByPowerOf2(pow);
+  debugLog("udiv: A and B computed");
+  debugLogInteger("A: %lld", A);
+  debugLogInteger("B: %lld", B);
 
   /* A = a[0] + a[1]*beta + ... + a[n+m-1]*beta^(n+m-1)
    * B = b[0] + b[1]*beta + ... + b[n-1]*beta^(n-1) */
   int n = B.numberOfHalfDigits();
   int m = A.numberOfHalfDigits()-n;
+  debugLogInt("n: %d", n);
+  debugLogInt("m: %d", m);
   // qDigits is a half_native_uint_t array and enable one digit overflow
   half_native_uint_t * qDigits = reinterpret_cast<half_native_uint_t *>(s_workingBufferDivision);
   // The quotient q has at maximum m+1 half digits but we set an extra half digit to 0 to enable to easily convert it from half digits to digits
   memset(qDigits, 0, std::max(m+1+1,2*k_maxNumberOfDigits)*sizeof(half_native_uint_t));
   // betaMB = B*beta^m
   Integer betaMB = B.multiplyByPowerOfBase(m);
+  if (betaMB.isNegative()) {
+    debugLog("udiv: betaMB is negative");
+  } else {
+    debugLog("udiv: betaMB is positive");
+  }
+  // Print all the "digits" of betaMB
+  for (int i = 0; i < betaMB.numberOfDigits(); i++) {
+    debugLogInt("betaMB digits[%d]", i);
+    debugLogInt("= %d", betaMB.digit(i));
+  }
+  debugLogInteger("betaMB: %lld", betaMB);
   if (Integer::NaturalOrder(A,betaMB) >= 0) { // A >= B*beta^m
     qDigits[m] = 1; // q[m] = 1
     A = usum(A, betaMB, true, true); // A-B*beta^m
   }
+  debugLogInteger("A: %lld", A);
   native_int_t base = 1 << 16;
+  debugLog("Before loop");
+  debugLogInt("m: %d", m);
   for (int j = m-1; j >= 0; j--) {
+    debugLogInt("j: %d", j);
+    debugLogInt("A.halfDigit(n+j): %d", A.halfDigit(n+j));
+    debugLogInt("A.halfDigit(n+j-1): %d", A.halfDigit(n+j-1));
+    debugLogInt("B.halfDigit(n-1): %d", B.halfDigit(n-1));
     native_uint_t qj2 = ((native_uint_t)A.halfDigit(n+j)*base+(native_uint_t)A.halfDigit(n+j-1))/(native_uint_t)B.halfDigit(n-1); // (a[n+j]*beta+a[n+j-1])/b[n-1]
+    debugLogInt("qj2: %d", qj2);
     half_native_uint_t baseMinus1 = (1 << 16) -1; // beta-1
+    debugLogInt("baseMinus1: %d", baseMinus1);
     qDigits[j] = qj2 < (native_uint_t)baseMinus1 ? (half_native_uint_t)qj2 : baseMinus1; // std::min(qj2, beta -1)
+    debugLogInt("qDigits[j]: %d", qDigits[j]);
     A = Integer::addition(A, multiplication(qDigits[j], B.multiplyByPowerOfBase(j), true), true, true); // A-q[j]*beta^j*B
+    debugLogInteger("A: %lld", A);
     if (A.isNegative()) {
       Integer betaJM = B.multiplyByPowerOfBase(j); // betaJM = B*beta^j
+      debugLog("Before nested loop");
       while (A.isNegative()) {
+        debugLogInteger("A: %lld", A);
+        debugLogInteger("betaJM: %lld", betaJM);
         qDigits[j] = qDigits[j]-1; // q[j] = q[j]-1
         A = addition(A, betaJM, false, true); // A = B*beta^j+A
       }
+      debugLog("After nested loop");
     }
   }
+  debugLog("After loop");
   int qNumberOfDigits = m+1;
+  debugLog("Before second loop");
   while (qDigits[qNumberOfDigits-1] == 0 && qNumberOfDigits > 1) {
     qNumberOfDigits--;
   }
+  debugLog("After second loop");
   int qNumberOfDigitsInBase32 = qNumberOfDigits%2 == 1 ? qNumberOfDigits/2+1 : qNumberOfDigits/2;
   IntegerDivision div = {.quotient = BuildInteger((native_uint_t *)qDigits, qNumberOfDigitsInBase32, false), .remainder = A};
   if (pow > 0 && !div.remainder.isZero()) {
     div.remainder = div.remainder.divideByPowerOf2(pow);
   }
+  debugLog("Leaving udiv");
   return div;
 }
 
@@ -715,3 +911,5 @@ template float Integer::approximate<float>() const;
 template double Integer::approximate<double>() const;
 
 }
+
+// #pragma GCC pop_options

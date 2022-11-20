@@ -47,10 +47,10 @@ private:
   static constexpr KDCoordinate k_sideMargin = 4;
   static constexpr KDCoordinate k_bottomMargin = 14;
   static constexpr KDCoordinate k_indicatorMargin = 61;
-  static constexpr int k_numberOfColumns = 3;
+  static constexpr int k_numberOfColumns = 4;
   static constexpr int k_maxNumberOfCells = 16;
-  static constexpr int k_cellHeight = 104;
-  static constexpr int k_cellWidth = 104;
+  static constexpr int k_cellHeight = 96;
+  static constexpr int k_cellWidth = 97;
   ContentView m_view;
   AppCell m_cells[k_maxNumberOfCells];
   App * m_app;

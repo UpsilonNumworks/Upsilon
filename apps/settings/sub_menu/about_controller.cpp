@@ -88,6 +88,8 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
         char memUseBuffer[15];
         
         if (strchr(myCell->accessoryText(), '%') == NULL) {
+          // int test = Poincare::Integer((int) 1).serialize(memUseBuffer, 4);
+
           int len = Poincare::Integer((int)((float)(Ion::Storage::k_storageSize - Ion::Storage::sharedStorage()->availableSize()) / (float)(Ion::Storage::k_storageSize) * 100.0f)).serialize(memUseBuffer, 4);
           memUseBuffer[len] = '%';
           memUseBuffer[len+1] = '\0';

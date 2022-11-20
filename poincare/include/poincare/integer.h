@@ -5,6 +5,14 @@
 #include <assert.h>
 #include <poincare/horizontal_layout.h>
 
+#ifdef _PRIZM
+#include <gint/display.h>
+#include <gint/keyboard.h>
+#include <stdio.h>
+#else
+#include <stdio.h>
+#endif // y66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666t`g71y6hhhhhh
+
 namespace Poincare {
 
 class ExpressionLayout;
@@ -15,10 +23,15 @@ struct IntegerDivision;
 
 #ifdef _PRIZM
 typedef unsigned short half_native_uint_t;
+static_assert(sizeof(half_native_uint_t) == sizeof(uint16_t));
 typedef int native_int_t;
+static_assert(sizeof(native_int_t) == sizeof(int32_t));
 typedef long long int double_native_int_t;
+static_assert(sizeof(double_native_int_t) == sizeof(int64_t));
 typedef unsigned int native_uint_t;
+static_assert(sizeof(native_uint_t) == sizeof(uint32_t));
 typedef unsigned long long int double_native_uint_t;
+static_assert(sizeof(double_native_uint_t) == sizeof(uint64_t));
 #else
 typedef uint16_t half_native_uint_t;
 typedef int32_t native_int_t;
@@ -26,6 +39,20 @@ typedef int64_t double_native_int_t;
 typedef uint32_t native_uint_t;
 typedef uint64_t double_native_uint_t;
 #endif
+
+inline void debugLog22(const char* message) {
+  #ifdef _PRIZM
+  // dclear(C_WHITE); dtext(1, 1, C_BLACK, message); dupdate(); getkey();
+  #else
+  printf("%s\n", message);
+  #endif
+}
+
+inline void debugLogInt22(const char* message, const int i) {
+  char buffer2[100];
+  snprintf(buffer2, 100, message, i);
+  debugLog22(buffer2);
+}
 
 static_assert(sizeof(double_native_int_t) <= sizeof(double_native_uint_t), "double_native_int_t type has not the right size compared to double_native_uint_t");
 static_assert(sizeof(native_int_t) == sizeof(native_uint_t), "native_int_t type has not the right size compared to native_uint_t");
@@ -148,7 +175,7 @@ public:
   }
 
     // Arithmetic
-  static Integer Addition(const Integer & i, const Integer & j) { return addition(i, j, false); }
+  static Integer Addition(const Integer & i, const Integer & j) { /*debugLogInt22("usum -2 caller: %p", (int) __builtin_return_address(0));*/ return addition(i, j, false); }
   static Integer Subtraction(const Integer & i, const Integer & j) { return addition(i, j, true); }
   static Integer Multiplication(const Integer & i, const Integer & j) { return multiplication(i, j); }
   static IntegerDivision Division(const Integer & numerator, const Integer & denominator);
@@ -199,7 +226,12 @@ private:
     if (i >= numberOfHalfDigits()) {
       return 0;
     }
-    return (usesImmediateDigit() ? ((half_native_uint_t *)&m_digit)[i] : ((half_native_uint_t *)digits())[i]);
+    native_uint_t d = usesImmediateDigit() ? m_digit : digits()[i/2];
+    if (i % 2 == 0) {
+      return d & 0xFFFF;
+    } else {
+      return d >> 16;
+    }
   }
 
   native_uint_t digit(uint8_t i) const {

@@ -44,13 +44,19 @@ void draw() {
   } */
 
   // Loop over all the pixels and plot them
-  for (int x = 0; x < Ion::Display::Width; x++) {
-    for (int y = 0; y < /* Ion::Display::Height */ 224; y++) {
-      // Get the color of the pixel
-      KDColor color = Framebuffer::address()[x + y * Ion::Display::Width];
-      // Plot the pixel
-      dpixel(x, y, color);
-    }
+  // for (int x = 0; x < Ion::Display::Width; x++) {
+  //   for (int y = 0; y < /* Ion::Display::Height */ 224; y++) {
+  //     // Get the color of the pixel
+  //     KDColor color = Framebuffer::address()[x + y * Ion::Display::Width];
+  //     // Plot the pixel
+  //     dpixel(x, y, color);
+  //   }
+  // }
+  // dupdate();
+
+  // Faster implementation: Use memcpy to copy each line to gint_vram
+  for (int y = 0; y < /* Ion::Display::Height */ 224; y++) {
+    memcpy(gint_vram + (y * 396), Framebuffer::address() + y * Ion::Display::Width, Ion::Display::Width * sizeof(uint16_t));
   }
   dupdate();
 
