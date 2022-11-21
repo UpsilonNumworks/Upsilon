@@ -52,11 +52,11 @@ void ImageView::drawRect(KDContext * ctx, KDRect rect) const {
   );
 
   // If we are on a big-endian CPU, we need to swap the bytes
-  // #if _PRIZM
+  #if _BIG_ENDIAN
   for (uint32_t i = 0; i < pixelBufferSize; i++) {
     pixelBuffer[i] = KDColor::RGB16(__builtin_bswap16(pixelBuffer[i]));
   }
-  // #endif
+  #endif
 
   ctx->fillRectWithPixels(bounds(), pixelBuffer, nullptr);
 }

@@ -7,3 +7,4 @@ SIZE = sh-elf-size
 AS = sh-elf-as
 
 SFLAGS += -D_PRIZM
+SFLAGS += -D_BIG_ENDIAN

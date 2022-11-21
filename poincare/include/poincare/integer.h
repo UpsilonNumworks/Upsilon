@@ -40,20 +40,6 @@ typedef uint32_t native_uint_t;
 typedef uint64_t double_native_uint_t;
 #endif
 
-inline void debugLog22(const char* message) {
-  #ifdef _PRIZM
-  // dclear(C_WHITE); dtext(1, 1, C_BLACK, message); dupdate(); getkey();
-  #else
-  printf("%s\n", message);
-  #endif
-}
-
-inline void debugLogInt22(const char* message, const int i) {
-  char buffer2[100];
-  snprintf(buffer2, 100, message, i);
-  debugLog22(buffer2);
-}
-
 static_assert(sizeof(double_native_int_t) <= sizeof(double_native_uint_t), "double_native_int_t type has not the right size compared to double_native_uint_t");
 static_assert(sizeof(native_int_t) == sizeof(native_uint_t), "native_int_t type has not the right size compared to native_uint_t");
 static_assert(sizeof(double_native_uint_t) == 2*sizeof(native_uint_t), "double_native_uint_t should be twice the size of native_uint_t");
@@ -175,7 +161,7 @@ public:
   }
 
     // Arithmetic
-  static Integer Addition(const Integer & i, const Integer & j) { /*debugLogInt22("usum -2 caller: %p", (int) __builtin_return_address(0));*/ return addition(i, j, false); }
+  static Integer Addition(const Integer & i, const Integer & j) { return addition(i, j, false); }
   static Integer Subtraction(const Integer & i, const Integer & j) { return addition(i, j, true); }
   static Integer Multiplication(const Integer & i, const Integer & j) { return multiplication(i, j); }
   static IntegerDivision Division(const Integer & numerator, const Integer & denominator);

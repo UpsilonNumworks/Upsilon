@@ -24,13 +24,13 @@ ion_src += $(addprefix ion/src/simulator/shared/, \
   dummy/window_callback.cpp \
   actions.cpp \
   clipboard_helper.cpp \
-  collect_registers_x86_64.s \
-  collect_registers.cpp \
   haptics.cpp \
   journal.cpp \
   state_file.cpp \
   store_script.cpp \
 )
+
+ion_src += ion/src/shared/collect_registers.cpp
 
 ifeq ($(EPSILON_TELEMETRY),1)
 ion_src += ion/src/simulator/shared/dummy/telemetry_init.cpp

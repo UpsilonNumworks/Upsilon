@@ -13,20 +13,6 @@
 #include <stdio.h>
 #endif
 
-inline void debugLog22(const char* message) {
-  #ifdef _PRIZM
-  // dclear(C_WHITE); dtext(1, 1, C_BLACK, message); dupdate(); getkey();
-  #else
-  printf("%s\n", message);
-  #endif
-}
-
-inline void debugLogInt22(const char* message, const int i) {
-  // char buffer2[100];
-  // snprintf(buffer2, 100, message, i);
-  // debugLog22(buffer2);
-}
-
 namespace Shared {
   class ContinuousFunction;
 }
@@ -138,11 +124,11 @@ protected:
   TreeHandle(const TreeNode * node);
   // Un-inlining this constructor actually inscreases the firmware size
   TreeHandle(uint16_t nodeIndentifier = TreeNode::NoNodeIdentifier) : m_identifier(nodeIndentifier) {
-    debugLog22("Creating TreeHandle");
+    // debugLog22("Creating TreeHandle");
     if (hasNode(nodeIndentifier)) {
       node()->retain();
     }
-    debugLog22("Created TreeHandle");
+    // debugLog22("Created TreeHandle");
   }
 
   // WARNING: if the children table is the result of a cast, the object downcasted has to be the same size as a TreeHandle.
