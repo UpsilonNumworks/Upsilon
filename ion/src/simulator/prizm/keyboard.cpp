@@ -106,6 +106,8 @@ namespace Keyboard {
 //       return 0;
 // }
 
+int menuHeldFor = 0;
+
 State scan() {
   State state;
 
@@ -114,7 +116,13 @@ State scan() {
 
   clearevents();
   if (keydown(KEY_MENU)) {
-    gint_osmenu();
+    state.setKey(Key::Home);
+    menuHeldFor++;
+    if (menuHeldFor > 30) {
+      gint_osmenu();
+    }
+  } else {
+    menuHeldFor = 0;
   }
 
   if (keydown(KEY_DOWN)) {
@@ -133,7 +141,7 @@ State scan() {
     state.setKey(Key::Backspace);
   } else if (keydown(KEY_PLUS)) {
     state.setKey(Key::Plus);
-  } else if (keydown(KEY_MINUS)) {
+  } else if (keydown(KEY_MINUS) || keydown(KEY_NEG)) {
     state.setKey(Key::Minus);
   } else if (keydown(KEY_MUL)) {
     state.setKey(Key::Multiplication);
@@ -144,7 +152,7 @@ State scan() {
   } else if (keydown(KEY_RIGHTPAR)) {
     state.setKey(Key::RightParenthesis);
   } else if (keydown(KEY_X2)) {
-    state.setKey(Key::Square);
+    state.setKey(Key::Sqrt);
   } else if (keydown(KEY_1)) {
     state.setKey(Key::One);
   } else if (keydown(KEY_2)) {
@@ -168,7 +176,25 @@ State scan() {
   } else if (keydown(KEY_DOT)) {
     state.setKey(Key::Dot);
   } else if (keydown(KEY_ALPHA)) {
-    state.setKey(Key::Home);
+    state.setKey(Key::Alpha);
+  } else if (keydown(KEY_XOT)) {
+    state.setKey(Key::XNT);
+  } else if (keydown(KEY_COMMA)) {
+    state.setKey(Key::Comma);
+  } else if (keydown(KEY_SIN)) {
+    state.setKey(Key::Sine);
+  } else if (keydown(KEY_COS)) {
+    state.setKey(Key::Cosine);
+  } else if (keydown(KEY_TAN)) {
+    state.setKey(Key::Tangent);
+  } else if (keydown(KEY_LN)) {
+    state.setKey(Key::Ln);
+  } else if (keydown(KEY_LOG)) {
+    state.setKey(Key::Log);
+  } else if (keydown(KEY_VARS)) {
+    state.setKey(Key::Var);
+  } else if (keydown(KEY_EXP)) {
+    state.setKey(Key::Exp);
   }
 
   return state;
