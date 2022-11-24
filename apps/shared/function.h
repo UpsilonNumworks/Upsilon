@@ -82,6 +82,7 @@ protected:
     void setActive(bool active) { m_active = active; }
   private:
 #if __EMSCRIPTEN__
+    // TODO: Fix on Casio
     /* For emscripten memory representation, loads and stores must be aligned;
      * performing a normal load or store on an unaligned address can fail
      * silently. We thus use 'emscripten_align1_short' type, the unaligned

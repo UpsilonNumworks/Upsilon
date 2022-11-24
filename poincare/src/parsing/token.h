@@ -10,6 +10,26 @@
  *   - an Expression, specifically for a Number Token,
  *   - a string (m_text, m_length), specifically for an Identifier Token. */
 
+inline int strcmp2(const char *s1, const char *s2)
+{
+        while (*s1 != '\0' && *s2 != '\0' && *s1 == *s2) {
+                s1 += 1;
+                s2 += 1;
+        }
+        return ((int)(unsigned char) *s1 - (int)(unsigned char) *s2);
+}
+
+
+inline int strncmp2(const char *s1, const char *s2, size_t n)
+{
+	if (n == 0)
+		return (0);
+	size_t i = -1;
+	while (++i < n - 1 && s1[i] != '\0' && s2[i] != '\0'
+	       && s1[i] == s2[i]) ;
+	return ((unsigned char) s1[i] - (unsigned char) s2[i]);
+}
+
 namespace Poincare {
 
 class Token {
@@ -78,8 +98,8 @@ public:
     /* Compare m_text to name, similarly to strcmp, assuming
      *  - m_text is not null-terminated
      *  - name is.*/
-    int diff = strncmp(nonNullTerminatedName, nullTerminatedName, nonNullTerminatedNameLength);
-    return (diff != 0) ? diff : strcmp("", nullTerminatedName + nonNullTerminatedNameLength);
+    int diff = strncmp2(nonNullTerminatedName, nullTerminatedName, nonNullTerminatedNameLength);
+    return (diff != 0) ? diff : strcmp2("", nullTerminatedName + nonNullTerminatedNameLength);
 
   }
   int compareTo(const char * name) const {

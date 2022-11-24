@@ -33,6 +33,7 @@ public:
   static float defaultRangeLengthFor(float position);
 private:
 #if __EMSCRIPTEN__
+    // TODO: Fix on Casio
     // See comment about emscripten alignment in Shared::Function::RecordDataBuffer
     static_assert(sizeof(emscripten_align1_short) == sizeof(uint16_t), "emscripten_align1_short should have the same size as uint16_t");
     emscripten_align1_float m_min;

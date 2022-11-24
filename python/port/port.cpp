@@ -299,6 +299,37 @@ KDColor MicroPython::Color::Parse(mp_obj_t input, Mode mode){
   mp_raise_TypeError("Color couldn't be parsed");
 }
 
+// typedef uintptr_t gc_helper_regs_t[8];
+
+// STATIC void gc_helper_get_regs(gc_helper_regs_t arr) {
+//     register const long r8 asm ("r8");
+//     register const long r9 asm ("r9");
+//     register const long r10 asm ("r10");
+//     register const long r11 asm ("r11");
+//     register const long r12 asm ("r12");
+//     register const long r13 asm ("r13");
+//     register const long r14 asm ("r14");
+//     register const long r15 asm ("r15");
+//     arr[0] = r8;
+//     arr[1] = r9;
+//     arr[2] = r10;
+//     arr[3] = r11;
+//     arr[4] = r12;
+//     arr[5] = r13;
+//     arr[6] = r14;
+//     arr[7] = r15;
+// }
+
+// MP_NOINLINE void gc_helper_collect_regs_and_stack(void) {
+//     gc_helper_regs_t regs;
+//     gc_helper_get_regs(regs);
+//     // GC stack (and regs because we captured them)
+//     void **regs_ptr = (void **)(void *)&regs;
+//     gc_collect_root(regs_ptr, ((uintptr_t)MP_STATE_THREAD(stack_top) - (uintptr_t)&regs) / sizeof(uintptr_t));
+// }
+
+// #define gc_collect_regs_and_stack gc_helper_collect_regs_and_stack
+
 void gc_collect_regs_and_stack(void) {
   // get the registers and the sp
   jmp_buf regs;

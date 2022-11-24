@@ -711,7 +711,7 @@ IntegerDivision Integer::udiv(const Integer & numerator, const Integer & denomin
   if (pow > 0 && !div.remainder.isZero()) {
     div.remainder = div.remainder.divideByPowerOf2(pow);
   }
-  printf("%u / %u = %u\n", numerator.digit(0), denominator.digit(0), div.quotient.digit(0));
+  // printf("%u / %u = %u\n", numerator.digit(0), denominator.digit(0), div.quotient.digit(0));
   return div;
 }
 

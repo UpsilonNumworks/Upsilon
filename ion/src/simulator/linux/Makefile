@@ -8,6 +8,8 @@ SFLAGS += -DUSING_GENERATED_CONFIG_H
 # which is added later on in the SDL Makefile
 SFLAGS += -Iion/src/simulator/linux/include
 
+# SFLAGS += -D_BIG_ENDIAN
+
 ion_src += $(addprefix ion/src/simulator/linux/, \
   assets.s \
   platform_files.cpp \

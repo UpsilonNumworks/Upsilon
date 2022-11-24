@@ -4,15 +4,6 @@
 #include <poincare/tree_pool.h>
 #include <initializer_list>
 
-
-#ifdef _PRIZM
-#include <gint/display.h>
-#include <gint/keyboard.h>
-#include <stdio.h>
-#else
-#include <stdio.h>
-#endif
-
 namespace Shared {
   class ContinuousFunction;
 }

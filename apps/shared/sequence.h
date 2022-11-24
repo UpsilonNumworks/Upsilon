@@ -108,6 +108,7 @@ private:
     Type m_type;
     uint8_t m_initialRank;
 #if __EMSCRIPTEN__
+    // TODO: Fix on Casio
     // See comment about emscripten alignment in Shared::Function::RecordDataBuffer
     static_assert(sizeof(emscripten_align1_short) == sizeof(uint16_t), "emscripten_align1_short should have the same size as uint16_t");
     emscripten_align1_short m_initialConditionSizes[2];

@@ -2,9 +2,11 @@
 #define POINCARE_IEEE754_H
 
 #include <assert.h>
+#include <cstdint>
 #include <stdint.h>
 #include <stddef.h>
 #include <cmath>
+#include <type_traits>
 
 namespace Poincare {
 
@@ -41,11 +43,28 @@ public:
     if (((uint64_t)mantissa >> (size()-k_mantissaNbBits-2)) & 1) {
       u.ui += 1;
     }
-    return u.f;
+    // Return f32.f or f64.f depending on the type of T
+    // Copilot did this so I don't really understand it
+    if constexpr (std::is_same<T, float>::value) {
+      return u.f32.f;
+    } else if constexpr (std::is_same<T, double>::value) {
+      return u.f64.f;
+    } else {
+      // Error and log the type at compile time
+      static_assert(std::is_same<T, float>::value || std::is_same<T, double>::value, "IEEE754::buildFloat: T must be float or double");
+    }
   }
   static int exponent(T f) {
     uint_float u;
-    u.f = f;
+    // u.f = f;
+    if constexpr (std::is_same<T, float>::value) {
+      u.f32.f = f;
+    } else if constexpr (std::is_same<T, double>::value) {
+      u.f64.f = f;
+    } else {
+      // Error and log the type at compile time
+      static_assert(std::is_same<T, float>::value || std::is_same<T, double>::value, "IEEE754::exponent: T must be float or double");
+    }
     constexpr uint16_t oneOnExponentsBits = maxExponent();
     int exp = (u.ui >> k_mantissaNbBits) & oneOnExponentsBits;
     exp -= exponentOffset();
@@ -75,10 +94,28 @@ public:
   }
 
 private:
+  #ifdef _BIG_ENDIAN
   union uint_float {
     uint64_t ui;
-    T f;
+    struct {
+      uint32_t padding;
+      float f;
+    } f32;
+    struct {
+      double f;
+    } f64;
   };
+  #else
+  union uint_float {
+    uint64_t ui;
+    struct {
+      float f;
+    } f32;
+    struct {
+      double f;
+    } f64;
+  };
+  #endif
 
   constexpr static size_t k_signNbBits = 1;
   constexpr static size_t k_exponentNbBits = sizeof(T) == sizeof(float) ? 8 : 11;

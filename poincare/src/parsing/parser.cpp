@@ -4,6 +4,28 @@
 #include <algorithm>
 #include <stdlib.h>
 
+// #include <stdio.h>
+// #ifdef _PRIZM
+// #include <gint/display-cg.h>
+// #include <gint/display.h>
+// #include <gint/keyboard.h>
+
+// #define debugLog(format, ...) { \
+//   char buffer[100]; \
+//   snprintf(buffer, 100, format, ##__VA_ARGS__); \
+//   dclear(C_WHITE); \
+//   dtext(1, 1, C_BLACK, buffer); \
+//   dupdate(); \
+//   getkey(); \
+// }
+// #else
+// #define debugLog(format, ...) { \
+//   char buffer[100]; \
+//   snprintf(buffer, 100, format, ##__VA_ARGS__); \
+//   printf("%s\n", buffer); \
+// }
+// #endif
+
 namespace Poincare {
 
 constexpr const Expression::FunctionHelper * Parser::s_reservedFunctions[];
@@ -25,17 +47,29 @@ bool Parser::IsReservedName(const char * name, size_t nameLength) {
 // Private
 
 const Expression::FunctionHelper * const * Parser::GetReservedFunction(const char * name, size_t nameLength) {
+  // debugLog("GetReservedFunction %s", name);
+  // // Print the first 3 bytes of the name
+  // debugLog("bytes %02X %02X %02X", (unsigned char)name[0], (unsigned char)name[1], (unsigned char)name[2]);
+  // // Print the first 3 bytes of the square root function
+  // debugLog("sqrt bytes %02X %02X %02X", (unsigned char)s_reservedFunctions[61]->name()[0], (unsigned char)s_reservedFunctions[61]->name()[1], (unsigned char)s_reservedFunctions[61]->name()[2]);
+  // debugLog("nameLength %d", nameLength);
+
   const Expression::FunctionHelper * const * reservedFunction = s_reservedFunctions;
+  // int count = 0;
   while (reservedFunction < s_reservedFunctionsUpperBound) {
+    // debugLog("against %d bytes %02X %02X %02X", count, (unsigned char)(**reservedFunction).name()[0], (unsigned char)(**reservedFunction).name()[1], (unsigned char)(**reservedFunction).name()[2]);
     int nameDifference = Token::CompareNonNullTerminatedName(name, nameLength, (**reservedFunction).name());
     if (nameDifference == 0) {
+      // debugLog("GetReservedFunction %s found", (**reservedFunction).name());
       return reservedFunction;
     }
     if (nameDifference < 0) {
       break;
     }
     reservedFunction++;
+    // count++;
   }
+  // debugLog("GetReservedFunction %s not found", name);
   return nullptr;
 }
 
