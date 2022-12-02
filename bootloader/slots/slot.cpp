@@ -40,21 +40,21 @@ const UserlandHeader* Slot::userlandHeader() const {
 
   // Erase the bootloader integrated in slots in Epsilon 20
   if (m_userland2Header->isValid()) {
-		if (m_address == 0x90000000) {
-			// Check if bootloader is present in slot A
-			if (*(uint32_t*)0x90010000 != 0xFFFFFFFF) {
+    if (m_address == 0x90000000) {
+      // Check if bootloader is present in slot A
+      if (*(uint32_t*)0x90010000 != 0xFFFFFFFF) {
         // Erase bootloader in slot A
-				Ion::Device::ExternalFlash::EraseSector(9);
-			}
-		}
-		else if (m_address == 0x90400000) {
-			// Check if bootloader is present in slot B
-			if (*(uint32_t*)0x90410000 != 0xFFFFFFFF) {
+        Ion::Device::ExternalFlash::EraseSector(9);
+      }
+    }
+    else if (m_address == 0x90400000) {
+      // Check if bootloader is present in slot B
+      if (*(uint32_t*)0x90410000 != 0xFFFFFFFF) {
         // Erase bootloader in slot B
-				Ion::Device::ExternalFlash::EraseSector(73);
-			}
-		}
-	}
+        Ion::Device::ExternalFlash::EraseSector(73);
+      }
+    }
+  }
 
   // Configure the MPU for the booted firmware
   Ion::Device::Board::bootloaderMPU();
