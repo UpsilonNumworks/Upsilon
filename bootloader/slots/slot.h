@@ -14,8 +14,8 @@ public:
   Slot(uint32_t address) :
     m_kernelHeader(reinterpret_cast<KernelHeader*>(address)),
     m_userlandHeader(reinterpret_cast<UserlandHeader*>(address + 64 * 1024)),
-    m_address(address),
-    m_userland2Header(reinterpret_cast<UserlandHeader*>(address + 128 * 1024)) { }
+    m_userland2Header(reinterpret_cast<UserlandHeader*>(address + 128 * 1024)),
+    m_address(address) {}
 
   const KernelHeader* kernelHeader() const;
   const UserlandHeader* userlandHeader() const;

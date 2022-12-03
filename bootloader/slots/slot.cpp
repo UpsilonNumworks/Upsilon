@@ -25,7 +25,13 @@ const KernelHeader* Slot::kernelHeader() const {
 }
 
 const UserlandHeader* Slot::userlandHeader() const {
-  return m_userlandHeader;
+  if (m_userlandHeader->isValid()) {
+    return m_userlandHeader;
+  } else if (m_userland2Header->isValid()) {
+    return m_userland2Header;
+  } else {
+    return m_userlandHeader;
+  }
 }
 
 [[ noreturn ]] void Slot::boot() const {
