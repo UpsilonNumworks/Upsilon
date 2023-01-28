@@ -31,6 +31,16 @@ const mp_obj_fun_builtin_fixed_t modion_is_plugged_obj = {
   {(mp_fun_0_t)modion_is_plugged}
 };
 
+const mp_obj_fun_builtin_fixed_t modion_screen_off_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_screen_off}
+};
+
+const mp_obj_fun_builtin_fixed_t modion_screen_on_obj = {
+  {&mp_type_fun_builtin_0},
+  {(mp_fun_0_t)modion_screen_on}
+};
+
 const mp_obj_fun_builtin_fixed_t modion_get_keys_obj = {
   {&mp_type_fun_builtin_0},
   {(mp_fun_0_t)modion_get_keys}
@@ -70,6 +80,8 @@ extern "C" const mp_rom_map_elem_t modion_module_globals_table[] = {
   { MP_ROM_QSTR(MP_QSTR_set_dfu), MP_ROM_PTR(&modion_set_dfu_obj) },
   { MP_ROM_QSTR(MP_QSTR_set_led_color), MP_ROM_PTR(&modion_set_led_color_obj) },
   { MP_ROM_QSTR(MP_QSTR_is_plugged), MP_ROM_PTR(&modion_is_plugged_obj) },
+  { MP_ROM_QSTR(MP_QSTR_screen_off), MP_ROM_PTR(&modion_screen_off_obj) },
+  { MP_ROM_QSTR(MP_QSTR_screen_on), MP_ROM_PTR(&modion_screen_on_obj) },
   { MP_ROM_QSTR(MP_QSTR_get_keys), MP_ROM_PTR(&modion_battery_ischarging_obj) },
   { MP_ROM_QSTR(MP_QSTR_set_brightness), MP_ROM_PTR(&modion_set_brightness_obj) },
   { MP_ROM_QSTR(MP_QSTR_get_brightness), MP_ROM_PTR(&modion_get_brightness_obj) },

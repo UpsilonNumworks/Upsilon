@@ -143,6 +143,17 @@ mp_obj_t modion_is_plugged() {
   return mp_obj_new_bool(Ion::USB::isPlugged());
 }
 
+mp_obj_t modion_screen_off() {
+  Ion::Backlight::shutdown();
+  micropython_port_interrupt_if_needed();
+  return mp_const_none;
+}
+
+mp_obj_t modion_screen_on() {
+  Ion::Backlight::init();
+  return mp_const_none;
+}
+
 mp_obj_t modion_get_brightness(){
   uint8_t brightness = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
   micropython_port_interrupt_if_needed();

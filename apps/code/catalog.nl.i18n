@@ -1,6 +1,8 @@
 PythonSetLEDColor = "Verander de LED-kleur"
 PythonIsPlugged = "Retourneert de status Powers"
 PythonSetDFU = "Schakel de DFU in of uit"
+PythonScreenOff = "Schakelt het scherm uit"
+PythonScreenOn = "Schakelt het scherm in"
 PythonPound = "Opmerkingen"
 PythonPercent = "Modulo"
 Python1J = "Imaginaire i"

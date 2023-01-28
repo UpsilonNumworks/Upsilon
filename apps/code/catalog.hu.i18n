@@ -1,6 +1,8 @@
 PythonSetLEDColor = "A LED színének megváltoztatása"
 PythonIsPlugged = "Visszaadja a hatalom állapotát"
 PythonSetDFU = "Engedélyezze vagy tiltsa le a DFU-t"
+PythonScreenOff = "Kikapcsolja a képernyőt"
+PythonScreenOn = "Bekapcsolja a képernyőt"
 PythonPound = "Megjegyzés"
 PythonPercent = "Modulo"
 Python1J = "Képzeletbeli i"

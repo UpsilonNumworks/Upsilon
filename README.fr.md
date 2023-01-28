@@ -20,6 +20,8 @@ Ce fork ajoute les fonctions suivantes aux modules python:
 | ion    | set_DFU(bool)        | Active ou désactive le DFU                                                          | Ne semble pas fonctionner |
 | ion    | set_led_color(r,g,b) | Change la couleur de la LED (brise la règle G12 sur le serveur communautaire)       | Fonctionne                |
 | ion    | is_plugged()         | Revoie l'état de la connexion (True si branché à une source de courant False sinon) | Fonctionne                |
+| ion    | screen_off()         | Eteint l'écran (n'éteint pas la calulatrice)                                        | Fonctionne                |
+| ion    | screen_on()          | Allume l'écran                                                                      | Fonctionne                |
 
 ### Quelques fonctionnalités supplémentaires
 

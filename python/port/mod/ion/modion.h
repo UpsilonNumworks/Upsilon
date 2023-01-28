@@ -10,4 +10,6 @@ mp_obj_t modion_get_brightness();
 mp_obj_t modion_set_dfu(mp_obj_t b);
 mp_obj_t modion_set_led_color(mp_obj_t r, mp_obj_t g, mp_obj_t b);
 mp_obj_t modion_is_plugged();
+mp_obj_t modion_screen_off();
+mp_obj_t modion_screen_on();
 extern const mp_obj_type_t file_type;

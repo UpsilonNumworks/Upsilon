@@ -1,5 +1,7 @@
 PythonSetLEDColor = "Change LED color"
 PythonIsPlugged = "Returns the powers state"
+PythonScreenOff = "Turns the screen off"
+PythonScreenOn = "Turns the screen on"
 PythonPound = "Comment"
 PythonPercent = "Modulo"
 Python1J = "Imaginary i"

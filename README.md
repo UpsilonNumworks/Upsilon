@@ -19,7 +19,9 @@ This fork adds the following functions to the python modules:
 | ------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
 | ion    | set_DFU(bool)        | Enables or disables DFU                                                             | Doesn't seem to work      |
 | ion    | set_led_color(r,g,b) | Changes the LEDs color (Conflicts with the rule G12 on the community server)        | Works                     |
-| ion    | is_plugged()         | Returns the powers state (True if powered false otherwise)                           | Works                     |
+| ion    | is_plugged()         | Returns the powers state (True if powered false otherwise)                          | Works                     |
+| ion    | screen_off()         | Turns off the screen (doesn't power off the calculator)                             | Works                     |
+| ion    | screen_on()          | Turns on the screen                                                                 | Works                     |
 
 ### Some new features
 
