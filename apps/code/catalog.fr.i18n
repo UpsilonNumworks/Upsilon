@@ -1,4 +1,5 @@
 PythonSetLEDColor = "Changer la couleur de la led"
+PythonIsPlugged = "Revoie l'état de la connexion"
 PythonPound = "Commentaire"
 PythonPercent = "Modulo"
 Python1J = "i complexe"

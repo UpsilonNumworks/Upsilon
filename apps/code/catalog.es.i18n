@@ -1,5 +1,6 @@
 PythonSetDFU = "Habilitar o deshabilitar el DFU"
 PythonSetLEDColor = "Cambiar el color de la LED"
+PythonIsPlugged = "Devuelve el estado de las potencias"
 PythonPound = "Comment"
 PythonPercent = "Modulo"
 Python1J = "Imaginary i"

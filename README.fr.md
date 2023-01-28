@@ -13,6 +13,14 @@
 
 Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de Numworks tournant sur les calculatrices du même nom, qui apporte beaucoup de fonctionnalités en plus, mais qui fut archivé et fermé pour des raisons légales après un changement de politique de Numworks. Upsilon est fait pour ceux qui aimeraient voir un futur pour les OS créées par les utilisateurs pour Numworks, même après l'arrèt du projet initial.
 
+Ce fork ajoute les fonctions suivantes aux modules python:
+
+| Module | fonction             | description                                                                         | status                    |
+| ------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
+| ion    | set_DFU(bool)        | Active ou désactive le DFU                                                          | Ne semble pas fonctionner |
+| ion    | set_led_color(r,g,b) | Change la couleur de la LED (brise la règle G12 sur le serveur communautaire)       | Fonctionne                |
+| ion    | is_plugged()         | Revoie l'état de la connexion (True si branché à une source de courant False sinon) | Fonctionne                |
+
 ### Quelques fonctionnalités supplémentaires
 
 - Un module python kandinsky amélioré
@@ -87,6 +95,7 @@ dnf install make automake gcc gcc-c++ kernel-devel git ImageMagick libX11-devel 
 <br>
 
 Installez toutes les dépendances grâce à cette commande:
+
 ```bash
 nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext python3 imagemagick python310Packages.lz4 python310Packages.pypng python310Packages.pypng gcc-arm-embedded
 ```
@@ -187,9 +196,10 @@ wsl --set-default-version 2
 WSL est maintenant installé.
 
 6. Installez maintenant la version pour ARM de GCC.
-```bash
-sudo apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
-```
+   
+   ```bash
+   sudo apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+   ```
 
 ### Installation d'usbipd pour connecter la calculatrice à WSL (facultatif)
 
@@ -210,7 +220,7 @@ sudo visudo
 ```
 
 3. Ajoutez `/usr/lib/linux-tools/5.4.0-77-generic` au début du secure_path. Après édition, la ligne devrait ressembler à:
-`Defaults secure_path="/usr/lib/linux-tools/5.4.0-77-generic:/usr/local/sbin:..."`
+   `Defaults secure_path="/usr/lib/linux-tools/5.4.0-77-generic:/usr/local/sbin:..."`
 
 #### Debian
 
@@ -325,8 +335,8 @@ make OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
 pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
-</details>
 
+</details>
 
 <details>
 
@@ -354,24 +364,29 @@ make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
 pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
-</details>
 
 </details>
 
+</details>
 
 <details>
 
 <summary><b>Simulateur Natif</b></summary>
 
 Lancez cette commande:
+
 ```bash
 make clean
 ```
+
 Vous pouvez soit choisir d'utiliser la commmande qui détectera automatiquement votre plateforme:
+
 ```bash
 make PLATFORM=simulator
 ```
+
 Ou choisir une commande qui correspond à votre plateforme:
+
 ```bash
 make PLATFORM=simulator TARGET=android
 make PLATFORM=simulator TARGET=ios
@@ -384,7 +399,6 @@ make PLATFORM=simulator TARGET=3ds
 Vous trouverez les fichiers du simulateur dans `output/release/simulator/`.
 
 </details>
-
 
 <details>
 

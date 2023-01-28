@@ -139,6 +139,10 @@ mp_obj_t modion_set_led_color(mp_obj_t r, mp_obj_t g, mp_obj_t b){
   return mp_obj_new_tuple(3, colors);
 }
 
+mp_obj_t modion_is_plugged() {
+  return mp_obj_new_bool(Ion::USB::isPlugged());
+}
+
 mp_obj_t modion_get_brightness(){
   uint8_t brightness = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
   micropython_port_interrupt_if_needed();

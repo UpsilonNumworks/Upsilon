@@ -1,4 +1,5 @@
 PythonSetLEDColor = "Cambia il colore del LED"
+PythonIsPlugged = "Restituisce lo stato delle alimentazioni"
 PythonSetDFU = "Abilitare o disabilitare il DFU"
 PythonPound = "Commento"
 PythonPercent = "Modulo"

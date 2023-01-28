@@ -1,4 +1,5 @@
 PythonSetLEDColor = "Verander de LED-kleur"
+PythonIsPlugged = "Retourneert de status Powers"
 PythonSetDFU = "Schakel de DFU in of uit"
 PythonPound = "Opmerkingen"
 PythonPercent = "Modulo"

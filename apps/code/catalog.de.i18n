@@ -1,5 +1,6 @@
 PythonSetDFU = "DFU aktivieren oder deaktivieren"
 PythonSetLEDColor = "Ändern Sie die Farbe der led"
+PythonIsPlugged = "Gibt den Status der Befugnisse zurück"
 PythonPound = "Kommentar"
 PythonPercent = "Modulo"
 Python1J = "Imaginäres i"

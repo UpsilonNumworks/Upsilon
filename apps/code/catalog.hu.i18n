@@ -1,4 +1,5 @@
 PythonSetLEDColor = "A LED színének megváltoztatása"
+PythonIsPlugged = "Visszaadja a hatalom állapotát"
 PythonSetDFU = "Engedélyezze vagy tiltsa le a DFU-t"
 PythonPound = "Megjegyzés"
 PythonPercent = "Modulo"

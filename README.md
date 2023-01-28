@@ -13,6 +13,14 @@
 
 Upsilon is a fork of Omega, an user-made OS that runs on the Numworks calculator, which brings many features to it, but was discontinued because of a policy change from Numworks. Upsilon is for the people who want to see a future for user-made OSes for Numworks, even after the closure and archiving of Omega.
 
+This fork adds the following functions to the python modules:
+
+| Module | function             | description                                                                         | status                    |
+| ------ | -------------------- | ----------------------------------------------------------------------------------- | ------------------------- |
+| ion    | set_DFU(bool)        | Enables or disables DFU                                                             | Doesn't seem to work      |
+| ion    | set_led_color(r,g,b) | Changes the LEDs color (Conflicts with the rule G12 on the community server)        | Works                     |
+| ion    | is_plugged()         | Returns the powers state (True if powered false otherwise)                           | Works                     |
+
 ### Some new features
 
 - Enhancements for the Kandinsky python module
