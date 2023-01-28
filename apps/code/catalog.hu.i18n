@@ -1,3 +1,5 @@
+PythonSetLEDColor = "A LED színének megváltoztatása"
+PythonSetDFU = "Engedélyezze vagy tiltsa le a DFU-t"
 PythonPound = "Megjegyzés"
 PythonPercent = "Modulo"
 Python1J = "Képzeletbeli i"
