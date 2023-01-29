@@ -154,6 +154,10 @@ mp_obj_t modion_screen_on() {
   return mp_const_none;
 }
 
+mp_obj_t modion_is_screen_on() {
+  return mp_obj_new_bool(Ion::Backlight::isInitialized());
+}
+
 mp_obj_t modion_get_brightness(){
   uint8_t brightness = GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
   micropython_port_interrupt_if_needed();

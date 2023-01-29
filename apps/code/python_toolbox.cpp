@@ -445,6 +445,7 @@ const ToolboxMessageTree IonModuleChildren[] = {
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandisPlugged, I18n::Message::PythonIsPlugged),
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandScreenOff, I18n::Message::PythonScreenOff),
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandScreenOn, I18n::Message::PythonScreenOn),
+  ToolboxMessageTree::Leaf(I18n::Message::PythonCommandIsScreenOn, I18n::Message::PythonIsScreenOn),
   // This is a special case, because it is handled separately, so the sub-tree is unused.
   ToolboxMessageTree::Node(I18n::Message::IonSelector, IonKeyModuleChildren),
   ToolboxMessageTree::Node(I18n::Message::IonKeyList, IonKeyModuleChildren)
