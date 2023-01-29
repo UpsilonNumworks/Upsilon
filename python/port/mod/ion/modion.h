@@ -13,4 +13,5 @@ mp_obj_t modion_is_plugged();
 mp_obj_t modion_screen_off();
 mp_obj_t modion_is_screen_on();
 mp_obj_t modion_screen_on();
+mp_obj_t modion_blink_led(mp_obj_t period);
 extern const mp_obj_type_t file_type;

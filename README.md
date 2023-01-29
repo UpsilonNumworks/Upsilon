@@ -23,6 +23,7 @@ This fork adds the following functions to the python modules:
 | ion    | screen_off()         | Turns off the screen (doesn't power off the calculator)                             | Works                     |
 | ion    | screen_on()          | Turns on the screen                                                                 | Works                     |
 | ion    | is_screen_on()       | Checks if the screen is on                                                          | Works                     |
+| ion    | blink_led(period)    | Makes the LED blink every X milisecond (ruffly)                                     | Works                     |
 
 ### Some new features
 

@@ -17,8 +17,8 @@ for file in os.listdir("./apps/code/"):
         translated = translator.translate(toTranslate, dest=targetLang, src="en").text
         pythonFunc = "Python" + (cap(func_name[6:].split("_")))
         with open("./apps/code/" + file, "a") as f:
-            f.write(pythonFunc + " = " + '"' +translated + '"')
+            f.write("\n" + pythonFunc + " = " + '"' +translated + '"')
 
 with open("./apps/code/catalog.universal.i18n", "a") as f:
     pythonCommand = "PythonCommand" + (cap(func_name[6:].split("_")))
-    f.write(pythonCommand + " = " + '"' + func_name[6:] + '()"')
+    f.write("\n" + pythonCommand + " = " + '"' + func_name[6:] + '()"')

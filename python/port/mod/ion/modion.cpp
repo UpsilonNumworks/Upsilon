@@ -154,6 +154,12 @@ mp_obj_t modion_screen_on() {
   return mp_const_none;
 }
 
+mp_obj_t modion_blink_led(mp_obj_t period) {
+  uint16_t p = mp_obj_int_get_uint_checked(period);
+  Ion::LED::setBlinking(p, 0.1f);
+  return mp_const_none;
+}
+
 mp_obj_t modion_is_screen_on() {
   return mp_obj_new_bool(Ion::Backlight::isInitialized());
 }

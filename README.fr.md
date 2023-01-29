@@ -23,6 +23,7 @@ Ce fork ajoute les fonctions suivantes aux modules python:
 | ion    | screen_off()         | Eteint l'écran (n'éteint pas la calulatrice)                                        | Fonctionne                |
 | ion    | screen_on()          | Allume l'écran                                                                      | Fonctionne                |
 | ion    | is_screen_on()       | Verifie si l'écran est allumé                                                       | Fonctionne                |
+| ion    | blink_led(period)    | Fais clignoter la LED toute les X milisecondes (plus ou moins)                      | Fonctionne                |
 
 ### Quelques fonctionnalités supplémentaires
 
