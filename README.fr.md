@@ -22,6 +22,7 @@ Ce fork ajoute les fonctions suivantes aux modules python:
 | ion    | is_plugged()         | Revoie l'état de la connexion (True si branché à une source de courant False sinon) | Fonctionne                |
 | ion    | screen_off()         | Eteint l'écran (n'éteint pas la calulatrice)                                        | Fonctionne                |
 | ion    | screen_on()          | Allume l'écran                                                                      | Fonctionne                |
+| ion    | is_screen_on()       | Verifie si l'écran est allumé                                                       | Fonctionne                |
 
 ### Quelques fonctionnalités supplémentaires
 

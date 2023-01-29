@@ -22,6 +22,7 @@ This fork adds the following functions to the python modules:
 | ion    | is_plugged()         | Returns the powers state (True if powered false otherwise)                          | Works                     |
 | ion    | screen_off()         | Turns off the screen (doesn't power off the calculator)                             | Works                     |
 | ion    | screen_on()          | Turns on the screen                                                                 | Works                     |
+| ion    | is_screen_on()       | Checks if the screen is on                                                          | Works                     |
 
 ### Some new features
 
