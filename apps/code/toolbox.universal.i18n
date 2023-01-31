@@ -1,4 +1,5 @@
 CmathModule = "cmath"
+EscherModule = "escher"
 IonModule = "ion"
 KandinskyModule = "kandinsky"
 MathModule = "math"

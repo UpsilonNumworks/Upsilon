@@ -339,6 +339,10 @@ Q(value)
 Q(values)
 Q(zip)
 
+  // Escher QSTR
+Q(escher)
+Q(set_clipboard)
+
   // Ion QSTR
 Q(get_keys)
 Q(ion)
@@ -351,6 +355,7 @@ Q(get_brightness)
 Q(set_dfu)
 Q(set_led_color)
 Q(blink_led)
+Q(get_led_color)
 Q(is_plugged)
 Q(screen_off)
 Q(screen_on)

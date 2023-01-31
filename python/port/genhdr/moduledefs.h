@@ -46,6 +46,10 @@ extern const struct _mp_obj_module_t modion_module;
 #undef MODULE_DEF_MP_QSTR_ION
 #define MODULE_DEF_MP_QSTR_ION { MP_ROM_QSTR(MP_QSTR_ion), MP_ROM_PTR(&modion_module) },
 
+extern const struct _mp_obj_module_t modescher_module;
+#undef MODULE_DEF_MP_QSTR_ESCHER
+#define MODULE_DEF_MP_QSTR_ESCHER { MP_ROM_QSTR(MP_QSTR_escher), MP_ROM_PTR(&modescher_module) },
+
 extern const struct _mp_obj_module_t modkandinsky_module;
 #undef MODULE_DEF_MP_QSTR_KANDINSKY
 #define MODULE_DEF_MP_QSTR_KANDINSKY { MP_ROM_QSTR(MP_QSTR_kandinsky), MP_ROM_PTR(&modkandinsky_module) },
@@ -81,6 +85,7 @@ extern const struct _mp_obj_module_t modturtle_module;
     MODULE_DEF_MP_QSTR___MAIN__ \
 /* Upsilon's modules part */ \
     MODULE_DEF_MP_QSTR_ION \
+    MODULE_DEF_MP_QSTR_ESCHER \
     MODULE_DEF_MP_QSTR_KANDINSKY \
     MODULE_DEF_MP_QSTR_MATPLOTLIB \
     MODULE_DEF_MP_QSTR_PYPLOT \
@@ -101,6 +106,7 @@ extern const struct _mp_obj_module_t ulab_user_cmodule;
     MODULE_DEF_MP_QSTR___MAIN__ \
 /* Upsilon's modules part */ \
     MODULE_DEF_MP_QSTR_ION \
+    MODULE_DEF_MP_QSTR_ESCHER \
     MODULE_DEF_MP_QSTR_KANDINSKY \
     MODULE_DEF_MP_QSTR_MATPLOTLIB \
     MODULE_DEF_MP_QSTR_PYPLOT \

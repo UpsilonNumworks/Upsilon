@@ -140,6 +140,8 @@ port_src += $(addprefix python/port/,\
   mod/ion/modion.cpp \
   mod/ion/modion_table.cpp \
   mod/ion/file.cpp \
+  mod/escher/modescher.cpp \
+  mod/escher/modescher_table.cpp \
   mod/kandinsky/modkandinsky.cpp \
   mod/kandinsky/modkandinsky_table.c \
   mod/matplotlib/modmatplotlib.cpp \
