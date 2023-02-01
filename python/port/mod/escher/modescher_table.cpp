@@ -16,8 +16,13 @@ const mp_obj_fun_builtin_fixed_t modescher_set_clipboard_obj = {
     {&mp_type_fun_builtin_1},
     {(mp_fun_0_t)modescher_set_clipboard}};
 
+const mp_obj_fun_builtin_fixed_t modescher_get_clipboard_obj = {
+    {&mp_type_fun_builtin_0},
+    {(mp_fun_0_t)modescher_get_clipboard}};
+
 extern "C" const mp_rom_map_elem_t modescher_module_globals_table[] = {
-    {MP_ROM_QSTR(MP_QSTR_set_clipboard), MP_ROM_PTR(&modescher_set_clipboard_obj)}};
+    {MP_ROM_QSTR(MP_QSTR_set_clipboard), MP_ROM_PTR(&modescher_set_clipboard_obj)},
+    {MP_ROM_QSTR(MP_QSTR_get_clipboard), MP_ROM_PTR(&modescher_get_clipboard_obj)}};
 
 STATIC MP_DEFINE_CONST_DICT(modescher_module_globals, modescher_module_globals_table);
 

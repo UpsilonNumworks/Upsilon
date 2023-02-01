@@ -342,6 +342,7 @@ Q(zip)
   // Escher QSTR
 Q(escher)
 Q(set_clipboard)
+Q(get_clipboard)
 
   // Ion QSTR
 Q(get_keys)

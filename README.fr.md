@@ -25,6 +25,8 @@ Ce fork ajoute les fonctions suivantes aux modules python:
 | ion    | is_screen_on()       | Verifie si l'écran est allumé                                                       | Fonctionne                |
 | ion    | blink_led(period)    | Fais clignoter la LED toute les X milisecondes (plus ou moins)                      | Fonctionne                |
 | escher | set_clipboard(text)  | Défini le presse papier sur text                                                    | Fonctionne                |
+| escher | get_clipboard(text)  | Renvoie le contenu du presse-papier                                                 | Fonctionne                |
+
 
 ### Quelques fonctionnalités supplémentaires
 

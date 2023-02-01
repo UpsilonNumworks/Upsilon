@@ -456,7 +456,8 @@ const ToolboxMessageTree EscherModuleChildren[] = {
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandImportEscher, I18n::Message::PythonImportEscher, false),
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandImportFromEscher, I18n::Message::PythonImportEscher, false),
   ToolboxMessageTree::Leaf(I18n::Message::PythonCommandEscherFunction, I18n::Message::PythonEscherFunction, false, I18n::Message::PythonCommandEscherFunctionWithoutArg),
-  ToolboxMessageTree::Leaf(I18n::Message::PythonCommandSetClipboard, I18n::Message::PythonSetClipboard)
+  ToolboxMessageTree::Leaf(I18n::Message::PythonCommandSetClipboard, I18n::Message::PythonSetClipboard),
+  ToolboxMessageTree::Leaf(I18n::Message::PythonCommandGetClipboard, I18n::Message::PythonGetClipboard)
 };
 
 const ToolboxMessageTree TimeModuleChildren[] = {

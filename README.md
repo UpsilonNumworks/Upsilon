@@ -25,6 +25,7 @@ This fork adds the following functions to the python modules:
 | ion    | is_screen_on()       | Checks if the screen is on                                                          | Works                     |
 | ion    | blink_led(period)    | Makes the LED blink every X milisecond (ruffly)                                     | Works                     |
 | escher | set_clipboard(text)  | Sets the clipboard to text                                                          | Works                     |
+| escher | get_clipboard(text)  | Returns the clipboard's content                                                     | Works                     |
 
 
 ### Some new features

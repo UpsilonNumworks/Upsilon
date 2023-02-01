@@ -17,3 +17,9 @@ mp_obj_t modescher_set_clipboard(mp_obj_t text)
   clip->store(txt);
   return mp_const_none;
 }
+
+mp_obj_t modescher_get_clipboard() {
+  Clipboard *clip = Clipboard::sharedClipboard();
+  const char *txt = clip->storedText();
+  return mp_obj_new_str(txt, strlen(txt));
+}
