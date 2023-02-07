@@ -133,7 +133,7 @@ mp_obj_t modion_set_led_color(mp_obj_t r, mp_obj_t g, mp_obj_t b){
   uint8_t color_g = mp_obj_int_get_uint_checked(g);
   uint8_t color_b = mp_obj_int_get_uint_checked(b);
 
-  if (color_r > 8 || color_g > 8 || color_b > 8) {
+  if (color_r > 255 || color_g > 255 || color_b > 255) {
     mp_raise_ValueError("Color values must be between 0 and 255");
   }else {
     Ion::LED::setColor(KDColor::RGB888(color_r, color_g, color_b));
@@ -160,11 +160,7 @@ mp_obj_t modion_screen_on() {
 
 mp_obj_t modion_blink_led(mp_obj_t period) {
   uint16_t p = mp_obj_int_get_uint_checked(period);
-  if (sizeof(period) > sizeof(uint16_t)) {
-    mp_raise_ValueError("Period must be lower than 65 536");
-  } else {
-    Ion::LED::setBlinking(p, 0.1f);
-  }
+  Ion::LED::setBlinking(p, 0.1f);
   return mp_const_none;
 }
 
