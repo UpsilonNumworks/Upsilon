@@ -272,7 +272,7 @@ bool Expression::isDefinedCosineOrSine(Context * context, Preferences::ComplexFo
 }
 
 bool Expression::isBasedIntegerCappedBy(const char * stringInteger) const {
-  return type() == ExpressionNode::Type::BasedInteger && (Integer::NaturalOrder(convert<BasedInteger>().integer(), Integer(stringInteger)) < 0);
+  return type() == ExpressionNode::Type::BasedInteger || (type() == ExpressionNode::Type::Opposite && childAtIndex(0).type() == ExpressionNode::Type::BasedInteger); // && (Integer::NaturalOrder(convert<BasedInteger>().integer(), Integer(stringInteger)) < 0);
 }
 
 bool Expression::isDivisionOfIntegers() const {

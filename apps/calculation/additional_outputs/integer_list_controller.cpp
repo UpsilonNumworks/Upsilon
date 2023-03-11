@@ -1,6 +1,8 @@
 #include "integer_list_controller.h"
 #include <poincare/based_integer.h>
+#include <poincare/opposite.h>
 #include <poincare/integer.h>
+#include <poincare/logarithm.h>
 #include <poincare/empty_layout.h>
 #include <poincare/factor.h>
 #include "../app.h"
@@ -26,10 +28,30 @@ Integer::Base baseAtIndex(int index) {
 void IntegerListController::setExpression(Poincare::Expression e) {
   ExpressionsListController::setExpression(e);
   static_assert(k_maxNumberOfRows >= k_indexOfFactorExpression + 1, "k_maxNumberOfRows must be greater than k_indexOfFactorExpression");
-  assert(!m_expression.isUninitialized() && m_expression.type() == ExpressionNode::Type::BasedInteger);
-  Integer integer = static_cast<BasedInteger &>(m_expression).integer();
-  for (int index = 0; index < k_indexOfFactorExpression; ++index) {
-    m_layouts[index] = integer.createLayout(baseAtIndex(index));
+  assert(!m_expression.isUninitialized() && m_expression.type() == ExpressionNode::Type::BasedInteger || (m_expression.type() == ExpressionNode::Type::Opposite && m_expression.childAtIndex(0).type() == ExpressionNode::Type::BasedInteger));
+  assert(!m_expression.isUninitialized());
+
+  if (m_expression.type() == ExpressionNode::Type::BasedInteger) {
+    Integer integer = static_cast<BasedInteger &>(m_expression).integer();
+    for (int index = 0; index < k_indexOfFactorExpression; ++index) {
+      m_layouts[index] = integer.createLayout(baseAtIndex(index));
+    }
+  }
+  else
+  {
+    Opposite b = static_cast<Opposite &>(m_expression);
+    Expression e = b.childAtIndex(0);
+    Integer childInt = static_cast<BasedInteger &>(e).integer();
+    childInt.setNegative(true);
+    Integer num_bits = Integer::CeilingLog2(childInt);
+    Integer integer = Integer::TwosComplementToBits(childInt, num_bits);
+    for (int index = 0; index < k_indexOfFactorExpression; ++index) {
+      if(baseAtIndex(index) == Integer::Base::Decimal) {
+        m_layouts[index] = childInt.createLayout(baseAtIndex(index));
+      } else {
+        m_layouts[index] = integer.createLayout(baseAtIndex(index));
+      }
+    }
   }
   // Computing factorExpression
   Expression factor = Factor::Builder(m_expression.clone());
