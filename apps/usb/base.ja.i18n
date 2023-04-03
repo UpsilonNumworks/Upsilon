@@ -1,0 +1,7 @@
+USBConnected = "電卓が接続されています"
+ConnectedMessage1 = "データを転送するには、"
+ConnectedMessage2 = "コンピュータから当社のページにアクセスしてください"
+ConnectedMessage3 = "getomega.dev/ide"
+ConnectedMessage4 = "電卓のBACKキーを押すか、"
+ConnectedMessage5 = "電卓を抜くと"
+ConnectedMessage6 = "接続が解除されます。"

@@ -1,0 +1,4 @@
+Apps = "アプリ"
+AppsCapital = "UPSILON"
+ForbiddenAppInExamMode1 = "このアプリケーションは"
+ForbiddenAppInExamMode2 = "試験モードで禁止されています"
