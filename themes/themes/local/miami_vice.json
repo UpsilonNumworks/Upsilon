@@ -1,0 +1,148 @@
+{
+    "name": "Miami Vice",
+    "icons": "miami_vice",
+    "colors": {
+        "PrimaryText": "ffffff",
+        "SecondaryText": "919191",
+        "AccentText": "ff7a80",
+        "ApproximateSignText": "a6a6a6",
+        "ApproximateExpressionText": "a6a6a6",
+        "Background": {
+            "Hard": "2d3e43",
+            "Apps": "2a363b",
+            "AppsSecondary": "2e474b"
+        },
+        "Toolbar": {
+            "": "45ada8",
+            "Text": "000000"
+        },
+        "ExpressionInput": {
+            "Background": "45ada8",
+            "Border": "45ada8"
+        },
+        "Grid": {
+            "PrimaryLine": "262626",
+            "SecondaryLine": "2e474b"
+        },
+        "Battery": {
+            "": "2a363b",
+            "InCharge": "9de0ad",
+            "Low": "e84a5"
+        },
+        "ScrollBar": {
+            "Foreground": "b5b5b5",
+            "Background": "262626"
+        },
+        "Control": {
+            "": "ff7a80",
+            "Enabled": "ff4d4f",
+            "Disabled": "616161"
+        },
+        "Calculation": {
+            "BackgroundOdd": "2e474b",
+            "BackgroundEven": "2a363b",
+            "EmptyBox": "3b3b3b",
+            "EmptyBoxNeeded": "ff7a80",
+            "TrigoAndComplexForeground": "00fff3"
+        },
+        "Code": {
+            "Background": "2a363b",
+            "BackgroundSelected": "1f1f1f",
+            "Text": "ffffff",
+            "Comment": "666677",
+            "Number": "ff6666",
+            "Keyword": "00fff3",
+            "Operator": "28c5b6",
+            "String": "fcd09d",
+            "GutterViewBackground": "1b1918"
+        },
+        "Probability": {
+            "Curve": "f18c8e",
+            "CellBorder": "2d3e43",
+            "HistogramBar": "b4b5b4"
+        },
+        "Statistics": {
+            "Box": "f18c8e",
+            "BoxVerticalLine": "2d3e43",
+            "Selected": "f18c8e",
+            "NotSelected": "ffbabc"
+        },
+        "Graph": {
+            "Tangent": "b3b3b3"
+        },
+        "SubMenu": {
+            "Background": "2d3e43",
+            "Border": "2e474b",
+            "Text": "ffffff"
+        },
+        "Toolbox": {
+            "HeaderBackground": "b4b5b4",
+            "HeaderText": "000000",
+            "HeaderBorder": "b4b5b4",
+            "Background": "2a363b"
+        },
+        "List": {
+            "CellBackground": "2a363b",
+            "CellBackgroundSelected": "2e474b",
+            "CellBorder": "2d3e43"
+        },
+        "Button": {
+            "Background": "b4b5b4",
+            "BackgroundSelected": "f18c8e",
+            "BackgroundSelectedHighContrast": "ff4d4f",
+            "Border": "f18c8e",
+            "RowBorder": "2e474b",
+            "BorderOut": "2e474b",
+            "Shadow": "b4b5b4",
+            "Text": "000000"
+        },
+        "Tab": {
+            "Background": "b4b5b4",
+            "BackgroundSelected": "ffbabc",
+            "BackgroundActive": "f18c8e",
+            "BackgroundSelectedAndActive": "d48284",
+            "Text": "000000",
+            "TextActive": "000000"
+        },
+        "SubTab": {
+            "Background": "b4b5b4",
+            "BackgroundSelected": "f18c8e",
+            "Text": "ffffff"
+        },
+        "Banner": {
+            "FirstBackground": "f18c8e",
+            "FirstBorder": "f18c8e",
+            "FirstText": "000000",
+            "FirstVariantBackground": "f18c8e",
+            "FirstVariantBorder": "f18c8e",
+            "FirstVariantText": "000000",
+            "SecondBackground": "b4b5b4",
+            "SecondBorder": "b4b5b4",
+            "SecondText": "000000"
+        },
+        "Home": {
+            "Background": "2a363b",
+            "CellBackground": "2a363b",
+            "CellBackgroundActive": "b5b5b5",
+            "CellText": "ffffff",
+            "CellTextActive": "000000",
+            "CellTextExternal": "008f87",
+            "CellTextExternalActive": "901920"
+        },
+        "Atom": {
+            "Unknown": "111111",
+            "Text": "ffffff",
+            "AlkaliMetal": "0055ff",
+            "AlkaliEarthMetal": "f6f200",
+            "Lanthanide": "005574",
+            "Actinide": "215532",
+            "TransitionMetal": "216663",
+            "PostTransitionMetal": "634553",
+            "Metalloid": "ad3174",
+            "Halogen": "ff2142",
+            "ReactiveNonmetal": "ff11ff",
+            "NobleGas": "745500",
+            "TableLines": "cdcacd"
+        }
+    }
+}
