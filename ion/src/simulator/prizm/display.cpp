@@ -55,9 +55,9 @@ void draw() {
   // dupdate();
 
   // Faster implementation: Use memcpy to copy each line to gint_vram
-  for (int y = 0; y < /* Ion::Display::Height */ 224; y++) {
-    memcpy(gint_vram + (y * 396), Framebuffer::address() + y * Ion::Display::Width, Ion::Display::Width * sizeof(uint16_t));
-  }
+  // for (int y = 0; y < /* Ion::Display::Height */ 224; y++) {
+  //   memcpy(gint_vram + (y * 396), Framebuffer::address() + y * Ion::Display::Width, Ion::Display::Width * sizeof(uint16_t));
+  // }
   dupdate();
 
   // printf("draw\n");

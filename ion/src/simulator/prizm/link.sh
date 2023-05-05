@@ -1,0 +1,2 @@
+cd /home/heath/omega-prizm-2/Omega
+sh-elf-g++ output/release/simulator/prizm/ion/src/simulator/prizm/main.o -nostdlib -Wl,--no-warn-rwx-segments -T fxcg50.ld /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a -lgcc -lopenlibm -lstdc++ -o output/release/simulator/prizm/epsilon.bin

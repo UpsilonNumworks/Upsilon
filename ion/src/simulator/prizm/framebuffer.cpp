@@ -1,10 +1,14 @@
 #include "framebuffer.h"
+#include <gint/display-cg.h>
 #include <ion/display.h>
 #include "main.h"
 
 #include <stdio.h>
+#include <gint/display.h>
 
-static KDColor sPixels[Ion::Display::Width * Ion::Display::Height];
+// static KDColor sPixels[Ion::Display::Width * Ion::Display::Height];
+static_assert(sizeof(KDColor) == sizeof(uint16_t), "KDColor is not 16 bits");
+static KDColor* sPixels = (KDColor*) gint_vram;
 static bool sFrameBufferActive = true;
 
 namespace Ion {

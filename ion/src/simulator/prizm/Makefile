@@ -11,6 +11,7 @@ ion_src += $(addprefix ion/src/simulator/prizm/, \
   timing.cpp \
   console.cpp \
   atexit.c \
+  backlight.cpp \
 )
 
 ion_src += ion/src/shared/collect_registers.cpp
@@ -31,6 +32,10 @@ sdl_simu_needs_to_be_removed += $(addprefix ion/src/simulator/shared/, \
   console.cpp \
 )
 
+sdl_simu_needs_to_be_removed += $(addprefix ion/src/shared/dummy/, \
+  backlight.cpp \
+)
+
 #sdl_simu_needs_to_be_removed += $(addprefix ion/src/simulator/shared/dummy/, \
 #  display.cpp \
 #  led.cpp \
@@ -45,7 +50,7 @@ ion_src := $(filter-out $(sdl_simu_needs_to_be_removed),$(ion_src))
 SFLAGS := $(filter-out -Iion/src/simulator/external/sdl/include,$(SFLAGS))
 
 SFLAGS += -DFXCG50 -DTARGET_FXCG50 -m4-nofpu -mb -ffreestanding -nostdlib -Wa,--dsp -fstrict-volatile-bitfields 
-LDFLAGS += -nostdlib -Wl,--no-warn-rwx-segments -T fxcg50.ld /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a -lgcc -lopenlibm -lstdc++
+LDFLAGS += -nostdlib -Wl,--no-warn-rwx-segments -T fxcg50_fastload.ld /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libgint-cg.a /home/heath/.local/share/fxsdk/sysroot/sh3eb-elf/lib/libc.a -lgcc -lopenlibm -lstdc++
 #define	M_E		2.7182818284590452354	/* e */
 #define	M_LOG2E		1.4426950408889634074	/* log 2e */
 #define	M_LOG10E	0.43429448190325182765	/* log 10e */

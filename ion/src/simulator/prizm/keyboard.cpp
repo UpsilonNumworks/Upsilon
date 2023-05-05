@@ -1,9 +1,13 @@
 
+#include <cstdlib>
+#include <gint/display-cg.h>
+#include <gint/display.h>
 #include <gint/keycodes.h>
 #include <ion/keyboard.h>
 // #include <libndls.h>
 // #include <n2DLib.h>
 
+#include "ion/events.h"
 #include "keyboard.h"
 #include "layout_keyboard.h"
 #include "main.h"
@@ -13,103 +17,187 @@
 
 using namespace Ion::Keyboard;
 
-// class KeyPair {
-// public:
-//   constexpr KeyPair(Key key, t_key ndlessKey) :
-//     m_key(key),
-//     m_ndlessKey(ndlessKey)
-//   {}
-//   Key key() const { return m_key; }
-//   t_key ndlessKey() const { return m_ndlessKey; }
-// private:
-//   Key m_key;
-//   t_key m_ndlessKey;
-// };
+class KeyPair {
+public:
+  constexpr KeyPair(Key key, bool numworksShift, bool numworksAlpha, int gintKey, bool gintShift, bool gintAlpha, bool ignoreShiftAlpha = false) :
+    m_key(key),
+    m_numworksShift(numworksShift),
+    m_numworksAlpha(numworksAlpha),
+    m_gintKey(gintKey),
+    m_gintShift(gintShift),
+    m_gintAlpha(gintAlpha),
+    m_ignoreShiftAlpha(ignoreShiftAlpha)
+  {}
+  Key key() const { return m_key; }
+  bool numworksShift() const { return m_numworksShift; }
+  bool numworksAlpha() const { return m_numworksAlpha; }
+  int gintKey() const { return m_gintKey; }
+  bool gintShift() const { return m_gintShift; }
+  bool gintAlpha() const { return m_gintAlpha; }
+  bool ignoreShiftAlpha() const { return m_ignoreShiftAlpha; }
+private:
+  Key m_key;
+  bool m_numworksShift;
+  bool m_numworksAlpha;
+  int m_gintKey;
+  bool m_gintShift;
+  bool m_gintAlpha;
+  bool m_ignoreShiftAlpha;
+};
 
-// constexpr static KeyPair sKeyPairs[] = {
-//   KeyPair(Key::Down,             KEY_NSPIRE_DOWN),
-//   KeyPair(Key::Up,               KEY_NSPIRE_UP),
-//   KeyPair(Key::Left,             KEY_NSPIRE_LEFT),
-//   KeyPair(Key::Right,            KEY_NSPIRE_RIGHT),
-//   KeyPair(Key::Shift,            KEY_NSPIRE_SHIFT),
-//   KeyPair(Key::EXE,              KEY_NSPIRE_ENTER),
-//   KeyPair(Key::EXE,              KEY_NSPIRE_RET),
-//   KeyPair(Key::Back,             KEY_NSPIRE_ESC),
-//   KeyPair(Key::Toolbox,          KEY_NSPIRE_TAB),
-//   KeyPair(Key::Backspace,        KEY_NSPIRE_DEL),
-//   KeyPair(Key::Home,             KEY_NSPIRE_HOME),
-//   KeyPair(Key::OK,               KEY_NSPIRE_CLICK),
-//   KeyPair(Key::One,              KEY_NSPIRE_1),
-//   KeyPair(Key::Two,              KEY_NSPIRE_2),
-//   KeyPair(Key::Three,            KEY_NSPIRE_3),
-//   KeyPair(Key::Four,             KEY_NSPIRE_4),
-//   KeyPair(Key::Five,             KEY_NSPIRE_5),
-//   KeyPair(Key::Six,              KEY_NSPIRE_6),
-//   KeyPair(Key::Seven,            KEY_NSPIRE_7),
-//   KeyPair(Key::Eight,            KEY_NSPIRE_8),
-//   KeyPair(Key::Nine,             KEY_NSPIRE_9),
-//   KeyPair(Key::Zero,             KEY_NSPIRE_0),
-//   KeyPair(Key::Dot,              KEY_NSPIRE_PERIOD),
-//   KeyPair(Key::LeftParenthesis,  KEY_NSPIRE_LP),
-//   KeyPair(Key::RightParenthesis, KEY_NSPIRE_RP),
-//   KeyPair(Key::Square,           KEY_NSPIRE_SQU),
-//   KeyPair(Key::Exp,              KEY_NSPIRE_eEXP),
-//   KeyPair(Key::Power,            KEY_NSPIRE_EXP),
-//   KeyPair(Key::Comma,            KEY_NSPIRE_COMMA),
-//   KeyPair(Key::Pi,               KEY_NSPIRE_PI),
-//   KeyPair(Key::Multiplication,   KEY_NSPIRE_MULTIPLY),
-//   KeyPair(Key::Division,         KEY_NSPIRE_DIVIDE),
-//   KeyPair(Key::Plus,             KEY_NSPIRE_PLUS),
-//   KeyPair(Key::Minus,            KEY_NSPIRE_MINUS),
-//   KeyPair(Key::EE,               KEY_NSPIRE_EE),
-//   KeyPair(Key::Shift,            KEY_NSPIRE_SHIFT),
-//   KeyPair(Key::Alpha,            KEY_NSPIRE_CTRL),
-//   KeyPair(Key::Var,              KEY_NSPIRE_VAR)
-// };
+constexpr static KeyPair sKeyPairs[] = {
+  KeyPair(Key::Down, false, false, KEY_DOWN, false, false, true),
+  KeyPair(Key::Left, false, false, KEY_LEFT, false, false, true),
+  KeyPair(Key::Right, false, false, KEY_RIGHT, false, false, true),
+  KeyPair(Key::Up, false, false, KEY_UP, false, false, true),
+  KeyPair(Key::Back, false, false, KEY_EXIT, false, false),
+  KeyPair(Key::Home, false, false, KEY_MENU, false, false),
+  KeyPair(Key::Shift, false, false, KEY_SHIFT, false, false, true),
+  KeyPair(Key::Alpha, false, false, KEY_ALPHA, false, false, true),
+  KeyPair(Key::XNT, false, false, KEY_XOT, false, false),
+  KeyPair(Key::Var, false, false, KEY_VARS, false, false),
+  KeyPair(Key::Toolbox, false, false, KEY_OPTN, false, false),
+  KeyPair(Key::Backspace, false, false, KEY_DEL, false, false),
+  KeyPair(Key::Exp, false, false, KEY_LN, true, false),
+  KeyPair(Key::Ln, false, false, KEY_LN, false, false),
+  KeyPair(Key::Log, false, false, KEY_LOG, false, false),
+  KeyPair(Key::Imaginary, false, false, KEY_0, true, false),
+  KeyPair(Key::Comma, false, false, KEY_COMMA, false, false),
+  KeyPair(Key::Power, false, false, KEY_POWER, false, false),
+  KeyPair(Key::Sine, false, false, KEY_SIN, false, false),
+  KeyPair(Key::Cosine, false, false, KEY_COS, false, false),
+  KeyPair(Key::Tangent, false, false, KEY_TAN, false, false),
+  KeyPair(Key::Pi, false, false, KEY_EXP, true, false),
+  KeyPair(Key::Sqrt, false, false, KEY_SQUARE, true, false),
+  KeyPair(Key::Square, false, false, KEY_SQUARE, false, false),
+  KeyPair(Key::Seven, false, false, KEY_7, false, false),
+  KeyPair(Key::Eight, false, false, KEY_8, false, false),
+  KeyPair(Key::Nine, false, false, KEY_9, false, false),
+  KeyPair(Key::LeftParenthesis, false, false, KEY_LEFTP, false, false),
+  KeyPair(Key::RightParenthesis, false, false, KEY_RIGHTP, false, false),
+  KeyPair(Key::Four, false, false, KEY_4, false, false),
+  KeyPair(Key::Five, false, false, KEY_5, false, false),
+  KeyPair(Key::Six, false, false, KEY_6, false, false),
+  KeyPair(Key::Multiplication, false, false, KEY_MUL, false, false),
+  KeyPair(Key::Division, false, false, KEY_DIV, false, false),
+  KeyPair(Key::Division, false, false, KEY_FRAC, false, false),
+  KeyPair(Key::One, false, false, KEY_1, false, false),
+  KeyPair(Key::Two, false, false, KEY_2, false, false),
+  KeyPair(Key::Three, false, false, KEY_3, false, false),
+  KeyPair(Key::Plus, false, false, KEY_ADD, false, false),
+  KeyPair(Key::Minus, false, false, KEY_SUB, false, false),
+  KeyPair(Key::Zero, false, false, KEY_0, false, false),
+  KeyPair(Key::Dot, false, false, KEY_DOT, false, false),
+  KeyPair(Key::EE, false, false, KEY_EXP, false, false),
+  KeyPair(Key::Ans, false, false, KEY_NEG, true, false),
+  KeyPair(Key::EXE, false, false, KEY_EXE, false, false),
 
-// constexpr int sNumberOfKeyPairs = sizeof(sKeyPairs)/sizeof(KeyPair);
+  // Cut
+  // Not assigned
+  // Copy
+  KeyPair(Key::Var, true, false, KEY_8, true, false),
+  // Paste
+  KeyPair(Key::Toolbox, true, false, KEY_9, true, false),
+  // Clear
+  KeyPair(Key::Backspace, true, false, KEY_F6, false, false),
+  // [
+  KeyPair(Key::Exp, true, false, KEY_ADD, true, false),
+  // ]
+  KeyPair(Key::Ln, true, false, KEY_SUB, true, false),
+  // {
+  KeyPair(Key::Log, true, false, KEY_MUL, true, false),
+  // }
+  KeyPair(Key::Imaginary, true, false, KEY_DIV, true, false),
+  // _
+  KeyPair(Key::Comma, true, false, KEY_NEG, false, false),
+  // ->
+  KeyPair(Key::Power, true, false, KEY_STORE, false, false),
+  // asin
+  KeyPair(Key::Sine, true, false, KEY_SIN, true, false),
+  // acos
+  KeyPair(Key::Cosine, true, false, KEY_COS, true, false),
+  // atan
+  KeyPair(Key::Tangent, true, false, KEY_TAN, true, false),
+  // =
+  KeyPair(Key::Pi, true, false, KEY_DOT, true, false),
+  // <
+  KeyPair(Key::Sqrt, true, false, KEY_F1, false, false),
+  // >
+  KeyPair(Key::Square, true, false, KEY_F2, false, false),
+
+  // :
+  KeyPair(Key::XNT, false, true, KEY_F3, false, false),
+  // ;
+  KeyPair(Key::Var, false, true, KEY_F4, false, false),
+  // "
+  KeyPair(Key::Toolbox, false, true, KEY_EXP, false, true),
+  // %
+  KeyPair(Key::Backspace, false, true, KEY_F5, false, false),
+  // A
+  KeyPair(Key::Exp, false, true, KEY_XOT, false, true),
+  // B
+  KeyPair(Key::Ln, false, true, KEY_LOG, false, true),
+  // C
+  KeyPair(Key::Log, false, true, KEY_LN, false, true),
+  // D
+  KeyPair(Key::Imaginary, false, true, KEY_SIN, false, true),
+  // E
+  KeyPair(Key::Comma, false, true, KEY_COS, false, true),
+  // F
+  KeyPair(Key::Power, false, true, KEY_TAN, false, true),
+  // G
+  KeyPair(Key::Sine, false, true, KEY_FRAC, false, true),
+  // H
+  KeyPair(Key::Cosine, false, true, KEY_FD, false, true),
+  // I
+  KeyPair(Key::Tangent, false, true, KEY_LEFTP, false, true),
+  // J
+  KeyPair(Key::Pi, false, true, KEY_RIGHTP, false, true),
+  // K
+  KeyPair(Key::Sqrt, false, true, KEY_COMMA, false, true),
+  // L
+  KeyPair(Key::Square, false, true, KEY_ARROW, false, true),
+  // M
+  KeyPair(Key::Seven, false, true, KEY_7, false, true),
+  // N
+  KeyPair(Key::Eight, false, true, KEY_8, false, true),
+  // O
+  KeyPair(Key::Nine, false, true, KEY_9, false, true),
+  // P
+  KeyPair(Key::LeftParenthesis, false, true, KEY_4, false, true),
+  // Q
+  KeyPair(Key::RightParenthesis, false, true, KEY_5, false, true),
+  // R
+  KeyPair(Key::Four, false, true, KEY_6, false, true),
+  // S
+  KeyPair(Key::Five, false, true, KEY_TIMES, false, true),
+  // T
+  KeyPair(Key::Six, false, true, KEY_DIV, false, true),
+  // U
+  KeyPair(Key::Multiplication, false, true, KEY_1, false, true),
+  // V
+  KeyPair(Key::Division, false, true, KEY_2, false, true),
+  // W
+  KeyPair(Key::One, false, true, KEY_3, false, true),
+  // X
+  KeyPair(Key::Two, false, true, KEY_PLUS, false, true),
+  // Y
+  KeyPair(Key::Three, false, true, KEY_MINUS, false, true),
+  // Z
+  KeyPair(Key::Plus, false, true, KEY_0, false, true),
+  // Space
+  KeyPair(Key::Minus, false, true, KEY_DOT, false, true),
+};
+
+constexpr int sNumberOfKeyPairs = sizeof(sKeyPairs)/sizeof(KeyPair);
 
 namespace Ion {
 namespace Keyboard {
 
-// static bool getTPArrow(t_key* result) {
-//   touchpad_report_t tpReport;
-
-//   result->row = result->tpad_row = _KEY_DUMMY_ROW;
-// 	result->col = result->tpad_col = _KEY_DUMMY_COL;
-// 	result->tpad_arrow = TPAD_ARROW_NONE;
-
-//   if (!touchpad_scan(&tpReport)) {
-//     //result->tpad_arrow = (tpad_arrow_t)tpReport.arrow;
-//     // nasty workaround for n2DLib isKey()
-//     switch (tpReport.arrow) {
-//       case TPAD_ARROW_UP:
-//         *result = KEY_NSPIRE_UP;
-//         break;
-//       case TPAD_ARROW_DOWN:
-//         *result = KEY_NSPIRE_DOWN;
-//         break;
-//       case TPAD_ARROW_LEFT:
-//         *result = KEY_NSPIRE_LEFT;
-//         break;
-//       case TPAD_ARROW_RIGHT:
-//         *result = KEY_NSPIRE_RIGHT;
-//         break;
-//       case TPAD_ARROW_CLICK:
-//         *result = KEY_NSPIRE_CLICK;
-//         break;
-//       default:
-//         return 0;
-//     }
-//     return 1;
-//   } else
-//       return 0;
-// }
-
 int menuHeldFor = 0;
 
 State scan() {
-  State state;
+  State state = 0;
 
   // Grab this opportunity to refresh the display if needed
   Simulator::Main::refresh();
@@ -119,82 +207,30 @@ State scan() {
     state.setKey(Key::Home);
     menuHeldFor++;
     if (menuHeldFor > 30) {
+      #if CMAKE_BUILD_TYPE == FastLoad
+      exit(0);
+      #else
       gint_osmenu();
+      #endif
     }
   } else {
     menuHeldFor = 0;
   }
 
-  if (keydown(KEY_DOWN)) {
-    state.setKey(Key::Down);
-  } else if (keydown(KEY_UP)) {
-    state.setKey(Key::Up);
-  } else if (keydown(KEY_LEFT)) {
-    state.setKey(Key::Left);
-  } else if (keydown(KEY_RIGHT)) {
-    state.setKey(Key::Right);
-  } else if (keydown(KEY_SHIFT)) {
-    state.setKey(Key::Shift);
-  } else if (keydown(KEY_EXE)) {
-    state.setKey(Key::EXE);
-  } else if (keydown(KEY_DEL)) {
-    state.setKey(Key::Backspace);
-  } else if (keydown(KEY_PLUS)) {
-    state.setKey(Key::Plus);
-  } else if (keydown(KEY_MINUS) || keydown(KEY_NEG)) {
-    state.setKey(Key::Minus);
-  } else if (keydown(KEY_MUL)) {
-    state.setKey(Key::Multiplication);
-  } else if (keydown(KEY_DIV)) {
-    state.setKey(Key::Division);
-  } else if (keydown(KEY_LEFTPAR)) {
-    state.setKey(Key::LeftParenthesis);
-  } else if (keydown(KEY_RIGHTPAR)) {
-    state.setKey(Key::RightParenthesis);
-  } else if (keydown(KEY_X2)) {
-    state.setKey(Key::Sqrt);
-  } else if (keydown(KEY_1)) {
-    state.setKey(Key::One);
-  } else if (keydown(KEY_2)) {
-    state.setKey(Key::Two);
-  } else if (keydown(KEY_3)) {
-    state.setKey(Key::Three);
-  } else if (keydown(KEY_4)) {
-    state.setKey(Key::Four);
-  } else if (keydown(KEY_5)) {
-    state.setKey(Key::Five);
-  } else if (keydown(KEY_6)) {
-    state.setKey(Key::Six);
-  } else if (keydown(KEY_7)) {
-    state.setKey(Key::Seven);
-  } else if (keydown(KEY_8)) {
-    state.setKey(Key::Eight);
-  } else if (keydown(KEY_9)) {
-    state.setKey(Key::Nine);
-  } else if (keydown(KEY_0)) {
-    state.setKey(Key::Zero);
-  } else if (keydown(KEY_DOT)) {
-    state.setKey(Key::Dot);
-  } else if (keydown(KEY_ALPHA)) {
-    state.setKey(Key::Alpha);
-  } else if (keydown(KEY_XOT)) {
-    state.setKey(Key::XNT);
-  } else if (keydown(KEY_COMMA)) {
-    state.setKey(Key::Comma);
-  } else if (keydown(KEY_SIN)) {
-    state.setKey(Key::Sine);
-  } else if (keydown(KEY_COS)) {
-    state.setKey(Key::Cosine);
-  } else if (keydown(KEY_TAN)) {
-    state.setKey(Key::Tangent);
-  } else if (keydown(KEY_LN)) {
-    state.setKey(Key::Ln);
-  } else if (keydown(KEY_LOG)) {
-    state.setKey(Key::Log);
-  } else if (keydown(KEY_VARS)) {
-    state.setKey(Key::Var);
-  } else if (keydown(KEY_EXP)) {
-    state.setKey(Key::Exp);
+  for (int i = 0; i < sNumberOfKeyPairs; i++) {
+    const KeyPair & keyPair = sKeyPairs[i];
+    if (!keyPair.ignoreShiftAlpha() &&
+       (keyPair.gintShift() != Events::isShiftActive() ||
+        keyPair.gintAlpha() != Events::isAlphaActive())) {
+      continue;
+    }
+    if (keydown(keyPair.gintKey())) {
+      if (!keyPair.ignoreShiftAlpha()) {
+        state.setSimulatedShift(keyPair.numworksShift() ? ModSimState::ForceOn : ModSimState::ForceOff);
+        state.setSimulatedAlpha(keyPair.numworksAlpha() ? ModSimState::ForceOn : ModSimState::ForceOff);
+      }
+      state.setKey(keyPair.key());
+    }
   }
 
   return state;
