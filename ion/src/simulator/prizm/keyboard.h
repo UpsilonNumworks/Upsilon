@@ -8,8 +8,6 @@ namespace Ion {
 namespace Simulator {
 namespace Keyboard {
 
-// bool scanHandlesKey(t_key key);
-
 }
 }
 }

@@ -127,6 +127,7 @@ ifndef USE_LIBA
 endif
 ifeq ($(USE_LIBA),0)
 include liba/Makefile.bridge
+include libaxx/Makefile.bridge
 else
 SFLAGS += -ffreestanding -nostdinc -nostdlib
 include liba/Makefile

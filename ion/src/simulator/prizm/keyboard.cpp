@@ -4,10 +4,8 @@
 #include <gint/display.h>
 #include <gint/keycodes.h>
 #include <ion/keyboard.h>
-// #include <libndls.h>
-// #include <n2DLib.h>
 
-#include "ion/events.h"
+#include <ion/events.h>
 #include "keyboard.h"
 #include "layout_keyboard.h"
 #include "main.h"
@@ -242,15 +240,6 @@ State scan() {
 namespace Ion {
 namespace Simulator {
 namespace Keyboard {
-
-// bool scanHandlesKey(t_key key) {
-//   for (int i = 0; i < sNumberOfKeyPairs; i++) {
-//     if (isKey(key, sKeyPairs[i].ndlessKey())) {
-//       return true;
-//     }
-//   }
-//   return false;
-// }
 
 }
 }

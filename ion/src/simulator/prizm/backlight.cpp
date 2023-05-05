@@ -5,9 +5,9 @@
 
 // From gint:
 /* Interface with the controller */
-static volatile uint16_t *intf = (void *)0xb4000000;
+static volatile uint16_t *intf = (uint16_t *)0xb4000000;
 /* Bit 4 of Port R controls the RS bit of the display driver */
-static volatile uint8_t *PRDR = (void *)0xa405013c;
+static volatile uint8_t *PRDR = (uint8_t *)0xa405013c;
 
 GINLINE static void select(uint16_t reg)
 {

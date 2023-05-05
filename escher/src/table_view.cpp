@@ -3,7 +3,6 @@
 
 extern "C" {
 #include <assert.h>
-#include <stdio.h>
 }
 #include <algorithm>
 

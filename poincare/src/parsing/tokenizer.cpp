@@ -3,28 +3,6 @@
 #include <poincare/number.h>
 #include <ion/unicode/utf8_decoder.h>
 
-// #include <stdio.h>
-// #ifdef _PRIZM
-// #include <gint/display-cg.h>
-// #include <gint/display.h>
-// #include <gint/keyboard.h>
-
-// #define debugLog(format, ...) { \
-//   char buffer[100]; \
-//   snprintf(buffer, 100, format, ##__VA_ARGS__); \
-//   dclear(C_WHITE); \
-//   dtext(1, 1, C_BLACK, buffer); \
-//   dupdate(); \
-//   getkey(); \
-// }
-// #else
-// #define debugLog(format, ...) { \
-//   char buffer[100]; \
-//   snprintf(buffer, 100, format, ##__VA_ARGS__); \
-//   printf("%s\n", buffer); \
-// }
-// #endif
-
 namespace Poincare {
 
 const CodePoint Tokenizer::nextCodePoint(PopTest popTest, CodePoint context, bool * testResult) {

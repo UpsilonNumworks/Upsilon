@@ -10,7 +10,6 @@ void quit();
 
 void setNeedsRefresh();
 void refresh();
-void relayout();
 
 }
 }

@@ -51,19 +51,6 @@ void setActive(bool enabled) {
   sFrameBufferActive = enabled;
 }
 
-void writeToFile(const char * filename) {
-  // // Write as a raw RGB565 file
-  // FILE * f = fopen(filename, "wb");
-  // if (f == NULL) {
-  //   return;
-  // }
-  // for (int i = 0; i < Ion::Display::Width * Ion::Display::Height; i++) {
-  //   uint16_t color = sPixels[i];
-  //   fwrite(&color, 2, 1, f);
-  // }
-  // fclose(f);
-}
-
 }
 }
 }

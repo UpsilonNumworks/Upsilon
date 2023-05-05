@@ -1,7 +1,7 @@
-#include <cstdint>
 #include <escher/image_view.h>
 extern "C" {
 #include <assert.h>
+#include <stdint.h>
 }
 #include <ion.h>
 

@@ -11,7 +11,7 @@
 #include <stdio.h>
 #else
 #include <stdio.h>
-#endif // y66666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666666t`g71y6hhhhhh
+#endif
 
 namespace Poincare {
 
@@ -21,7 +21,7 @@ class LayoutNode;
 class Integer;
 struct IntegerDivision;
 
-#ifdef _PRIZM
+#if (defined _3DS) || (defined _PRIZM)
 typedef unsigned short half_native_uint_t;
 static_assert(sizeof(half_native_uint_t) == sizeof(uint16_t));
 typedef int native_int_t;

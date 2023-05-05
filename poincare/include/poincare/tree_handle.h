@@ -115,11 +115,9 @@ protected:
   TreeHandle(const TreeNode * node);
   // Un-inlining this constructor actually inscreases the firmware size
   TreeHandle(uint16_t nodeIndentifier = TreeNode::NoNodeIdentifier) : m_identifier(nodeIndentifier) {
-    // debugLog22("Creating TreeHandle");
     if (hasNode(nodeIndentifier)) {
       node()->retain();
     }
-    // debugLog22("Created TreeHandle");
   }
 
   // WARNING: if the children table is the result of a cast, the object downcasted has to be the same size as a TreeHandle.

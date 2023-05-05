@@ -2,7 +2,6 @@
 #define ION_SIMULATOR_DISPLAY_H
 
 #include <kandinsky.h>
-// #include <n2DLib.h>
 
 namespace Ion {
 namespace Simulator {

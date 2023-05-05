@@ -1,9 +1,3 @@
-// Don't optimize this file
-#include <ios>
-// #pragma GCC push_options
-// #pragma GCC optimize ("O0")
-
-#include <cstdio>
 #include <poincare/integer.h>
 #include <poincare/code_point_layout.h>
 #include <poincare/ieee754.h>
@@ -644,6 +638,12 @@ Integer Integer::multiplyByPowerOfBase(uint8_t pow) const {
 
 
 IntegerDivision Integer::udiv(const Integer & numerator, const Integer & denominator) {
+  if (denominator.isOverflow()) {
+    return {.quotient = Overflow(false), .remainder = Integer::Overflow(false)};
+  }
+  if (numerator.isOverflow()) {
+    return {.quotient = Overflow(false), .remainder = Integer::Overflow(false)};
+  }
   /* Modern Computer Arithmetic, Richard P. Brent and Paul Zimmermann
    * (Algorithm 1.6) */
   assert(!denominator.isZero());
@@ -711,7 +711,6 @@ IntegerDivision Integer::udiv(const Integer & numerator, const Integer & denomin
   if (pow > 0 && !div.remainder.isZero()) {
     div.remainder = div.remainder.divideByPowerOf2(pow);
   }
-  // printf("%u / %u = %u\n", numerator.digit(0), denominator.digit(0), div.quotient.digit(0));
   return div;
 }
 
@@ -744,5 +743,3 @@ template float Integer::approximate<float>() const;
 template double Integer::approximate<double>() const;
 
 }
-
-// #pragma GCC pop_options

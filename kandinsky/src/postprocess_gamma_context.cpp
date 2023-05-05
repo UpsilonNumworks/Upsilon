@@ -1,4 +1,4 @@
-#include "kandinsky/color.h"
+#include <kandinsky/color.h>
 #include <cstdint>
 #include <kandinsky/postprocess_gamma_context.h>
 #include <ion.h>

@@ -8,8 +8,6 @@ SFLAGS += -DUSING_GENERATED_CONFIG_H
 # which is added later on in the SDL Makefile
 SFLAGS += -Iion/src/simulator/linux/include
 
-# SFLAGS += -D_BIG_ENDIAN
-
 ion_src += $(addprefix ion/src/simulator/linux/, \
   assets.s \
   platform_files.cpp \
@@ -26,13 +24,13 @@ ion_src += $(addprefix ion/src/simulator/shared/, \
   dummy/window_callback.cpp \
   actions.cpp \
   clipboard_helper.cpp \
+  collect_registers_x86_64.s \
+  collect_registers.cpp \
   haptics.cpp \
   journal.cpp \
   state_file.cpp \
   store_script.cpp \
 )
-
-ion_src += ion/src/shared/collect_registers.cpp
 
 ifeq ($(EPSILON_TELEMETRY),1)
 ion_src += ion/src/simulator/shared/dummy/telemetry_init.cpp

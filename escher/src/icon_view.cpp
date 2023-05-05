@@ -1,8 +1,7 @@
-#include "kandinsky/color.h"
-#include <cstdint>
 #include <escher/icon_view.h>
 extern "C" {
 #include <assert.h>
+#include <stdint.h>
 }
 #include <ion.h>
 #include <kandinsky.h>
