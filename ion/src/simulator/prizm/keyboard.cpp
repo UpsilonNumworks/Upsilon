@@ -205,11 +205,8 @@ State scan() {
     state.setKey(Key::Home);
     menuHeldFor++;
     if (menuHeldFor > 30) {
-      #if CMAKE_BUILD_TYPE == FastLoad
-      exit(0);
-      #else
+      // exit(0);
       gint_osmenu();
-      #endif
     }
   } else {
     menuHeldFor = 0;
