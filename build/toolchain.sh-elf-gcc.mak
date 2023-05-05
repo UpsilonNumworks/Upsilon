@@ -5,6 +5,6 @@ GDB = gdb
 OBJCOPY = sh-elf-objcopy
 SIZE = sh-elf-size
 AS = sh-elf-as
+FXGXA = fxgxa
 
-SFLAGS += -D_PRIZM
-SFLAGS += -D_BIG_ENDIAN
+SFLAGS += -D_PRIZM -D_BIG_ENDIAN
