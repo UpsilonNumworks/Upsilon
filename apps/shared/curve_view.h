@@ -142,7 +142,7 @@ private:
    * maxNumberOfRecursion in reached. */
   void joinDots(KDContext * ctx, KDRect rect, EvaluateXYForFloatParameter xyFloatEvaluation, void * model, void * context, bool drawStraightLinesEarly, float t, float x, float y, float s, float u, float v, KDColor color, bool thick, int maxNumberOfRecursion, EvaluateXYForDoubleParameter xyDoubleEvaluation = nullptr) const;
   /* Join two dots with a straight line. */
-  void straightJoinDots(KDContext * ctx, KDRect rect, float  pxf, float pyf, float  puf, float pvf, KDColor color, bool thick) const;
+  void straightJoinDots(KDContext * ctx, KDRect rect, float pxf, float pyf, float puf, float pvf, KDColor color, bool thick) const;
   /* Stamp centered around (pxf, pyf). If pxf and pyf are not round number, the
    * function shifts the stamp (by blending adjacent pixel colors) to draw with
    * anti alising. */
