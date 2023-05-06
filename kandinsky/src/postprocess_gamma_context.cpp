@@ -1,9 +1,8 @@
 #include <kandinsky/color.h>
-#include <cstdint>
 #include <kandinsky/postprocess_gamma_context.h>
 #include <ion.h>
 #include <math.h>
-#include <stdio.h>
+#include <stdint.h>
 
 constexpr int MaxGammaStates = 7;
 constexpr float MaxGammaGamut = 0.75;

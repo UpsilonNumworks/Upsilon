@@ -1,8 +1,8 @@
 #ifndef KANDINSKY_POSTPROCESS_GAMMA_CONTEXT_H
 #define KANDINSKY_POSTPROCESS_GAMMA_CONTEXT_H
 
-#include <cstdint>
 #include <kandinsky/postprocess_context.h>
+#include <stdint.h>
 
 class KDPostProcessGammaContext : public KDPostProcessContext {
 public:

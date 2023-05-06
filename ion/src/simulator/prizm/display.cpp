@@ -1,7 +1,7 @@
 #include "display.h"
 #include "framebuffer.h"
 #include <kandinsky/color.h>
-#include <cstdint>
+#include <stdint.h>
 #include <gint/display-cg.h>
 #include <ion/display.h>
 #include <string.h>
