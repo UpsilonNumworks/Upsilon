@@ -191,6 +191,10 @@ constexpr static KeyPair sKeyPairs[] = {
   KeyPair(Key::Plus, false, true, KEY_0, false, true),
   // Space
   KeyPair(Key::Minus, false, true, KEY_DOT, false, true),
+
+  // Brightness control shortcut in Upsilon
+  KeyPair(Key::Plus, true, false, KEY_UP, false, true),
+  KeyPair(Key::Minus, true, false, KEY_DOWN, false, true),
 };
 
 constexpr int sNumberOfKeyPairs = sizeof(sKeyPairs)/sizeof(KeyPair);
