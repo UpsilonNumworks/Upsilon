@@ -14,6 +14,7 @@ extern "C" {
 #include <algorithm>
 #include <string.h>
 #include <ion/storage.h>
+#include <apps/external/archive.h>
 
 STATIC void file_print(const mp_print_t *print, mp_obj_t self_in, mp_print_kind_t kind);
 STATIC mp_obj_t file_make_new(const mp_obj_type_t *type, size_t n_args, size_t n_kw, const mp_obj_t *args);
@@ -199,10 +200,16 @@ typedef struct _file_obj_t {
     file_bin_t      binary_mode;
     
     Ion::Storage::Record record;
-    
+
     size_t position;
     
     bool closed;
+
+    /// Index, for external files.
+    int index;
+
+    /// True for the ram fs, False for the flash fs (external)
+    bool filesystem;
     
 } file_obj_t;
 
@@ -417,13 +424,25 @@ STATIC mp_obj_t file_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
     
     Ion::Storage::Record::ErrorStatus status;
 
+    bool isExternalRecord = External::Archive::indexFromName(file_name) != -1;
+
     switch(file->open_mode) {
         case READ:
             file->record = Ion::Storage::sharedStorage()->recordNamed(file_name);
             file->position = 0;
+            // File not found in RAM file system
             if (file->record == Ion::Storage::Record()) {
-                mp_raise_OSError(2);
+                // If the file is not found in the external archive, raise an error
+                if (!isExternalRecord) {
+                    // File not found in external archive
+                    mp_raise_OSError(ENOENT);
+                    break;
+                }
+                // File found in external archive
+                file->index = External::Archive::indexFromName(file_name);
+                break;
             }
+            file->filesystem = true;
             break;
         case CREATE:
             file->position = 0;
@@ -499,6 +518,11 @@ STATIC mp_obj_t file_make_new(const mp_obj_type_t *type, size_t n_args, size_t n
     }
     
     if (file->edit_mode) {
+        // Error read only file on external archive
+        if (!file->filesystem) {
+            mp_raise_OSError(30);
+            // TODO: Return ?
+        }
         file_mode[1] = '+';
         offset = 1;
     }
@@ -529,7 +553,7 @@ void check_closed(file_obj_t* file) {
     const char* file_name = mp_obj_str_get_data(file->name, &l);
     file->record = Ion::Storage::sharedStorage()->recordNamed(file_name);
 
-    if (file->record == Ion::Storage::Record()) {
+    if (file->record == Ion::Storage::Record() && file->filesystem) {
         mp_raise_OSError(2);
     }
 }
@@ -765,45 +789,92 @@ STATIC mp_obj_t file_writelines(mp_obj_t o_in, mp_obj_t o_lines) {
  * Simpler read function used by read and readline.
  */
 STATIC mp_obj_t __file_read_backend(file_obj_t* file, mp_int_t size, bool with_line_sep) {
-    size_t file_size = file->record.value().size;
-    size_t start = file->position;
-    
-    // Handle seek pos > file size
-    // And size = 0
-    if (start >= file_size || size == 0) {
-        return mp_const_none;
-    }
-    
-    size_t end = 0;
-    
-    // size == 0 handled earlier.
-    if (size < 0) {
-        end = file_size;
-    } else {
-        end = std::min(file_size, file->position + size);
-    }
-    
-    // Handle line separator case.
-    // Always use \n, because simpler.
-    if (with_line_sep) {
-        for(size_t i = start; i < end; i++) {
-            if (*((uint8_t*)(file->record.value().buffer) + i) == '\n') {
-                end = i + 1;
-                break;
+    // If the file system is the RAM filesystem, we can directly read the data.
+    if (file->filesystem) {
+        size_t file_size = file->record.value().size;
+        size_t start = file->position;
+        
+        // Handle seek pos > file size
+        // And size = 0
+        if (start >= file_size || size == 0) {
+            return mp_const_none;
+        }
+        
+        size_t end = 0;
+        
+        // size == 0 handled earlier.
+        if (size < 0) {
+            end = file_size;
+        } else {
+            end = std::min(file_size, file->position + size);
+        }
+        
+        // Handle line separator case.
+        // Always use \n, because simpler.
+        if (with_line_sep) {
+            for(size_t i = start; i < end; i++) {
+                if (*((uint8_t*)(file->record.value().buffer) + i) == '\n') {
+                    end = i + 1;
+                    break;
+                }
             }
         }
+        
+        file->position = end;
+        
+        
+        // Return different type based on mode.
+        if (file->binary_mode == TEXT)
+            return mp_obj_new_str((const char*)file->record.value().buffer + start, end - start);
+        if (file->binary_mode == BINARY)
+            return mp_obj_new_bytes((const byte*)file->record.value().buffer + start, end - start);
+        return mp_const_none;
     }
-    
-    file->position = end;
-    
-    
-    // Return different type based on mode.
-    if (file->binary_mode == TEXT)
-        return mp_obj_new_str((const char*)file->record.value().buffer + start, end - start);
-    if (file->binary_mode == BINARY)
-        return mp_obj_new_bytes((const byte*)file->record.value().buffer + start, end - start);
-    
-    return mp_const_none;
+    else {
+        // Read the data from the external archive
+        // Get the file using fileAtIndex
+        External::Archive::File file_archive;
+        External::Archive::fileAtIndex(file->index, file_archive);
+        size_t file_size = file_archive.dataLength;
+        size_t start = file->position;
+        
+        // Handle seek pos > file size
+        // And size = 0
+        if (start >= file_size || size == 0) {
+            return mp_const_none;
+        }
+        
+        size_t end = 0;
+        
+        // size == 0 handled earlier.
+        if (size < 0) {
+            end = file_size;
+        } else {
+            end = std::min(file_size, file->position + size);
+        }
+        
+        // Handle line separator case.
+        // Always use \n, because simpler.
+        if (with_line_sep) {
+            for(size_t i = start; i < end; i++) {
+                if (*((uint8_t*)(file_archive.data) + i) == '\n') {
+                    end = i + 1;
+                    break;
+                }
+            }
+        }
+        
+        file->position = end;
+        
+        
+        // Return different type based on mode.
+        if (file->binary_mode == TEXT)
+            return mp_obj_new_str((const char*)file_archive.data + start, end - start);
+        if (file->binary_mode == BINARY)
+            return mp_obj_new_bytes((const byte*)file_archive.data + start, end - start);
+        return mp_const_none;
+
+    }
 }
 
 STATIC mp_obj_t file_read(size_t n_args, const mp_obj_t* args) {

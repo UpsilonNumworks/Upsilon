@@ -1,6 +1,8 @@
 #include "archive.h"
 #include "extapp_api.h"
 #include "../global_preferences.h"
+#include "execution_environment.h"
+#include <python/port/port.h>
 
 #include <string.h>
 #include <stdlib.h>
@@ -101,6 +103,12 @@ extern "C" void (* const apiPointers[])(void);
 typedef uint32_t (*entrypoint)(const uint32_t, const void *, void *, const uint32_t);
 
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
+  uint32_t pythonResult = executePython(name, heap, heapSize);
+  // If the python file was executed, we're done.
+  if (pythonResult != 1) {
+    return pythonResult;
+  }
+  // Else, execute the native external app.
   File entry;
   if(fileAtIndex(indexFromName(name), entry)) {
     if(!entry.isExecutable) {
@@ -133,6 +141,12 @@ bool fileAtIndex(size_t index, File &entry) {
 extern "C" void extapp_main(void);
 
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
+  uint32_t pythonResult = executePython(name, heap, heapSize);
+  // If the python file was executed, we're done.
+  if (pythonResult != 1) {
+    return pythonResult;
+  }
+  // Else, execute the native external app.
   extapp_main();
   return 0;
 }
@@ -194,6 +208,48 @@ size_t numberOfExecutables() {
       final_count++;
 
   return final_count;
+}
+
+// Private function to check if a file is a Python script and if so, execute it.
+uint32_t executePython(const char *name, void * heap, const uint32_t heapSize) {
+  // Check if the file exists
+  File entry;
+  if (!fileAtIndex(indexFromName(name), entry)) {
+    return 1;
+  }
+
+  // Get the extension without using strrchr
+  const char *ext = entry.name + strlen(entry.name) - 3;
+  if (ext == NULL) {
+    return 1;
+  }
+
+  // Check if it is a Python script
+  if (strcmp(ext, ".py") != 0) {
+    return 1;
+  }
+
+  // Clear the screen, exclude the top bar
+  // Prevent global-buffer-overflow when using Metric::TitleBarHeight
+  // KDRect rect(0, Metric::TitleBarHeight, 320, 240);
+  KDRect rect(0, 0, 320, 240);
+  Ion::Display::pushRectUniform(rect, KDColor::RGB16(0xFFFF));
+  // On simulator, we need to refresh the screen to see the changes
+  #ifndef DEVICE
+  Ion::Keyboard::scan();
+  #endif
+
+
+  uint32_t heapSizeReal = 16536;
+  // TODO: Use a namespace
+  // Clear the heap to avoid memory errors
+  memset(heap, 0, heapSizeReal);
+  // Initialize the Python interpreter
+  ExternalExecutionEnvironment env = init_environnement(heap, heapSizeReal);
+  bool result = execute_input(env, (const char *)entry.name);
+  deinit_environment();
+
+  return result ? 0 : 3;
 }
 
 }

@@ -3,6 +3,7 @@ ifdef HOME_DISPLAY_EXTERNALS
 app_external_src = $(addprefix apps/external/,\
 	extapp_api.cpp \
 	archive.cpp \
+	execution_environment.cpp \
 )
 
 $(eval $(call depends_on_image,apps/home/controller.cpp,apps/external/external_icon.png))
@@ -18,6 +19,7 @@ app_external_src = $(addprefix apps/external/,\
 	archive.cpp \
 	main_controller.cpp \
 	pointer_text_table_cell.cpp \
+	execution_environment.cpp \
 )
 
 $(eval $(call depends_on_image,apps/external/app.cpp,apps/external/external_icon.png))

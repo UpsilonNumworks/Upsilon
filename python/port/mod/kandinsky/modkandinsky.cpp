@@ -63,8 +63,13 @@ mp_obj_t modkandinsky_draw_string(size_t n_args, const mp_obj_t * args) {
   KDColor textColor = (n_args >= 4) ? MicroPython::Color::Parse(args[3]) : Palette::PrimaryText;
   KDColor backgroundColor = (n_args >= 5) ? MicroPython::Color::Parse(args[4]) : Palette::HomeBackground;
   const KDFont * font = (n_args >= 6) ? ((mp_obj_is_true(args[5])) ? KDFont::SmallFont : KDFont::LargeFont) : KDFont::LargeFont;
-  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
-  KDIonContext::sharedContext()->drawString(text, point, font, textColor, backgroundColor);
+  // Get tbe context and draw the string.
+  KDIonContext * ctx = KDIonContext::sharedContext();
+  ctx->setClippingRect(KDRect(0, 0, 320, 240));
+  ctx->setOrigin(KDPoint(0, 0));
+  ctx->drawString(text, point, font, KDColor::RGB16(textColor), KDColor::RGB16(backgroundColor));
+  // MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+  // KDIonContext::sharedContext()->drawString(text, point, font, textColor, backgroundColor);
   return mp_const_none;
 }
 
@@ -111,8 +116,15 @@ mp_obj_t modkandinsky_fill_rect(size_t n_args, const mp_obj_t * args) {
   }
   KDRect rect(x, y, width, height);
   KDColor color = MicroPython::Color::Parse(args[4]);
-  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
-  KDIonContext::sharedContext()->fillRect(rect, color);
+  // TODO: Get if the actual application is Python or not.
+  // If it isn't, we need to call directly the Ion fillRect function.
+  // If it is, we call the displaySandbox function, which will hide the console
+  // and switch to another mode.
+  // KDIonContext::sharedContext()->fillRect(rect, color);
+  Ion::Display::pushRectUniform(rect, color);
+  // KDColor color = KDColorBlue;
+  // MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+  // KDIonContext::sharedContext()->fillRect(rect, color);
   return mp_const_none;
 }
 
