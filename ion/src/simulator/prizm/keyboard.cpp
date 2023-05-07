@@ -1,17 +1,22 @@
+#include <stdlib.h>
+#include <unistd.h>
 
-#include <cstdlib>
 #include <gint/display-cg.h>
 #include <gint/display.h>
 #include <gint/keycodes.h>
-#include <ion/keyboard.h>
+#include <gint/keyboard.h>
+#include <gint/gint.h>
+#include <gint/clock.h>
 
+#include <ion/keyboard.h>
 #include <ion/events.h>
+#include <ion/power.h>
+
 #include "keyboard.h"
 #include "layout_keyboard.h"
 #include "main.h"
+#include "menuHandler.h"
 
-#include <gint/keyboard.h>
-#include <gint/gint.h>
 
 using namespace Ion::Keyboard;
 
@@ -89,6 +94,7 @@ constexpr static KeyPair sKeyPairs[] = {
   KeyPair(Key::EE, false, false, KEY_EXP, false, false),
   KeyPair(Key::Ans, false, false, KEY_NEG, true, false),
   KeyPair(Key::EXE, false, false, KEY_EXE, false, false),
+  KeyPair(Key::OnOff, false, false, KEY_ACON, true, false),
 
   // Cut
   // Not assigned
@@ -205,8 +211,13 @@ State scan() {
     state.setKey(Key::Home);
     menuHeldFor++;
     if (menuHeldFor > 30) {
-      // exit(0);
-      gint_osmenu();
+      Simulator::PrizmMenuHandler::openMenu();
+      dupdate();
+      // Wait until EXE is released
+      do {
+        sleep_ms(10);
+        clearevents();
+      } while (keydown(KEY_EXE));
     }
   } else {
     menuHeldFor = 0;

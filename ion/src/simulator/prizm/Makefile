@@ -11,6 +11,8 @@ ion_src += $(addprefix ion/src/simulator/prizm/, \
   timing.cpp \
   console.cpp \
   backlight.cpp \
+  power.cpp \
+  menuHandler.cpp \
 )
 
 liba_src += $(addprefix liba/src/, \
@@ -38,6 +40,7 @@ sdl_simu_needs_to_be_removed += $(addprefix ion/src/simulator/shared/, \
 
 sdl_simu_needs_to_be_removed += $(addprefix ion/src/shared/dummy/, \
   backlight.cpp \
+  power.cpp \
 )
 
 #sdl_simu_needs_to_be_removed += $(addprefix ion/src/simulator/shared/dummy/, \
@@ -48,7 +51,7 @@ sdl_simu_needs_to_be_removed += $(addprefix ion/src/shared/dummy/, \
 #  store_script.cpp \
 #)
 
-# Remove the dummy diplay (re-implemented) and the SDL simulator stuff.
+# Remove the dummy diaplay (re-implemented) and the SDL simulator stuff.
 ion_src := $(filter-out $(sdl_simu_needs_to_be_removed),$(ion_src))
 
 SFLAGS := $(filter-out -Iion/src/simulator/external/sdl/include,$(SFLAGS))

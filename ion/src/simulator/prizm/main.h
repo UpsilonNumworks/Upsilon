@@ -11,6 +11,8 @@ void quit();
 void setNeedsRefresh();
 void refresh();
 
+void runPowerOffSafe(void (*powerOffSafeFunction)(), bool prepareVRAM);
+
 }
 }
 }
