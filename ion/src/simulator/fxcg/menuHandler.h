@@ -3,7 +3,7 @@
 
 namespace Ion {
 namespace Simulator {
-namespace PrizmMenuHandler {
+namespace FXCGMenuHandler {
 
 void openMenu(void);
 

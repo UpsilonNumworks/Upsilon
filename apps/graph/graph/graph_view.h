@@ -18,7 +18,7 @@ public:
    * 10.0938275501223 which are hopefully rare enough.
    * TODO: The drawCurve algorithm should use the derivative function to know
    * how fast the function moves... */
-  #ifndef _PRIZM
+  #ifndef _FXCG
   static constexpr float k_graphStepDenominator = 10.0938275501223f;
   #else
   // This value rounded down has to be a factor of the horizontal resolution / 2

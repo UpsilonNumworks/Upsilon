@@ -30,7 +30,7 @@ bool DateTimeController::handleEvent(Ion::Events::Event event) {
     if (selectedRow() == 0) {
       clockEnabled = !clockEnabled;
       if (clockEnabled) {
-        #ifndef _PRIZM
+        #ifndef _FXCG
         // This doesn't apply on Casio calculators
         Container::activeApp()->displayWarning(I18n::Message::RTCWarning1, I18n::Message::RTCWarning2);
         #endif

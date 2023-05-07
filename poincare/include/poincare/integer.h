@@ -5,7 +5,7 @@
 #include <assert.h>
 #include <poincare/horizontal_layout.h>
 
-#ifdef _PRIZM
+#ifdef _FXCG
 #include <gint/display.h>
 #include <gint/keyboard.h>
 #include <stdio.h>
@@ -21,7 +21,7 @@ class LayoutNode;
 class Integer;
 struct IntegerDivision;
 
-#if (defined _3DS) || (defined _PRIZM)
+#if (defined _3DS) || (defined _FXCG)
 typedef unsigned short half_native_uint_t;
 static_assert(sizeof(half_native_uint_t) == sizeof(uint16_t));
 typedef int native_int_t;

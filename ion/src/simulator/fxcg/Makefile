@@ -1,5 +1,5 @@
 
-ion_src += $(addprefix ion/src/simulator/prizm/, \
+ion_src += $(addprefix ion/src/simulator/fxcg/, \
   main.cpp \
   clipboard.cpp \
   display.cpp \

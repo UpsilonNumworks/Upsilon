@@ -23,7 +23,7 @@ void pullRect(KDRect r, KDColor * pixels);
 
 bool waitForVBlank();
 
-#ifndef _PRIZM
+#ifndef _FXCG
 constexpr int Width = 320;
 constexpr int Height = 240;
 #else

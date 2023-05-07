@@ -48,7 +48,7 @@ private:
   static constexpr KDCoordinate k_bottomMargin = 14;
   static constexpr KDCoordinate k_indicatorMargin = 61;
 
-  #ifndef _PRIZM
+  #ifndef _FXCG
   static constexpr int k_numberOfColumns = 3;
   static constexpr int k_cellHeight = 104;
   static constexpr int k_cellWidth = 104;

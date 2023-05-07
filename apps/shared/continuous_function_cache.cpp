@@ -67,7 +67,7 @@ void ContinuousFunctionCache::ComputeNonCartesianSteps(float * tStep, float * tC
   const int multiple = numberOfCacheablePoints / numberOfWholeSteps;
   // Ignore this on Casio calculators for now, as the screen resolution breaks this
   // TODO: fix this. if it's possible
-  #ifndef _PRIZM
+  #ifndef _FXCG
   static_assert(multiple && !(multiple & (multiple - 1)), "multiple should be a power of 2 for optimal caching");
   #endif
   /* Define cacheStep such that every whole graph steps are equally divided

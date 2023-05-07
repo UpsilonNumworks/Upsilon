@@ -215,7 +215,7 @@ State scan() {
     state.setKey(Key::Home);
     menuHeldFor++;
     if (menuHeldFor > 30) {
-      Simulator::PrizmMenuHandler::openMenu();
+      Simulator::FXCGMenuHandler::openMenu();
       dupdate();
       // Wait until EXE is released
       do {

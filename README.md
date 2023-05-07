@@ -440,9 +440,9 @@ Next:
 git clone --recursive https://github.com/UpsilonNumworks/Upsilon.git
 cd Omega
 git checkout upsilon-dev
-make PLATFORM=simulator TARGET=prizm -j$(nproc)
+make PLATFORM=simulator TARGET=fxcg -j$(nproc)
 ```
-Then copy the file at `./output/release/simulator/prizm/epsilon.g3a` to the calculator over USB.
+Then copy the file at `./output/release/simulator/fxcg/epsilon.g3a` to the calculator over USB.
 
 </details>
 

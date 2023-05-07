@@ -1,7 +1,7 @@
 #ifndef LIBA_STRINGS_H
 #define LIBA_STRINGS_H
 
-#if (_PRIZM)
+#if (_FXCG)
 
 #include <stdlib.h>
 

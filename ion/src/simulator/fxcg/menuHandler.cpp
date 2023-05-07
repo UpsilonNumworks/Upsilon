@@ -2,7 +2,7 @@
 
 namespace Ion {
 namespace Simulator {
-namespace PrizmMenuHandler {
+namespace FXCGMenuHandler {
 
 int saveAndOpenMainMenu(void) {
   int addr;
