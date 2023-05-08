@@ -56,8 +56,8 @@ ion_src := $(filter-out $(sdl_simu_needs_to_be_removed),$(ion_src))
 
 SFLAGS := $(filter-out -Iion/src/simulator/external/sdl/include,$(SFLAGS))
 
-SFLAGS += -DFXCG50 -DTARGET_FXCG50 -m4-nofpu -mb -ffreestanding -nostdlib -Wa,--dsp -fstrict-volatile-bitfields -g
-LDFLAGS += -nostdlib -Wl,--no-warn-rwx-segments -lgint-cg -lc -lgint-cg -lc -lgcc -lopenlibm -lstdc++
+SFLAGS += -DFXCG50 -DTARGET_FXCG50 -m4-nofpu -mb -ffreestanding -nostdlib -Wa,--dsp -fstrict-volatile-bitfields -g -Os -flto
+LDFLAGS += -nostdlib -Wl,--no-warn-rwx-segments -lgint-cg -lc -lgint-cg -lc -lgcc -lopenlibm -lstdc++ -lgcc
 
 ifdef FASTLOAD
   LDFLAGS += -T fxcg50_fastload.ld

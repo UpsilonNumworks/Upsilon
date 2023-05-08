@@ -13,8 +13,10 @@ void PowerOff(int displayLogo) {
     "mov.l 1f, r0 \n\t"
     "jmp @r2 \n\t"
     "nop \n\t"
+    ".align 2 \n\t"
     "1: \n\t"
     ".long 0x1839 \n\t"
+    ".align 4 \n\t"
     "2: \n\t"
     ".long 0x80020070 \n\t"
   );
