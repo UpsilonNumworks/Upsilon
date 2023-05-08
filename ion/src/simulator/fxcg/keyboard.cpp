@@ -93,7 +93,7 @@ constexpr static KeyPair sKeyPairs[] = {
   KeyPair(Key::Dot, false, false, KEY_DOT, false, false),
   KeyPair(Key::EE, false, false, KEY_EXP, false, false),
   KeyPair(Key::Ans, false, false, KEY_NEG, true, false),
-  KeyPair(Key::EXE, false, false, KEY_EXE, false, false),
+  KeyPair(Key::EXE, false, false, KEY_EXE, false, false, true),
   KeyPair(Key::OnOff, false, false, KEY_ACON, true, false),
 
   // Cut
@@ -103,7 +103,7 @@ constexpr static KeyPair sKeyPairs[] = {
   // Paste
   KeyPair(Key::Toolbox, true, false, KEY_9, true, false),
   // Clear
-  KeyPair(Key::Backspace, true, false, KEY_F6, false, false),
+  KeyPair(Key::Backspace, true, false, KEY_ACON, false, false),
   // [
   KeyPair(Key::Exp, true, false, KEY_ADD, true, false),
   // ]
@@ -191,6 +191,10 @@ constexpr static KeyPair sKeyPairs[] = {
   KeyPair(Key::Plus, false, true, KEY_0, false, true),
   // Space
   KeyPair(Key::Minus, false, true, KEY_DOT, false, true),
+  // ?
+  KeyPair(Key::Zero, false, true, KEY_F6, true, false),
+  // !
+  KeyPair(Key::Dot, false, true, KEY_F6, false, false),
 
   // Brightness control shortcut in Upsilon
   KeyPair(Key::Plus, true, false, KEY_UP, false, true),
