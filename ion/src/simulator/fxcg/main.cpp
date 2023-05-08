@@ -55,6 +55,7 @@ void quit() {
 
 void EnableStatusArea(int opt) {
   __asm__ __volatile__ (
+    ".align 2 \n\t"
     "mov.l 2f, r2 \n\t"
     "mov.l 1f, r0 \n\t"
     "jmp @r2 \n\t"
