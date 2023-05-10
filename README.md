@@ -279,7 +279,7 @@ git checkout upsilon-dev
 
 ```bash
 make MODEL=n0100 clean
-make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Your name, max 15 characters}" -j4
+make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Your name, max 15 characters}" -j(nproc)
 ```
 
 Now, run either:
@@ -295,7 +295,7 @@ to directly flash the calculator after pressing simultaneously `reset` and `6` b
 or:
 
 ```bash
-make MODEL=n0100 OMEGA_USERNAME="" binpack -j4
+make MODEL=n0100 OMEGA_USERNAME="" binpack -j(nproc)
 ```
 
 to make binpack which you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Binpacks are a great way to share a custom build of Upsilonto friends.
@@ -316,7 +316,7 @@ Then, build with:
 
 ```bash
 make clean
-make OMEGA_USERNAME="{Your name, max 15 characters}" -j4
+make OMEGA_USERNAME="{Your name, max 15 characters}" -j(nproc)
 ```
 
 Now, run either:
@@ -332,7 +332,7 @@ to directly flash the calculator into the current slot, or thought bootloader's 
 or:
 
 ```bash
-make OMEGA_USERNAME="" binpack -j4
+make OMEGA_USERNAME="" binpack -j(nproc)
 ```
 
 to make binpack which you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0110/). You'll find them at `output/release/device/bootloader/`. Binpacks are a great way to share a custom build of Upsilon to friends.
@@ -345,7 +345,7 @@ to make binpack which you can flash to the calculator from [Ti-planet's webDFU](
 
 ```bash
 make MODEL=n0110 clean
-make MODEL=n0110 OMEGA_USERNAME="{Your name, max 15 characters}" -j4
+make MODEL=n0110 OMEGA_USERNAME="{Your name, max 15 characters}" -j(nproc)
 ```
 
 Now, run either:
@@ -361,7 +361,7 @@ to directly flash the calculator after pressing simultaneously `reset` and `6` b
 or:
 
 ```bash
-make MODEL=n0110 OMEGA_USERNAME="" binpack -j4
+make MODEL=n0110 OMEGA_USERNAME="" binpack -j(nproc)
 ```
 
 to make binpack which you can flash to the calculator from [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0110/). You'll find them at `output/release/device/bootloader/`. Binpacks are a great way to share a custom build of Upsilon to friends.
@@ -415,7 +415,7 @@ Then, compile Upsilon :
 
 ```bash
 make clean
-make PLATFORM=simulator TARGET=web OMEGA_USERNAME="{Your name, max 15 characters}" -j4
+make PLATFORM=simulator TARGET=web OMEGA_USERNAME="{Your name, max 15 characters}" -j$(nproc)
 ```
 
 The simulator is now in `output/release/simulator/web/simulator.zip`
@@ -431,8 +431,8 @@ You need devkitPro and devkitARM installed and in your path (instructions [here]
 ```bash
 git clone --recursive https://github.com/UpsilonNumworks/Upsilon.git
 cd Upsilon
-git checkout --recursive upsilon-dev
-make PLATFORM=simulator TARGET=3ds -j
+git checkout upsilon-dev
+make PLATFORM=simulator TARGET=3ds -j(nproc)
 ```
 
 You can then put epsilon.3dsx on a SD card to run it from the HBC or use 3dslink to launch it over the network:
@@ -444,6 +444,22 @@ You can then put epsilon.3dsx on a SD card to run it from the HBC or use 3dslink
 </details>
 
 <br>
+
+<details>
+  <summary><b>Casio fx-CG-series Port</b></summary>
+  
+First, install gint and fxsdk along with a cross compiler for the calculator. There are instructions for this (in French, but Google Translate works well enough) [here](https://www.planet-casio.com/Fr/forums/topic16614-last-giteapc-installer-et-mettre-a-jour-automatiquement-des-projets-gitea.html).
+
+Next:
+```bash
+git clone --recursive https://github.com/UpsilonNumworks/Upsilon.git
+cd Omega
+git checkout upsilon-dev
+make PLATFORM=simulator TARGET=fxcg -j$(nproc)
+```
+Then copy the file at `./output/release/simulator/fxcg/epsilon.g3a` to the calculator over USB.
+
+</details>
 
 Important: Don't forget the `--recursive` tag, because Upsilon relies on submodules.
 Also, you can change the number of processes that run in parallel during the build by changing the value of the `-j` flag.
@@ -491,7 +507,8 @@ You can try Epsilon straight from your browser in the [online simulator](https:/
 
 NumWorks is a registered trademark of NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.
 Nintendo and Nintendo 3DS are registered trademarks of Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, USA.
-NumWorks SAS and Nintendo of America Inc aren't associated in any shape or form with this project.
+Casio is a registered trademark of Casio Computer Co., Ltd. CORPORATION JAPAN 6-2, Hon-machi 1-chome Shibuya-ku, Tokyo JAPAN 151-8543.
+NumWorks SAS, Nintendo of America Inc and Casio aren't associated in any shape or form with this project.
 
 - NumWorks Epsilon is released under a [CC BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
 - Omega is released under a [CC BY-NC-SA License](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
