@@ -55,10 +55,10 @@ Ne débranchez votre calculatrice qu'une fois l'installation terminée.
 Il suffit juste d'installer les dépendances en tapant ces commandes dans un Terminal en mode super-utilisateur.
 
 ```bash
-apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+apt install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
 ```
 
-C'est fait! Vous pouvez aller à l'étape 2.
+C'est fait ! Vous pouvez aller à l'étape 2.
 
 <br>
 
@@ -70,7 +70,7 @@ C'est fait! Vous pouvez aller à l'étape 2.
 
 <br>
 
-Installez toutes les dépendances grâce à cette commande:
+Installez toutes les dépendances grâce à cette commande :
 
 ```bash
 dnf install make automake gcc gcc-c++ kernel-devel git ImageMagick libX11-devel libXext-devel freetype-devel libpng-devel libjpeg-devel pkg-config arm-none-eabi-gcc-cs arm-none-eabi-gcc-cs-c++
@@ -86,7 +86,7 @@ dnf install make automake gcc gcc-c++ kernel-devel git ImageMagick libX11-devel 
 
 <br>
 
-Installez toutes les dépendances grâce à cette commande:
+Installez toutes les dépendances grâce à cette commande :
 ```bash
 nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext python3 imagemagick python310Packages.lz4 python310Packages.pypng python310Packages.pypng gcc-arm-embedded
 ```
@@ -103,7 +103,7 @@ nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext pytho
 
 <br>
 
-Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois installé, utilisez:
+Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois téléchargé, utilisez :
 
 ```bash
 brew install numworks/tap/epsilon-sdk
@@ -131,20 +131,20 @@ Vous pouvez aller à l'étape 2.
 
 <summary>Avec Msys2/Mingw (Supportés par Numwoks bien qu'il y ait beaucoup de bugs)</summary>
 
-L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par NumWorks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-coller toutes les commandes de ce tutoriel. Une fois installé, copier-coller ces deux commandes dans le terminal:
+L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par NumWorks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-coller toutes les commandes de ce tutoriel. Une fois installé, copier-coller ces deux commandes dans le terminal :
 
 ```bash
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config mingw-w64-x86_64-libusb git make python
 echo "export PATH=/mingw64/bin:$PATH" >> .bashrc
 ```
 
-Ensuite, vous devrez installer [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). Quand il vous est demandé de choisir un dossier d'installation, choisissez `C:\msys64\home\User\gcc-arm\`. Il vous faudra ensuite ajouter ce dossier à votre $PATH. Tapez juste:
+Ensuite, vous devrez installer [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). Quand il vous est demandé de choisir un dossier d'installation, choisissez `C:\msys64\home\User\gcc-arm\`. Il vous faudra ensuite ajouter ce dossier à votre $PATH. Tapez juste :
 
 ```bash
 echo "export PATH=$PATH:$HOME/gcc-arm/bin" >> .bashrc
 ```
 
-Redémarrez votre terminal et vous pouvez aller à l'étape 2!
+Redémarrez votre terminal et vous pouvez aller à l'étape 2 !
 
 </details>
 
@@ -158,7 +158,7 @@ Votre version de Windows doit être >= 1903.
 
 #### Installation de WSL
 
-1. Apuyez simultanément sur les touches "Windows" et "x" puis cliquez sur "Powershell administrateur". Entrez ensuite ceci dans la nouvelle fenêtre:
+1. Apuyez simultanément sur les touches "Windows" et "x" puis cliquez sur "Powershell administrateur". Entrez ensuite ceci dans la nouvelle fenêtre :
 
 ```powershell
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
@@ -176,7 +176,7 @@ Cette commande permet d'autoriser le démarrage des machines signées par Micros
 
 3. Téléchargez [ce fichier](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi) et suivez les instructions d'installation.
 
-4. Ouvrez votre fenêtre PowerShell comme avant et tapez:
+4. Ouvrez votre fenêtre PowerShell comme avant et tapez :
 
 ```powershell
 wsl --set-default-version 2
@@ -188,7 +188,7 @@ WSL est maintenant installé.
 
 6. Installez maintenant la version pour ARM de GCC.
 ```bash
-sudo apt-get install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+sudo apt install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
 ```
 
 ### Installation d'usbipd pour connecter la calculatrice à WSL (facultatif)
@@ -197,24 +197,24 @@ Pour connecter la calculatrice, il faut installer cet [outil](https://github.com
 
 #### Ubuntu
 
-1. Dans un terminal WSL Ubuntu, tapez:
+1. Dans un terminal WSL Ubuntu, tapez :
 
 ```bash
 sudo apt install linux-tools-5.4.0-77-generic hwdata
 ```
 
-2. Editez /etc/sudoers pour que l'on puisse utiliser la commande usbip. Sur Ubutu, cele est fait de cette manière:
+2. Editez /etc/sudoers pour que l'on puisse utiliser la commande usbip. Sur Ubutu, cele est fait de cette manière :
 
 ```bash
 sudo visudo
 ```
 
-3. Ajoutez `/usr/lib/linux-tools/5.4.0-77-generic` au début du secure_path. Après édition, la ligne devrait ressembler à:
+3. Ajoutez `/usr/lib/linux-tools/5.4.0-77-generic` au début du secure_path. Après édition, la ligne devrait ressembler à :
 `Defaults secure_path="/usr/lib/linux-tools/5.4.0-77-generic:/usr/local/sbin:..."`
 
 #### Debian
 
-1.Si vous utilisez Debian, utilisez cette commande:
+1.Si vous utilisez Debian, utilisez cette commande :
 
 ```bash
 sudo apt install usbip hwdata usbutils
@@ -222,7 +222,7 @@ sudo apt install usbip hwdata usbutils
 
 ### Pour connecter la calculatrice à WSL
 
-1. Ouvrez encore un PowerShell en mode administrateur et tapez:
+1. Ouvrez encore un PowerShell en mode administrateur et tapez :
 
 ```powershell
   usbipd wsl list
@@ -230,7 +230,7 @@ sudo apt install usbip hwdata usbutils
 
 Ceci va lister les périphériques USB connectés à l'ordinateur. Regardez le BUSID de votre "NumWorks Calculator".
 
-2. Maintenant, lancez cette commande en remplaçant <BUSID> par celui de votre calculatrice:
+2. Maintenant, lancez cette commande en remplaçant <BUSID> par celui de votre calculatrice :
 
 ```powershell
 usbipd wsl attach --busid <BUSID>
@@ -248,7 +248,7 @@ Vous pouvez aller à l'étape 2.
 
 ### 2. Récupérer le code source
 
-Le code source est disponible dans une repository git. Récupérez-le de cette manière:
+Le code source est disponible dans une repository git. Récupérez-le de cette manière :
 
 ```bash
 git clone --recursive https://github.com/UpsilonNumworks/Upsilon.git
@@ -264,30 +264,30 @@ git checkout upsilon-dev
 
 <summary><b>Model n0100</b></summary>
 
-(note: vous pouvez changer l'argument `EPSILON_I18N=en` avec `fr`, `nl`, `pt`, `it`, `de`, `es` or `hu`).
+(note : vous pouvez changer l'argument `EPSILON_I18N=en` avec `fr`, `nl`, `pt`, `it`, `de`, `es` or `hu`).
 
 ```bash
 make MODEL=n0100 clean
 make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Votre nom, maximum 15 caractères}" -j4
 ```
 
-Maintenant, lancez soit:
+Maintenant, lancez soit :
 
 ```bash
 make MODEL=n0100 epsilon_flash
 ```
 
-pour directement flasher la calculatrice après avoir appuyé simultanément sur `reset` et `6` et avoir branché la calculatrice à l'ordinateur.
+Pour directement flasher la calculatrice après avoir appuyé simultanément sur `reset` et `6` et avoir branché la calculatrice à l'ordinateur.
 
 <br>
 
-soit:
+Soit :
 
 ```bash
 make MODEL=n0100 OMEGA_USERNAME="" binpack -j4
 ```
 
-pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/).
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/).
 
 </details>
 
@@ -301,20 +301,20 @@ Le bootloader vous permet d'installer firmware dans des "slots" séparés. Dans 
 <summary>Bootloader</summary>
 
 Votre calculatrice doit être flashée avec le bootloader d'[Upsilon](https://getupsilon.web.app) ou d'[Omega](https://getomega.dev).
-Compilez avec:
+Compilez avec :
 
 ```bash
 make clean
 make OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 ```
 
-Ensuite lancez soit:
+Ensuite lancez soit :
 
 ```bash
 make epsilon.A_flash
 ```
 
-pour flasher le slot actuel ou pour flasher par le flasher du booloader avec RESET, puis 4 (flash) et 1 (flash slots) pour flasher n'importe quel slot.
+Pour flasher le slot actuel ou pour flasher par le flasher du booloader avec RESET, puis 4 (flash) et 1 (flash slots) pour flasher n'importe quel slot.
 
 <br>
 
@@ -324,36 +324,36 @@ soit:
 make OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
 </details>
 
 
 <details>
 
 <summary>Model n0110 sans bootloader (obsolète, utilisez le bootloader à la place pour la protection contre Epsilon)</summary>
-Compilez avec:
+Compilez avec :
 
 ```bash
 make MODEL=n0110 clean
 make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 ```
 
-Ensuite lancez soit:
+Ensuite lancez soit :
 
 ```bash
 make MODEL=n0110 epsilon_flash
 ```
 
-pour directement flasher la calculatrice après avoir appuyé simultanément sur `RESET` et `6` et avoir branché la calculatrice à l'ordinateur.
+Pour directement flasher la calculatrice après avoir appuyé simultanément sur `RESET` et `6` et avoir branché la calculatrice à l'ordinateur.
 <br>
 
-soit:
+Soit :
 
 ```bash
 make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
 </details>
 
 </details>
@@ -363,15 +363,15 @@ pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-p
 
 <summary><b>Simulateur Natif</b></summary>
 
-Lancez cette commande:
+Lancez cette commande :
 ```bash
 make clean
 ```
-Vous pouvez soit choisir d'utiliser la commande qui détectera automatiquement votre plateforme:
+Vous pouvez soit choisir d'utiliser la commande qui détectera automatiquement votre plateforme :
 ```bash
 make PLATFORM=simulator
 ```
-Ou choisir une commande qui correspond à votre plateforme:
+Ou choisir une commande qui correspond à votre plateforme :
 ```bash
 make PLATFORM=simulator TARGET=android
 make PLATFORM=simulator TARGET=ios
@@ -424,7 +424,7 @@ git checkout --recursive upsilon-dev
 make PLATFORM=simulator TARGET=3ds -j
 ```
 
-Vous pouvez ensuite mettre epsilon.3dsx sur une carte SDpour le lancer depuis le HBC ou utilisez 3dslink pour le lancer via le réseau:
+Vous pouvez ensuite mettre epsilon.3dsx sur une carte SDpour le lancer depuis le HBC ou utilisez 3dslink pour le lancer via le réseau :
 
 ```bash
 3dslink output/release/simulator/3ds/epsilon.3dsx -a <3DS' IP ADDRESS>
@@ -434,7 +434,7 @@ Vous pouvez ensuite mettre epsilon.3dsx sur une carte SDpour le lancer depuis le
 
 <br>
 
-Important: n'oubliez pas l'argument `--recursive` Parce qu'Upsilon dépend de submodules.
+Important : n'oubliez pas l'argument `--recursive` Parce qu'Upsilon dépend de submodules.
 Aussi, vous pouvez changer le nombre de processus de compilation en parallèles en changeant le nombre après l'argument `-j`.
 N'oubliez pas de mettre votre nom à la place `{Votre nom, maximum 15 caractères}`.Si vous n'en voulez pas, enlevez l'argument `OMEGA_USERNAME`.
 
