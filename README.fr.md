@@ -58,7 +58,7 @@ Il suffit juste d'installer les dépendances en tapant ces commandes dans un Ter
 apt install build-essential git imagemagick libx11-dev libxext-dev libfreetype6-dev libpng-dev libjpeg-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
 ```
 
-C'est fait ! Vous pouvez aller à l'étape 2.
+C'est fait ! Vous pouvez passer à l'étape 2.
 
 <br>
 
@@ -113,7 +113,7 @@ Et toutes les dépendances seront installées.
 
 <br>
 
-Vous pouvez aller à l'étape 2.
+Vous pouvez passer à l'étape 2.
 
 <br>
 
@@ -144,7 +144,7 @@ Ensuite, vous devrez installer [GCC toolchain for ARM](https://developer.arm.com
 echo "export PATH=$PATH:$HOME/gcc-arm/bin" >> .bashrc
 ```
 
-Redémarrez votre terminal et vous pouvez aller à l'étape 2 !
+Redémarrez votre terminal et vous pouvez passer à l'étape 2 !
 
 </details>
 
@@ -203,7 +203,7 @@ Pour connecter la calculatrice, il faut installer cet [outil](https://github.com
 sudo apt install linux-tools-5.4.0-77-generic hwdata
 ```
 
-2. Editez /etc/sudoers pour que l'on puisse utiliser la commande usbip. Sur Ubutu, cele est fait de cette manière :
+2. Editez /etc/sudoers pour que l'on puisse utiliser la commande usbip. Sur Ubuntu, cele est fait de cette manière :
 
 ```bash
 sudo visudo
@@ -214,7 +214,7 @@ sudo visudo
 
 #### Debian
 
-1.Si vous utilisez Debian, utilisez cette commande :
+1.Si vous utilisez Debian, procédez comme suit :
 
 ```bash
 sudo apt install usbip hwdata usbutils
@@ -238,7 +238,7 @@ usbipd wsl attach --busid <BUSID>
 
 Le mot de passe de votre machine WSL vous sera demandé.
 
-Vous pouvez aller à l'étape 2.
+Vous pouvez passer à l'étape 2.
 
 </details>
 
@@ -287,7 +287,7 @@ Soit :
 make MODEL=n0100 OMEGA_USERNAME="" binpack -j4
 ```
 
-Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/).
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [WebDFU de TI-Planet](https://ti-planet.github.io/webdfu_numworks/n0100/).
 
 </details>
 
@@ -318,7 +318,7 @@ Pour flasher le slot actuel ou pour flasher par le flasher du booloader avec RES
 
 <br>
 
-soit:
+Soit :
 
 ```bash
 make OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
@@ -367,11 +367,11 @@ Lancez cette commande :
 ```bash
 make clean
 ```
-Vous pouvez soit choisir d'utiliser la commande qui détectera automatiquement votre plateforme :
+Vous avez le choix entre utiliser la commande qui détectera automatiquement votre plateforme :
 ```bash
 make PLATFORM=simulator
 ```
-Ou choisir une commande qui correspond à votre plateforme :
+Et choisir une commande qui correspond à votre plateforme :
 ```bash
 make PLATFORM=simulator TARGET=android
 make PLATFORM=simulator TARGET=ios
@@ -390,7 +390,7 @@ Vous trouverez les fichiers du simulateur dans `output/release/simulator/`.
 
 <summary><b>Simulateur web</b></summary>
 
-D'abord, installez emsdk :
+D'abord, installez ```emsdk``` :
 
 ```bash
 git clone https://github.com/emscripten-core/emsdk.git
@@ -424,7 +424,7 @@ git checkout --recursive upsilon-dev
 make PLATFORM=simulator TARGET=3ds -j
 ```
 
-Vous pouvez ensuite mettre epsilon.3dsx sur une carte SDpour le lancer depuis le HBC ou utilisez 3dslink pour le lancer via le réseau :
+Vous pouvez ensuite mettre ```epsilon.3dsx``` sur une carte SD pour le lancer depuis le HBC ou utilisez 3dslink pour le lancer via le réseau :
 
 ```bash
 3dslink output/release/simulator/3ds/epsilon.3dsx -a <3DS' IP ADDRESS>
@@ -434,9 +434,9 @@ Vous pouvez ensuite mettre epsilon.3dsx sur une carte SDpour le lancer depuis le
 
 <br>
 
-Important : n'oubliez pas l'argument `--recursive` Parce qu'Upsilon dépend de submodules.
-Aussi, vous pouvez changer le nombre de processus de compilation en parallèles en changeant le nombre après l'argument `-j`.
-N'oubliez pas de mettre votre nom à la place `{Votre nom, maximum 15 caractères}`.Si vous n'en voulez pas, enlevez l'argument `OMEGA_USERNAME`.
+Important : n'oubliez pas l'argument `--recursive` parce qu'Upsilon dépend de submodules.
+Aussi, vous pouvez changer le nombre de processus de compilation en parallèle en changeant le nombre après l'argument `-j`.
+N'oubliez pas de mettre votre nom à la place `{Votre nom, maximum 15 caractères}`. Si vous n'en voulez pas, enlevez l'argument `OMEGA_USERNAME`.
 
 Si vous avez besoin d'aide, n'hésitez pas à rejoindre notre serveur Discord : <https://discord.gg/Q9buEMduXG>
 
