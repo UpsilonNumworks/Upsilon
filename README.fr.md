@@ -11,15 +11,15 @@
 
 ## À propos
 
-Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de Numworks tournant sur les calculatrices du même nom, qui apporte beaucoup de fonctionnalités en plus, mais qui fut archivé et fermé pour des raisons légales après un changement de politique de Numworks. Upsilon est fait pour ceux qui aimeraient voir un futur pour les OS créées par les utilisateurs pour Numworks, même après l'arrèt du projet initial.
+Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de NumWorks tournant sur les calculatrices du même nom, qui apporte beaucoup de fonctionnalités en plus, mais qui fut archivé et fermé pour des raisons légales après un changement de politique de NumWorks. Upsilon est fait pour ceux qui aimeraient voir un futur pour les OS créées par les utilisateurs pour NumWorks, même après l'arrêt du projet initial.
 
 ### Quelques fonctionnalités supplémentaires
 
-- Un module python kandinsky amélioré
+- Un module Python kandinsky amélioré
 - Un support pour fonds d'écrans personnalisés
 - Des applications externes
 - Un thème Upsilon
-- La surcharge des opérateurs en python
+- La surcharge des opérateurs en Python
 - Un tableau périodique légèrement amélioré
 - L'utilisation possible du signe "=" dans les calculs
 - *Ainsi que tout ce qui a été ajouté sur Omega, et bien plus...* [Changelogs complets d'Omega](https://github.com/Omega-Numworks/Omega/wiki/Changelog) | [Fonctionnalités principales d'Omega & captures d'écran](https://github.com/Omega-Numworks/Omega/wiki/Main-features).
@@ -103,7 +103,7 @@ nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext pytho
 
 <br>
 
-Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois intsallé, utilisez:
+Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois installé, utilisez:
 
 ```bash
 brew install numworks/tap/epsilon-sdk
@@ -131,14 +131,14 @@ Vous pouvez aller à l'étape 2.
 
 <summary>Avec Msys2/Mingw (Supportés par Numwoks bien qu'il y ait beaucoup de bugs)</summary>
 
-L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par Numworks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-colletoutes lecommandes de ce tutoriel. Une fois installé, copier-coller ces deux commandes dans le terminal:
+L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par NumWorks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-coller toutes les commandes de ce tutoriel. Une fois installé, copier-coller ces deux commandes dans le terminal:
 
 ```bash
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config mingw-w64-x86_64-libusb git make python
 echo "export PATH=/mingw64/bin:$PATH" >> .bashrc
 ```
 
-Ensuite, vous devrez installer [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). Quand il vouest demandde choisir u dossier d'installation, choisissez `C:\msys64\home\User\gcc-arm\`. Il vous faudra ensuite ajouter ce dossier à votre $PATH. Tapez juste:
+Ensuite, vous devrez installer [GCC toolchain for ARM](https://developer.arm.com/tools-and-software/open-source-software/developer-tools/gnu-toolchain/gnu-rm/downloads). Quand il vous est demandé de choisir un dossier d'installation, choisissez `C:\msys64\home\User\gcc-arm\`. Il vous faudra ensuite ajouter ce dossier à votre $PATH. Tapez juste:
 
 ```bash
 echo "export PATH=$PATH:$HOME/gcc-arm/bin" >> .bashrc
@@ -154,11 +154,11 @@ Redémarrez votre terminal et vous pouvez aller à l'étape 2!
 
 WSL est un système qui virtualise un environnement GNU/Linux dans Windows.
 
-Votre version de windows doit être >= 1903.
+Votre version de Windows doit être >= 1903.
 
 #### Installation de WSL
 
-1. Apuyez simulatanément sur les touches "windows" et "x" puis cliquez sur "Powershell administrateur". Entrez ensuite ceci dans la nouvelle fenêtre:
+1. Apuyez simultanément sur les touches "Windows" et "x" puis cliquez sur "Powershell administrateur". Entrez ensuite ceci dans la nouvelle fenêtre:
 
 ```powershell
 dism.exe /online /enable-feature /featurename:Microsoft-Windows-Subsystem-Linux /all /norestart
@@ -176,7 +176,7 @@ Cette commande permet d'autoriser le démarrage des machines signées par Micros
 
 3. Téléchargez [ce fichier](https://wslstorestorage.blob.core.windows.net/wslblob/wsl_update_x64.msi) et suivez les instructions d'installation.
 
-4. Ouvrez votre fenêtre powershell comme avant et tapez:
+4. Ouvrez votre fenêtre PowerShell comme avant et tapez:
 
 ```powershell
 wsl --set-default-version 2
@@ -214,7 +214,7 @@ sudo visudo
 
 #### Debian
 
-1.Si vous utiliser Debian, utilisez cette commande:
+1.Si vous utilisez Debian, utilisez cette commande:
 
 ```bash
 sudo apt install usbip hwdata usbutils
@@ -222,15 +222,15 @@ sudo apt install usbip hwdata usbutils
 
 ### Pour connecter la calculatrice à WSL
 
-1. Ouvrez encore un powershell en mode administrateur et tapez:
+1. Ouvrez encore un PowerShell en mode administrateur et tapez:
 
 ```powershell
   usbipd wsl list
 ```
 
-Ceci va lister les périphériques USB connectés à l'ordinateur. Reagrdez le BUSID de votre "Numworks Calculator".
+Ceci va lister les périphériques USB connectés à l'ordinateur. Regardez le BUSID de votre "NumWorks Calculator".
 
-2. Maintenant, lancez cette commande en remplçant <BUSID> par celui de votre caculatrice:
+2. Maintenant, lancez cette commande en remplaçant <BUSID> par celui de votre calculatrice:
 
 ```powershell
 usbipd wsl attach --busid <BUSID>
@@ -300,7 +300,7 @@ Le bootloader vous permet d'installer firmware dans des "slots" séparés. Dans 
 <details>
 <summary>Bootloader</summary>
 
-Votre calculatrice doit être flashé avec le bootloader d'[Upsilon](https://getupsilon.web.app) ou d'[Omega](https://getomega.dev).
+Votre calculatrice doit être flashée avec le bootloader d'[Upsilon](https://getupsilon.web.app) ou d'[Omega](https://getomega.dev).
 Compilez avec:
 
 ```bash
@@ -367,7 +367,7 @@ Lancez cette commande:
 ```bash
 make clean
 ```
-Vous pouvez soit choisir d'utiliser la commmande qui détectera automatiquement votre plateforme:
+Vous pouvez soit choisir d'utiliser la commande qui détectera automatiquement votre plateforme:
 ```bash
 make PLATFORM=simulator
 ```
@@ -438,7 +438,7 @@ Important: n'oubliez pas l'argument `--recursive` Parce qu'Upsilon dépend de su
 Aussi, vous pouvez changer le nombre de processus de compilation en parallèles en changeant le nombre après l'argument `-j`.
 N'oubliez pas de mettre votre nom à la place `{Votre nom, maximum 15 caractères}`.Si vous n'en voulez pas, enlevez l'argument `OMEGA_USERNAME`.
 
-Si vous avez besoin d'aide, n'hésitez pas à rejoindre notre serveur discord : <https://discord.gg/Q9buEMduXG>
+Si vous avez besoin d'aide, n'hésitez pas à rejoindre notre serveur Discord : <https://discord.gg/Q9buEMduXG>
 
 <a href="https://discord.gg/Q9buEMduXG"><p align="center"><img alt="Omega Banner Discord" src="https://user-images.githubusercontent.com/12123721/86287349-54ef5800-bbe8-11ea-80c1-34eb1f93eebd.png" /></p></a>
 ---
@@ -467,7 +467,7 @@ Les anciens projets d'Omega, avant sa fermeture, qui ont été utilisés pour ce
 
 ## À propos d'Epsilon
 
-Upsilon est un fork d'Omega, visant a continuer le projet des OS utilisateurs pour Numworks
+Upsilon est un fork d'Omega, visant à continuer le projet des OS utilisateurs pour NumWorks
 
 Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieurs
 
@@ -476,7 +476,7 @@ Vous pouvez essayer Epsilon depuis votre navigateur sur le [simulateur en ligne]
 ## Licence
 
 NumWorks est une marque déposée de NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.
-Nintendo est Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, Etats-Unis.
+Nintendo et Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, Etats-Unis.
 NumWorks SAS et Nintendo of America Inc ne sont en aucun cas associés avec ce projet.
 
 - NumWorks Epsilon est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
