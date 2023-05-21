@@ -32,7 +32,7 @@ Rendez-vous sur le [site d'Upsilon](https://getupsilon.web.app/) à la section "
 Si votre calculatrice est reconnue, qu'elle contient une version d'Epsilon inférieure à 16 et que votre navigateur accepte WebUSB, la page vous proposera d'installer Upsilon.  
 Ne débranchez votre calculatrice qu'une fois l'installation terminée.
 
-### Manuel
+### Manuelle
 
  *Vous pouvez vous référer à ce  [site Internet](https://www.numworks.com/resources/engineering/software/build/) pour la première étape si vous avez des erreurs*
 
