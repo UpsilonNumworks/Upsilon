@@ -467,7 +467,7 @@ Les anciens projets d'Omega, avant sa fermeture, qui ont été utilisés pour ce
 
 ## À propos d'Epsilon
 
-Upsilon est un fork d'Omega, visant à continuer le projet des OS utilisateurs pour NumWorks
+Upsilon est un fork d'Omega, visant à continuer le projet des OS utilisateurs pour NumWorks.
 
 Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieurs.
 
