@@ -2,12 +2,12 @@
 
 <p align="center">
   <a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img alt="cc by-nc-sa 4.0" src="https://img.shields.io/badge/License-CC%20BY--NC--SA%204.0-525252.svg?labelColor=292929&logo=creative%20commons&style=for-the-badge" /></a>
-  <a href="https://github.com/UpsilonNumworks/Upsilon/issues"><img alt="Issues" src="https://img.shields.io/github/issues/Lauryy06/Upsilon.svg?labelColor=292929&logo=git&style=for-the-badge" /></a>
+  <a href="https://github.com/UpsilonNumworks/Upsilon/issues"><img alt="Issues" src="https://img.shields.io/github/issues/UpsilonNumworks/Upsilon.svg?labelColor=292929&logo=git&style=for-the-badge" /></a>
   <br/>
   <a href="https://discord.gg/sbGvhWETAd"><img alt="Discord" src="https://img.shields.io/discord/663420259851567114?color=blue&labelColor=292929&label=chat%20-%20discord&logo=discord&style=for-the-badge" /></a>
 </p>
 
-> Don't understand french ? speak english ? here's the [english README](./README.md) !
+> Don't understand French ? Speak English ? Here's the [English README](./README.md) !
 
 ## À propos
 
@@ -15,8 +15,8 @@ Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de NumWorks tournant sur le
 
 ### Quelques fonctionnalités supplémentaires
 
-- Un module Python kandinsky amélioré
-- Un support pour fonds d'écrans personnalisés
+- Un module Python Kandinsky amélioré
+- Un support pour fonds d'écran personnalisés
 - Des applications externes
 - Un thème Upsilon
 - La surcharge des opérateurs en Python
@@ -32,9 +32,9 @@ Rendez-vous sur le [site d'Upsilon](https://getupsilon.web.app/) à la section "
 Si votre calculatrice est reconnue, qu'elle contient une version d'Epsilon inférieure à 16 et que votre navigateur accepte WebUSB, la page vous proposera d'installer Upsilon.  
 Ne débranchez votre calculatrice qu'une fois l'installation terminée.
 
-### Manuelle
+### Manuel
 
- *Vous pouvez vous référer à ce  [site Internet](https://www.numworks.com/resources/engineering/software/build/)pour la première étape si vous avez des erreurs*
+ *Vous pouvez vous référer à ce  [site Internet](https://www.numworks.com/resources/engineering/software/build/) pour la première étape si vous avez des erreurs*
 
 ### 1. Installation du SDK
 
@@ -103,7 +103,7 @@ nix-env -p gcc libpng libjpeg xorg.libX11 pkg-config freetype xorg.libXext pytho
 
 <br>
 
-Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois téléchargé, utilisez :
+Il est recommandé d'utiliser [Homebrew](https://brew.sh/). Une fois téléchargé, lancez :
 
 ```bash
 brew install numworks/tap/epsilon-sdk
@@ -182,7 +182,7 @@ Cette commande permet d'autoriser le démarrage des machines signées par Micros
 wsl --set-default-version 2
 ```
 
-5. téléchargez [Ubuntu](https://www.microsoft.com/store/apps/9n6svws3rx71) depuis le Microsoft store. Vous pouvez aussi installer [Debian](https://www.microsoft.com/store/productI9MSVKQC78PK6).
+5. Téléchargez [Ubuntu](https://www.microsoft.com/store/apps/9n6svws3rx71) depuis le Microsoft store. Vous pouvez aussi installer [Debian](https://www.microsoft.com/store/productI9MSVKQC78PK6).
 
 WSL est maintenant installé.
 
@@ -324,7 +324,7 @@ Soit :
 make OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [WebDFU de TI-Planet](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/bootloader/`.
 </details>
 
 
@@ -353,7 +353,7 @@ Soit :
 make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" binpack -j4
 ```
 
-Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [Ti-planet's webDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
+Pour compiler les binpacks que vous pouvez distribuer et flasher depuis le [WebDFU de TI-Planet](https://ti-planet.github.io/webdfu_numworks/n0100/). Vous les trouverez dans `output/release/device/n0110/`.
 </details>
 
 </details>
@@ -371,7 +371,7 @@ Vous avez le choix entre utiliser la commande qui détectera automatiquement vot
 ```bash
 make PLATFORM=simulator
 ```
-Et choisir une commande qui correspond à votre plateforme :
+Ou choisir une commande qui correspond à votre plateforme :
 ```bash
 make PLATFORM=simulator TARGET=android
 make PLATFORM=simulator TARGET=ios
@@ -469,16 +469,16 @@ Les anciens projets d'Omega, avant sa fermeture, qui ont été utilisés pour ce
 
 Upsilon est un fork d'Omega, visant à continuer le projet des OS utilisateurs pour NumWorks
 
-Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieurs
+Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieurs.
 
 Vous pouvez essayer Epsilon depuis votre navigateur sur le [simulateur en ligne](https://www.numworks.com/simulator/).
 
 ## Licence
 
 NumWorks est une marque déposée de NumWorks SAS, 24 Rue Godot de Mauroy, 75009 Paris, France.
-Nintendo et Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, Etats-Unis.
+Nintendo et Nintendo 3DS sont des marques déposées de Nintendo of America Inc, 4600 150th Ave NE, Redmond, WA 98052, États-Unis.
 NumWorks SAS et Nintendo of America Inc ne sont en aucun cas associés avec ce projet.
 
-- NumWorks Epsilon est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
-- Omega est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
-- Upsilon est disponible sous [Lisense CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+- NumWorks Epsilon est disponible sous [Lisence CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+- Omega est disponible sous [Lisence CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
+- Upsilon est disponible sous [Lisence CC BY-NC-SA](https://creativecommons.org/licenses/by-nc-sa/4.0/legalcode).
