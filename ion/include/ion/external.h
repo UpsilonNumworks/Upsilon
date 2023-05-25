@@ -1,9 +1,12 @@
-#ifndef EXTERNAL_ARCHIVE_H
-#define EXTERNAL_ARCHIVE_H
+#ifndef ION_EXTERNAL_H
+#define ION_EXTERNAL_H
 
+extern "C" {
 #include <stddef.h>
 #include <stdint.h>
+}
 
+namespace Ion {
 namespace External {
 namespace Archive {
 
@@ -24,6 +27,7 @@ size_t numberOfExecutables();
 bool executableAtIndex(size_t index, File &entry);
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize);
 
+}
 }
 }
 

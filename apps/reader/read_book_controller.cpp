@@ -14,7 +14,7 @@ View * ReadBookController::view() {
   return &m_readerView;
 }
 
-void ReadBookController::setBook(const External::Archive::File& file, bool isRichTextFile) {
+void ReadBookController::setBook(const Ion::External::Archive::File& file, bool isRichTextFile) {
   m_file = &file;
   loadPosition();
   m_readerView.setText(reinterpret_cast<const char*>(file.data), file.dataLength, isRichTextFile);

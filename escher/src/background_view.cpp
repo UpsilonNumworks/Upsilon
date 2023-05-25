@@ -5,7 +5,6 @@
 #include "apps/home/controller.h"
 #ifdef HOME_DISPLAY_EXTERNALS
 #include "apps/external/external_icon.h"
-#include "apps/external/archive.h"
 #include <string.h>
 #endif
 

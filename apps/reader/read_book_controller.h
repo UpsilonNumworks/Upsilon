@@ -2,7 +2,7 @@
 #define _READ_BOOK_CONTROLLER_H_
 
 #include <escher.h>
-#include "apps/external/archive.h"
+#include "ion/external.h"
 #include "word_wrap_view.h"
 
 namespace Reader {
@@ -11,7 +11,7 @@ class ReadBookController : public ViewController {
 public:
   ReadBookController(Responder * parentResponder);
   View * view() override;
-  void setBook(const External::Archive::File& file, bool isRichTextFile);
+  void setBook(const Ion::External::Archive::File& file, bool isRichTextFile);
   bool handleEvent(Ion::Events::Event event) override;
   void viewDidDisappear() override;
   void savePosition() const;
@@ -19,7 +19,7 @@ public:
   void throwError();
 private:
   WordWrapTextView m_readerView;
-  const External::Archive::File* m_file;
+  const Ion::External::Archive::File* m_file;
 };
 
 }

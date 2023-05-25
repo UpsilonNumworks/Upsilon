@@ -2,7 +2,7 @@
 #define __LIST_BOOK_CONTROLLER_H__
 
 #include <escher.h>
-#include <apps/external/archive.h>
+#include <ion/external.h>
 
 #include "read_book_controller.h"
 
@@ -30,7 +30,7 @@ public:
 private:
   SelectableTableView m_tableView;
   static const int k_maxFilesNumber = 20;
-  External::Archive::File m_files[k_maxFilesNumber];
+  Ion::External::Archive::File m_files[k_maxFilesNumber];
   int m_txtFilesNumber;
   int m_urtFilesNumber;
   static const int k_cellsNumber = 6;

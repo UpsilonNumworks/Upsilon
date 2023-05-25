@@ -4,22 +4,16 @@
 #include <stdlib.h>
 #include <stdint.h>
 #include <stddef.h>
-#include "archive.h"
-#include "extapp_api.h"
-#include "../apps_container.h"
-#include "../global_preferences.h"
+#include <ion/external.h>
+#include <ion/extapp_api.h>
+#include "apps/apps_container.h"
+#include "apps/global_preferences.h"
 
 #ifdef DEVICE
 #include <ion/src/device/shared/drivers/reset.h>
 #include <ion/src/device/shared/drivers/board.h>
 #include <ion/src/device/shared/drivers/flash.h>
 #endif
-
-#include <python/port/port.h>
-
-extern "C" {
-#include <python/port/mphalport.h>
-}
 
 uint64_t extapp_millis() {
   return Ion::Timing::millis();
@@ -128,11 +122,11 @@ int extapp_fileListWithExtension(const char ** filenames, int maxrecords, const 
   // Don't read external files the exam mode is enabled
   if (GlobalPreferences::sharedGlobalPreferences()->isInExamMode()) return j;
   if (storage == EXTAPP_FLASH_FILE_SYSTEM || storage == EXTAPP_BOTH_FILE_SYSTEM) {
-    int n = External::Archive::numberOfFiles();
+    int n = Ion::External::Archive::numberOfFiles();
     for (int i = 0; i < n && j < maxrecords; i++) {
-      External::Archive::File entry;
+      Ion::External::Archive::File entry;
       // Filter extension
-      if (External::Archive::fileAtIndex(i, entry) && match(entry.name, extension)) {
+      if (Ion::External::Archive::fileAtIndex(i, entry) && match(entry.name, extension)) {
         filenames[j] = entry.name;
         ++j;
       }
@@ -147,7 +141,7 @@ bool extapp_fileExists(const char * filename, int storage) {
       return true;
   }
   if (storage == EXTAPP_FLASH_FILE_SYSTEM || storage == EXTAPP_BOTH_FILE_SYSTEM) {
-    return External::Archive::indexFromName(filename) >= 0;
+    return Ion::External::Archive::indexFromName(filename) >= 0;
   }
   return false;
 }
@@ -178,10 +172,10 @@ const char * extapp_fileRead(const char * filename, size_t * len, int storage) {
     }
   }
   if (storage == EXTAPP_FLASH_FILE_SYSTEM || storage == EXTAPP_BOTH_FILE_SYSTEM) {
-    int index = External::Archive::indexFromName(filename);
+    int index = Ion::External::Archive::indexFromName(filename);
     if (index >= 0) {
-      External::Archive::File entry;
-      External::Archive::fileAtIndex(index, entry);
+      Ion::External::Archive::File entry;
+      Ion::External::Archive::fileAtIndex(index, entry);
       if (len) {
         *len = entry.dataLength;
       }

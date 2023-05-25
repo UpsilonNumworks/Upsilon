@@ -46,12 +46,12 @@ void stringNCopy(char* dest, int max, const char* src, int len) {
 
 #ifdef DEVICE
 
-int filesWithExtension(const char* extension, External::Archive::File* files, int filesSize) {
-  size_t nbTotalFiles = External::Archive::numberOfFiles();
+int filesWithExtension(const char* extension, Ion::External::Archive::File* files, int filesSize) {
+  size_t nbTotalFiles = Ion::External::Archive::numberOfFiles();
   int nbFiles = 0;
   for(size_t i=0; i < nbTotalFiles; ++i) {
-    External::Archive::File file;
-    External::Archive::fileAtIndex(i, file);
+    Ion::External::Archive::File file;
+    Ion::External::Archive::fileAtIndex(i, file);
     if(stringEndsWith(file.name, extension)) {
       files[nbFiles] = file;
       nbFiles++;
@@ -63,7 +63,7 @@ int filesWithExtension(const char* extension, External::Archive::File* files, in
 }
 #else
 
-static void fillFileData(External::Archive::File& file) {
+static void fillFileData(Ion::External::Archive::File& file) {
   file.data = nullptr;
   file.dataLength = 0;
 
@@ -87,7 +87,7 @@ static void fillFileData(External::Archive::File& file) {
   file.dataLength = info.st_size;
 }
 
-int filesWithExtension(const char* extension, External::Archive::File* files, int filesSize) {
+int filesWithExtension(const char* extension, Ion::External::Archive::File* files, int filesSize) {
   dirent *file;
   DIR *d = opendir(".");
   int nb = 0;

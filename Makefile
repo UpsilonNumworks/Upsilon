@@ -31,13 +31,7 @@ ifeq ($(filter reader,$(apps_list)),)
   HAS_READER := 1
 endif
 
-# Remove the external apps for the n0100
-ifeq (${MODEL}, n0100)
-    apps_list = $(foreach i, ${EPSILON_APPS}, $(if $(filter external, $(i)),,$(i)))
-else
-    apps_list = ${EPSILON_APPS}
-endif
-
+apps_list = ${EPSILON_APPS}
 ifdef FORCE_EXTERNAL
   apps_list = ${EPSILON_APPS}
 endif

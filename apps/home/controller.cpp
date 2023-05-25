@@ -11,7 +11,7 @@ extern "C" {
 
 #ifdef HOME_DISPLAY_EXTERNALS
 #include "../external/external_icon.h"
-#include "../external/archive.h"
+#include <ion/external.h>
 #include <string.h>
 #endif
 
@@ -77,10 +77,10 @@ Controller::Controller(Responder * parentResponder, SelectableTableViewDataSourc
 
 
 #ifdef HOME_DISPLAY_EXTERNALS
-    int index = External::Archive::indexFromName("wallpaper.obm");
+    int index = Ion::External::Archive::indexFromName("wallpaper.obm");
     if(index > -1) {
-      External::Archive::File image;
-      External::Archive::fileAtIndex(index, image);
+      Ion::External::Archive::File image;
+      Ion::External::Archive::fileAtIndex(index, image);
       m_view.backgroundView()->setBackgroundImage(image.data);
     }
 #endif
@@ -103,9 +103,9 @@ bool Controller::handleEvent(Ion::Events::Event event) {
       if (GlobalPreferences::sharedGlobalPreferences()->examMode() == GlobalPreferences::ExamMode::Dutch || GlobalPreferences::sharedGlobalPreferences()->examMode() == GlobalPreferences::ExamMode::NoSymNoText || GlobalPreferences::sharedGlobalPreferences()->examMode() == GlobalPreferences::ExamMode::NoSym) {
         App::app()->displayWarning(I18n::Message::ForbiddenAppInExamMode1, I18n::Message::ForbiddenAppInExamMode2);
       } else {
-        External::Archive::File executable;
-        if (External::Archive::executableAtIndex(index - container->numberOfApps(), executable)) {
-          uint32_t res = External::Archive::executeFile(executable.name, ((App *)m_app)->heap(), ((App *)m_app)->heapSize());
+        Ion::External::Archive::File executable;
+        if (Ion::External::Archive::executableAtIndex(index - container->numberOfApps(), executable)) {
+          uint32_t res = Ion::External::Archive::executeFile(executable.name, ((App *)m_app)->heap(), ((App *)m_app)->heapSize());
           ((App*)m_app)->redraw();
           switch(res) {
             case 0:
@@ -219,19 +219,19 @@ void Controller::willDisplayCellAtLocation(HighlightCell * cell, int i, int j) {
   int appIndex = (j * k_numberOfColumns + i) + 1;
   if (appIndex >= container->numberOfApps()) {
 #ifdef HOME_DISPLAY_EXTERNALS
-    External::Archive::File app_file;
+    Ion::External::Archive::File app_file;
 
 
-    if (External::Archive::executableAtIndex(appIndex - container->numberOfApps(), app_file)) {
+    if (Ion::External::Archive::executableAtIndex(appIndex - container->numberOfApps(), app_file)) {
       char temp_name_buffer[100];
       strlcpy(temp_name_buffer, app_file.name, 94);
       strlcat(temp_name_buffer, ".icon", 99);
 
-      int img_index = External::Archive::indexFromName(temp_name_buffer);
+      int img_index = Ion::External::Archive::indexFromName(temp_name_buffer);
 
       if (img_index != -1) {
-        External::Archive::File image_file;
-        if (External::Archive::fileAtIndex(img_index, image_file)) {
+        Ion::External::Archive::File image_file;
+        if (Ion::External::Archive::fileAtIndex(img_index, image_file)) {
           // const Image* img = new Image(55, 56, image_file.data, image_file.dataLength);
           appCell->setExtAppDescriptor(app_file.name, image_file.data, image_file.dataLength);
         } else {
@@ -259,7 +259,7 @@ int Controller::numberOfIcons() const {
   AppsContainer * container = AppsContainer::sharedAppsContainer();
   assert(container->numberOfApps() > 0);
 #ifdef HOME_DISPLAY_EXTERNALS
-  return container->numberOfApps() - 1 + External::Archive::numberOfExecutables();
+  return container->numberOfApps() - 1 + Ion::External::Archive::numberOfExecutables();
 #else
   return container->numberOfApps() - 1;
 #endif

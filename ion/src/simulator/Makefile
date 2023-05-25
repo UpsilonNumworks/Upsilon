@@ -1,4 +1,5 @@
 ion_src += $(addprefix ion/src/shared/dummy/, \
+  archive.cpp \
   backlight.cpp \
   board.cpp \
   battery.cpp \

@@ -1,5 +1,6 @@
 
 ion_device_src += $(addprefix ion/src/device/bootloader/drivers/, \
+  archive.cpp \
   board.cpp \
   cache.cpp \
   external_flash_tramp.cpp \
