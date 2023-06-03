@@ -212,6 +212,11 @@ static void reloadTitleBar() {
   AppsContainer::sharedAppsContainer()->updateBatteryState();
   AppsContainer::sharedAppsContainer()->reloadTitleBarView();
   AppsContainer::sharedAppsContainer()->redrawWindow();
+  // Refresh the display on simulator.
+  #ifndef DEVICE
+  Ion::Keyboard::scan();
+  #endif
+
 }
 
 void extapp_lockAlpha() {
@@ -377,6 +382,174 @@ bool extapp_inExamMode() {
   return GlobalPreferences::sharedGlobalPreferences()->isInExamMode();
 }
 
+uint8_t extapp_getBrightness () {
+  // TODO: Support dimming
+  return GlobalPreferences::sharedGlobalPreferences()->brightnessLevel();
+}
+
+void extapp_setBrightness (uint8_t b) {
+  GlobalPreferences::sharedGlobalPreferences()->setBrightnessLevel(b);
+  Ion::Backlight::setBrightness(b);
+}
+
+int extapp_batteryLevel() {
+  return (int)Ion::Battery::level();
+}
+
+float extapp_batteryVoltage() {
+  return Ion::Battery::voltage();
+}
+
+bool extapp_batteryCharging() {
+  return Ion::Battery::isCharging();
+}
+
+int extapp_batteryPercentage() {
+  // We don't have a battery percentage, so compute it from the voltage
+  // TODO: Move it to Ion::Battery
+  int percentage = (extapp_batteryVoltage() - 3.6) * 166;
+  // Ensure that the percentage is between 0 and 100
+  if (percentage < 0)
+    percentage = 1;
+  if (percentage > 100)
+    percentage = 100;
+  return (int)percentage;
+}
+
+DateTime extapp_getDateTime() {
+  Ion::RTC::DateTime dt = Ion::RTC::dateTime();
+  // TODO: This should not be necessary
+  return DateTime {
+    dt.tm_sec,
+    dt.tm_min,
+    dt.tm_hour,
+    dt.tm_mday,
+    dt.tm_mon,
+    dt.tm_year,
+    dt.tm_wday,
+  };
+}
+
+void extapp_setDateTime(DateTime dt) {
+  // TODO: Conversion should not be necessary (same format is used in the RTC), but casting is not working...
+  Ion::RTC::setDateTime(Ion::RTC::DateTime {
+    dt.tm_sec,
+    dt.tm_min,
+    dt.tm_hour,
+    dt.tm_mday,
+    dt.tm_mon,
+    dt.tm_year,
+    dt.tm_wday,
+  });
+}
+
+void extapp_setRTCMode(int mode) {
+  Ion::RTC::setMode((Ion::RTC::Mode)mode);
+}
+
+int extapp_getRTCMode() {
+  return (int)Ion::RTC::mode();
+}
+
+////////////////////////////////////////////////////////////////////////////////
+// Code from MicroPython
+static const uint16_t days_since_jan1[] = { 0, 31, 59, 90, 120, 151, 181, 212, 243, 273, 304, 334, 365 };
+
+bool is_leap_year(mp_uint_t year) {
+    return (year % 4 == 0 && year % 100 != 0) || year % 400 == 0;
+}
+
+// compute the day of the year, between 1 and 366
+// month should be between 1 and 12, date should start at 1
+uint64_t year_day(uint16_t year, uint8_t month, uint8_t date) {
+  mp_uint_t yday = days_since_jan1[month - 1] + date;
+  if (month >= 3 && is_leap_year(year)) {
+    yday += 1;
+  }
+  return yday;
+}
+
+// returns the number of seconds, as an integer, since 2000-01-01
+uint64_t seconds_since_2000(Ion::RTC::DateTime tm) {
+  return
+    tm.tm_sec
+    + tm.tm_min * 60
+    + tm.tm_hour * 3600
+    + (year_day(tm.tm_year, tm.tm_mon, tm.tm_mday) - 1
+      + ((tm.tm_year - 2000 + 3) / 4) // add a day each 4 years starting with 2001
+      - ((tm.tm_year - 2000 + 99) / 100) // subtract a day each 100 years starting with 2001
+      + ((tm.tm_year - 2000 + 399) / 400) // add a day each 400 years starting with 2001
+      ) * 86400
+    + (tm.tm_year - 2000) * 31536000;
+}
+
+////////////////////////////////////////////////////////////////////////////////
+
+uint64_t extapp_getTime() {
+  Ion::RTC::DateTime dt = Ion::RTC::dateTime();
+  return seconds_since_2000(dt);
+}
+
+uint32_t extapp_random() {
+  return Ion::random();
+}
+
+void extapp_reloadTitleBar() {
+  reloadTitleBar();
+}
+
+const char * extapp_username() {
+  return (const char *)Ion::username();
+}
+
+const char * extapp_getOS() {
+  return "Upsilon";
+}
+
+const char * extapp_getOSVersion() {
+  return Ion::upsilonVersion();
+}
+
+const char * extapp_getOSCommit() {
+  return Ion::patchLevel();
+}
+
+size_t extapp_storageSize() {
+  return Ion::Storage::k_storageSize;
+}
+
+size_t extapp_storageAvailable() {
+  return Ion::Storage::sharedStorage()->availableSize();
+}
+
+size_t extapp_storageUsed() {
+  return extapp_storageSize() - extapp_storageAvailable();
+}
+
+struct Settings extapp_getSettings() {
+  Poincare::Preferences * poincare_preferences = Poincare::Preferences::sharedPreferences();
+  return Settings {
+    (uint8_t)poincare_preferences->angleUnit(),
+    (uint8_t)poincare_preferences->displayMode(),
+    poincare_preferences->numberOfSignificantDigits(),
+    (uint8_t)poincare_preferences->complexFormat(),
+    GlobalPreferences::sharedGlobalPreferences()->font() == KDFont::LargeFont ? true : false,
+  };
+}
+
+void extapp_setSettings(Settings settings) {
+  Poincare::Preferences * poincare_preferences = Poincare::Preferences::sharedPreferences();
+  poincare_preferences->setAngleUnit((Poincare::Preferences::AngleUnit)settings.angleUnit);
+  poincare_preferences->setDisplayMode((Poincare::Preferences::PrintFloatMode)settings.displayMode);
+  poincare_preferences->setNumberOfSignificantDigits(settings.numberOfSignificantDigits);
+  poincare_preferences->setComplexFormat((Poincare::Preferences::ComplexFormat)settings.complexFormat);
+  if (settings.largeFont) {
+    GlobalPreferences::sharedGlobalPreferences()->setFont(KDFont::LargeFont);
+  } else {
+    GlobalPreferences::sharedGlobalPreferences()->setFont(KDFont::SmallFont);
+  }
+}
+
 extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_millis,
   (void (*)(void)) extapp_msleep,
@@ -402,5 +575,27 @@ extern "C" void (* const apiPointers[])(void) = {
   (void (*)(void)) extapp_eraseSector,
   (void (*)(void)) extapp_writeMemory,
   (void (*)(void)) extapp_inExamMode,
+  (void (*)(void)) extapp_getBrightness,
+  (void (*)(void)) extapp_setBrightness,
+  (void (*)(void)) extapp_batteryLevel,
+  (void (*)(void)) extapp_batteryVoltage,
+  (void (*)(void)) extapp_batteryCharging,
+  (void (*)(void)) extapp_batteryPercentage,
+  (void (*)(void)) extapp_getDateTime,
+  (void (*)(void)) extapp_setDateTime,
+  (void (*)(void)) extapp_setRTCMode,
+  (void (*)(void)) extapp_getRTCMode,
+  (void (*)(void)) extapp_getTime,
+  (void (*)(void)) extapp_random,
+  (void (*)(void)) extapp_reloadTitleBar,
+  (void (*)(void)) extapp_username,
+  (void (*)(void)) extapp_getOS,
+  (void (*)(void)) extapp_getOSVersion,
+  (void (*)(void)) extapp_getOSCommit,
+  (void (*)(void)) extapp_storageSize,
+  (void (*)(void)) extapp_storageAvailable,
+  (void (*)(void)) extapp_storageUsed,
+  (void (*)(void)) extapp_getSettings,
+  (void (*)(void)) extapp_setSettings,
   (void (*)(void)) nullptr,
 };

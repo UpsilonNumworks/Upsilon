@@ -5,6 +5,11 @@
 #include <string.h>
 #include <stdlib.h>
 
+// Argv static definition (temporary), will be removed when argv is implemented
+// TODO: Move it to executeFileAtIndex()
+static char *argv[] = { "archive", "--help" };
+static int argc = 2;
+
 namespace External {
 namespace Archive {
 
@@ -98,7 +103,7 @@ bool fileAtIndex(size_t index, File &entry) {
 }
 
 extern "C" void (* const apiPointers[])(void);
-typedef uint32_t (*entrypoint)(const uint32_t, const void *, void *, const uint32_t);
+typedef uint32_t (*entrypoint)(const uint32_t, const void *, void *, const uint32_t, int, char * []);
 
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
   File entry;
@@ -108,7 +113,7 @@ uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
     }
     uint32_t ep = *reinterpret_cast<const uint32_t*>(entry.data);
     if(ep >= 0x90200000 && ep < 0x90800000) {
-      return ((entrypoint)ep)(API_VERSION, apiPointers, heap, heapSize);
+      return ((entrypoint)ep)(API_VERSION, apiPointers, heap, heapSize, argc, argv);
     }
   }
   return -1;
@@ -130,10 +135,10 @@ bool fileAtIndex(size_t index, File &entry) {
   return true;
 }
 
-extern "C" void extapp_main(void);
+extern "C" void extapp_main(int argc, char *argv[]);
 
 uint32_t executeFile(const char *name, void * heap, const uint32_t heapSize) {
-  extapp_main();
+  extapp_main(argc, argv);
   return 0;
 }
 
