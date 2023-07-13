@@ -17,12 +17,13 @@ i18n_files += $(call i18n_without_universal_for,home/base)
 SFLAGS += -I$(BUILD_DIR)
 
 apps_layout = apps/home/apps_layout.csv
+apps_layout_list = $(foreach i, $${EPSILON_APPS}, $(if $(filter external, $(i)),,"$(i),"))
 
 $(eval $(call rule_for, \
   APPS_LAYOUT, \
   apps/home/apps_layout.cpp, \
   , \
-  $$(PYTHON) apps/home/apps_layout.py --layouts $(apps_layout) --header $$(subst .cpp,.h,$$@) --implementation $$@ --apps $$(EPSILON_APPS), \
+  $$(PYTHON) apps/home/apps_layout.py --layouts $(apps_layout) --header $$(subst .cpp,.h,$$@) --implementation $$@ --apps $$(EPSILON_APPS) --apps_layout $(apps_layout_list), \
   global \
 ))
 
