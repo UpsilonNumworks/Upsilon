@@ -584,10 +584,10 @@ void statusflags(){
     else
       msg="";
   }
-  os_fill_rect(0,0,LCD_WIDTH_PX,16,SDK_BLACK);
-  os_draw_string_medium(225,-STATUS_AREA_PX,statuscolor,SDK_BLACK,msg,false);
-  os_draw_string_medium(160,-STATUS_AREA_PX,statuscolor,SDK_BLACK,os_get_angle_unit()?" rad ":" deg ",false);  
-  display_time();
+  // os_fill_rect(0,0,LCD_WIDTH_PX,16,SDK_BLACK);
+  // os_draw_string_medium(225,-STATUS_AREA_PX,statuscolor,SDK_BLACK,msg,false);
+  // os_draw_string_medium(160,-STATUS_AREA_PX,statuscolor,SDK_BLACK,os_get_angle_unit()?" rad ":" deg ",false);  
+  // display_time();
 }
 void statusline(int mode){
   statusflags();
@@ -617,7 +617,7 @@ void statusline(int mode){
 #include "k_defs.h"
 
 void sdk_init(void){
-  lcd_init(lcd_type()); // clrscr();
+  lcd_init(lcd_type());
 }
 
 void sdk_end(void){
@@ -993,6 +993,7 @@ int nspire_shift=0;
 int nspire_ctrl=0;
 int nspire_select=false;
 void statusline(int mode){
+  return; //DON'T DO ANYTHING YOU IDIOT
   char *msg=0;
   if (nspire_ctrl){
     if (nspire_shift)
