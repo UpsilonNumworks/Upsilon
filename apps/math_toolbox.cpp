@@ -39,8 +39,7 @@ const ToolboxMessageTree complexChildren[] = {
 const ToolboxMessageTree combinatoricsChildren[] = {
   ToolboxMessageTree::Leaf(I18n::Message::BinomialCommandWithArg, I18n::Message::Combination),
   ToolboxMessageTree::Leaf(I18n::Message::PermuteCommandWithArg, I18n::Message::Permutation),
-  ToolboxMessageTree::Leaf(I18n::Message::FactorialCommandWithArg,
-  I18n::Message::Factorial)
+  ToolboxMessageTree::Leaf(I18n::Message::FactorialCommandWithArg, I18n::Message::Factorial)
 };
 
 const ToolboxMessageTree normalDistributionChildren[] = {
