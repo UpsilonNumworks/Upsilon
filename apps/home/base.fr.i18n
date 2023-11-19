@@ -1,4 +1,4 @@
 Apps = "Applications"
-AppsCapital = "UPSILON"
+AppsCapital = "APPLICATIONS"
 ForbiddenAppInExamMode1 = "Cette application n'est"
 ForbiddenAppInExamMode2 = "pas autorisée en mode examen."
