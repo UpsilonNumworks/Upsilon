@@ -4,3 +4,6 @@
 [submodule "apps/atomic"]
 	path = apps/atomic
 	url = https://github.com/UpsilonNumworks/atomic
+[submodule "themes/themes/git/Omega-Theme-Example"]
+    path = themes/themes/git/Omega-Theme-Example
+    url = https://github.com/example/Omega-Theme-Example.git
