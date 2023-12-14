@@ -76,7 +76,7 @@ public:
 
   //USB NAMES
   constexpr static const char * usbUpsilonBootloader = "NumWorks Calculator";
-  constexpr static const char * usbUpsilonRecovery = "Upsilon Recovery";
+  constexpr static const char * usbUpsilonRecovery = "NumWorks Calculator";
   constexpr static const char * usbBootloaderUpdate = "Bootloader Update";
 
 };
