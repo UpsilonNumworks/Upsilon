@@ -37,7 +37,6 @@ bool ExpressionField::fieldHasOnlyAMinus() const {
         const char *inputBuffer = m_textField.draftTextBuffer();
         return (inputBuffer[0] == '-' && inputBuffer[1] == '\0');
     } 
-  
     Layout layout = m_layoutField.layout();
     if (layout.type() == LayoutNode::Type::HorizontalLayout && layout.numberOfChildren() == 1) {
         Layout child = layout.childAtIndex(0);
