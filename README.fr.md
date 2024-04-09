@@ -7,11 +7,11 @@
   <a href="https://discord.gg/sbGvhWETAd"><img alt="Discord" src="https://img.shields.io/discord/663420259851567114?color=blue&labelColor=292929&label=chat%20-%20discord&logo=discord&style=for-the-badge" /></a>
 </p>
 
-> Don't understand french ? speak english ? here's the [english README](./README.md) !
+> Don't understand French ? Speak English ? here's the [english README](./README.md) !
 
 ## À propos
 
-Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de Numworks tournant sur les calculatrices du même nom, qui apporte beaucoup de fonctionnalités en plus, mais qui fut archivé et fermé pour des raisons légales après un changement de politique de Numworks. Upsilon est fait pour ceux qui aimeraient voir un futur pour les OS créés par les utilisateurs pour Numworks, même après l'arrêt du projet initial.
+Upsilon est un fork d'Omega, un fork d'Epsilon, l'OS de NumWorks tournant sur les calculatrices du même nom, qui apporte beaucoup de fonctionnalités en plus, mais qui fut archivé et fermé pour des raisons légales après un changement de politique de NumWorks. Upsilon est fait pour ceux qui aimeraient voir un futur pour les OS créés par les utilisateurs pour NumWorks, même après l'arrêt du projet initial.
 
 ### Quelques fonctionnalités supplémentaires
 
@@ -129,9 +129,9 @@ Vous pouvez aller à l'étape 2.
 
 <details>
 
-<summary>Avec Msys2/Mingw (Supportés par Numworks bien qu'il y ait beaucoup de bugs)</summary>
+<summary>Avec Msys2/Mingw (Supportés par NumWorks bien qu'il y ait beaucoup de bugs)</summary>
 
-L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par Numworks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-coller toutes les commandes de ce tutoriel. Une fois installé, copiez-collez ces deux commandes dans le terminal:
+L'environnement de compilation [Msys2](https://www.msys2.org/) est recommandé par NumWorks pour obtenir la plupart des outils requis facilement. C'est ici que vous allez copier-coller toutes les commandes de ce tutoriel. Une fois installé, copiez-collez ces deux commandes dans le terminal:
 
 ```bash
 pacman -S mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config mingw-w64-x86_64-libusb git make python
@@ -445,7 +445,7 @@ Si vous avez besoin d'aide, n'hésitez pas à rejoindre notre serveur Discord : 
 
 ## Liens utiles
 
-- [Upsilon external (pour installer des applications supplémentaires et des fonds d'écran)](https://upsilonnumworks.github.io/Upsilon-External/)
+- [Upsilon-External (pour installer des applications supplémentaires et des fonds d'écran)](https://upsilonnumworks.github.io/Upsilon-External/)
 - [Documentation d'Ulab](https://micropython-ulab.readthedocs.io/en/latest/)
 
 ## Contribution
@@ -467,9 +467,9 @@ Les anciens projets d'Omega, avant sa fermeture, qui ont été utilisés pour ce
 
 ## À propos d'Epsilon
 
-Upsilon est un fork d'Omega, visant a continuer le projet des OS utilisateurs pour Numworks
+Upsilon est un fork d'Omega, visant a continuer le projet des OS utilisateurs pour NumWorks.
 
-Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieurs
+Omega est un fork d'Epsilon, un système d'exploitation performant pour calculatrices graphiques. Il inclut huit applications pour les mathématiques de lycée et d'études supérieures.
 
 Vous pouvez essayer Epsilon depuis votre navigateur sur le [simulateur en ligne](https://www.numworks.com/simulator/).
 
