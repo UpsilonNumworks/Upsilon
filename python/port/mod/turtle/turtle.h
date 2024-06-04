@@ -30,6 +30,7 @@ public:
     m_y(0),
     m_heading(0),
     m_color(k_defaultColor),
+    m_bgcolor(k_defaultColorBG),
     m_colorMode(MicroPython::Color::Mode::MaxIntensity255),
     m_penDown(true),
     m_visible(true),
@@ -67,11 +68,18 @@ public:
   void setVisible(bool visible);
 
   KDColor color() const { return m_color; }
+  KDColor colorBg() const { return m_bgcolor; }
   void setColor(KDColor c) {
     m_color = c;
   }
   void setColor(uint8_t r, uint8_t g, uint8_t b) {
     m_color = KDColor::RGB888(r, g, b);
+  }
+    void setColorBg(KDColor c) {
+    m_bgcolor = c;
+  }
+  void setColorBg(uint8_t r, uint8_t g, uint8_t b) {
+    m_bgcolor = KDColor::RGB888(r, g, b);
   }
   MicroPython::Color::Mode colorMode() const {return m_colorMode; }
   void setColorMode(MicroPython::Color::Mode colorMode){
@@ -88,6 +96,7 @@ public:
    * when out of bound, and can prevent text that would have been visible to be
    * drawn. We use very large bounds to temper these effects. */
   bool isOutOfBounds() const;
+  void drawBg();
 
 private:
   static constexpr mp_float_t k_headingScale = M_PI / 180;
@@ -99,6 +108,7 @@ private:
   static constexpr uint8_t k_defaultSpeed = 8;
   static constexpr uint8_t k_maxSpeed = 10;
   static constexpr KDColor k_defaultColor = KDColorBlack;
+  static constexpr KDColor k_defaultColorBG = KDColorYellow;
   static constexpr uint8_t k_defaultPenSize = 1;
   static constexpr const KDFont * k_font = KDFont::LargeFont;
   static constexpr mp_float_t k_maxPosition = KDCOORDINATE_MAX * 0.75f;
@@ -152,6 +162,7 @@ private:
   mp_float_t m_heading;
 
   KDColor m_color;
+  KDColor m_bgcolor;
   MicroPython::Color::Mode m_colorMode;
   bool m_penDown;
   bool m_visible;

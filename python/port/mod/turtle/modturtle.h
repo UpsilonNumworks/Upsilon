@@ -26,6 +26,7 @@ mp_obj_t modturtle_isvisible();
 mp_obj_t modturtle_write(mp_obj_t s);
 
 mp_obj_t modturtle_pencolor(size_t n_args, const mp_obj_t *args);
+mp_obj_t modturtle_bgcolor(size_t n_args, const mp_obj_t *args);
 mp_obj_t modturtle_colormode(size_t n_args, const mp_obj_t *args);
 
 mp_obj_t modturtle_showturtle();

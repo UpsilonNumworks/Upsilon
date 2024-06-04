@@ -20,6 +20,7 @@ void modturtle_view_did_disappear() {
 
 mp_obj_t modturtle___init__() {
   sTurtle = Turtle();
+  sTurtle.drawBg();
   /* Note: we don't even bother writing a destructor for Turtle because this
    * init function is called once, and only once, per MicroPython init cycle.
    * When the previous Turtle object is destroyed, its VM is long gone. */
@@ -162,6 +163,38 @@ mp_obj_t modturtle_pencolor(size_t n_args, const mp_obj_t *args) {
     color = mp_obj_new_tuple(n_args, args);
   }
   sTurtle.setColor(MicroPython::Color::Parse(color, sTurtle.colorMode()));
+  return mp_const_none;
+}
+
+mp_obj_t modturtle_bgcolor(size_t n_args, const mp_obj_t *args) {
+  if (n_args == 0) {
+    // bgcolor()
+    KDColor c = sTurtle.colorBg();
+    mp_obj_t mp_col[3];
+    if(sTurtle.colorMode() == MicroPython::Color::Mode::MaxIntensity255){
+      mp_col[0] = mp_obj_new_int_from_uint(c.red());
+      mp_col[1] = mp_obj_new_int_from_uint(c.green());
+      mp_col[2] = mp_obj_new_int_from_uint(c.blue());
+    } else {
+      mp_col[0] = mp_obj_new_float(uint8tColorToDouble(c.red()));
+      mp_col[1] = mp_obj_new_float(uint8tColorToDouble(c.green()));
+      mp_col[2] = mp_obj_new_float(uint8tColorToDouble(c.blue()));
+    }
+    return mp_obj_new_tuple(3, mp_col);
+  }
+  if (n_args == 2) {
+    mp_raise_TypeError("bgcolor() takes 0, 1 or 3 arguments");
+    return mp_const_none;
+  }
+  mp_obj_t color;
+  if (n_args == 1) {
+    color = args[0];
+  } else {
+    assert(n_args == 3);
+    color = mp_obj_new_tuple(n_args, args);
+  }
+  sTurtle.setColorBg(MicroPython::Color::Parse(color, sTurtle.colorMode()));
+  sTurtle.drawBg();
   return mp_const_none;
 }
 

@@ -33,6 +33,7 @@ void Turtle::reset() {
   m_y = 0;
   m_heading = 0;
   m_color = k_defaultColor;
+  m_bgcolor = k_defaultColorBG;
   m_penDown = true;
   m_visible = true;
   m_speed = k_defaultSpeed;
@@ -40,6 +41,7 @@ void Turtle::reset() {
   m_mileage = 0;
 
   // Draw the turtle
+  drawBg();
   draw(true);
 }
 
@@ -201,6 +203,19 @@ void Turtle::viewDidDisappear() {
 bool Turtle::isOutOfBounds() const {
   return absF(x()) > k_maxPosition || absF(y()) > k_maxPosition;
 };
+
+void Turtle::drawBg() {
+  MicroPython::ExecutionEnvironment::currentExecutionEnvironment()->displaySandbox();
+
+  KDContext * ctx = KDIonContext::sharedContext();
+
+  KDRect bg = KDRect(
+    0,
+    0,
+    320,
+    229);
+  ctx->fillRect(bg, m_bgcolor);
+}
 
 // Private functions
 
