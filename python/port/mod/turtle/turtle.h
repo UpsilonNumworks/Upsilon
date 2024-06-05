@@ -108,7 +108,7 @@ private:
   static constexpr uint8_t k_defaultSpeed = 8;
   static constexpr uint8_t k_maxSpeed = 10;
   static constexpr KDColor k_defaultColor = KDColorBlack;
-  static constexpr KDColor k_defaultColorBG = KDColorYellow;
+  static constexpr KDColor k_defaultColorBG = KDColorWhite;
   static constexpr uint8_t k_defaultPenSize = 1;
   static constexpr const KDFont * k_font = KDFont::LargeFont;
   static constexpr mp_float_t k_maxPosition = KDCOORDINATE_MAX * 0.75f;
