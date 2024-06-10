@@ -34,7 +34,7 @@ apply plugin: 'com.android.application'
 android {
   compileSdkVersion 29
   defaultConfig {
-    applicationId "io.github.omega.simulator"
+    applicationId "io.github.upsilon.simulator"
     minSdkVersion 16
     targetSdkVersion 29
     def (major, minor, patch) = System.getenv('OMEGA_VERSION').toLowerCase().tokenize('.').collect{it.toInteger()}

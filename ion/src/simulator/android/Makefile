@@ -36,6 +36,10 @@ $(BUILD_DIR)/app/res/mipmap-v26/ic_launcher_foreground.png: ion/src/simulator/as
 	$(call rule_label,CONVERT)
 	$(Q) convert -background none $< -resize 1024x1024 -gravity center -background none -extent 1024x1024 $@
 
+$(BUILD_DIR)/app/res/mipmap-v26/ic_launcher_monochrome.png: ion/src/simulator/assets/logo_monochrome.svg | $$(@D)/.
+	$(call rule_label,CONVERT)
+	$(Q) convert -background none $< -resize 1024x1024 -gravity center -background none -extent 1024x1024 $@
+
 $(BUILD_DIR)/app/res/%.xml: ion/src/simulator/android/src/res/%.xml | $$(@D)/.
 	$(call rule_label,COPY)
 	$(Q) cp $< $@
@@ -58,7 +62,7 @@ $(foreach ARCH,$(ARCHS),$(eval $(call rule_for_arch_jni_lib,$(ARCH))))
 
 apk_deps = $(foreach ARCH,$(ARCHS),$(call path_for_arch_jni_lib,$(ARCH)))
 apk_deps += $(subst ion/src/simulator/android/src/res,$(BUILD_DIR)/app/res,$(wildcard ion/src/simulator/android/src/res/*/*))
-apk_deps += $(addprefix $(BUILD_DIR)/app/res/,mipmap/ic_launcher.png mipmap-v26/ic_launcher_foreground.png)
+apk_deps += $(addprefix $(BUILD_DIR)/app/res/,mipmap/ic_launcher.png mipmap-v26/ic_launcher_foreground.png mipmap-v26/ic_launcher_monochrome.png)
 
 .PRECIOUS: $(apk_deps)
 

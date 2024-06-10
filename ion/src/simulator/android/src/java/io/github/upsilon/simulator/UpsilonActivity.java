@@ -1,4 +1,4 @@
-package io.github.omega.simulator;
+package io.github.upsilon.simulator;
 
 import java.util.Locale;
 
@@ -18,7 +18,7 @@ import com.google.android.gms.analytics.HitBuilders;
 import org.libsdl.app.SDLActivity;
 import org.libsdl.app.SDL;
 
-public class OmegaActivity extends SDLActivity {
+public class UpsilonActivity extends SDLActivity {
   protected String[] getLibraries() {
     return new String[] {
       "epsilon"

@@ -51,10 +51,6 @@ void resetLongRepetition() {
   ComputeAndSetRepetitionFactor(sEventRepetitionCount);
 }
 
-static Keyboard::Key keyFromState(Keyboard::State state) {
-  return static_cast<Keyboard::Key>(63 - __builtin_clzll(state));
-}
-
 static inline Event innerGetEvent(int * timeout) {
   assert(*timeout > delayBeforeRepeat);
   assert(*timeout > delayBetweenRepeat);
@@ -96,7 +92,7 @@ static inline Event innerGetEvent(int * timeout) {
       }
 
       bool lock = isLockActive();
-      
+
       if (   key == Keyboard::Key::Left
           || key == Keyboard::Key::Right
           || key == Keyboard::Key::Up
@@ -108,7 +104,7 @@ static inline Event innerGetEvent(int * timeout) {
           // shift = false;
         }
       }
-      
+
       Event event(key, shift, alpha, lock);
       sLastEventShift = shift;
       sLastEventAlpha = alpha;
