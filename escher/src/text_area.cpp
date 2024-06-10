@@ -4,6 +4,7 @@
 #include <ion/unicode/utf8_decoder.h>
 #include <ion/unicode/utf8_helper.h>
 #include <poincare/serialization_helper.h>
+#include <../../apps/global_preferences.h>
 
 #include <stddef.h>
 #include <assert.h>
@@ -249,11 +250,13 @@ bool TextArea::handleEvent(Ion::Events::Event event) {
     contentView()->resetSelection();
     contentView()->moveCursorGeo(0, event == Ion::Events::Up ? -step : step);
   } else if (event == Ion::Events::Clear) {
-    if (!contentView()->selectionIsEmpty()) {
-      deleteSelection();
-      return true;
-    } else if (!contentView()->removeEndOfLine()) {
-      contentView()->removeStartOfLine();
+    if (GlobalPreferences::sharedGlobalPreferences()->clearalphalockshift()){
+      if (!contentView()->selectionIsEmpty()) {
+        deleteSelection();
+        return true;
+      } else if (!contentView()->removeEndOfLine()) {
+        contentView()->removeStartOfLine();
+      }
     }
   } else if (event == Ion::Events::Paste) {
     return handleEventWithText(Clipboard::sharedClipboard()->storedText());
