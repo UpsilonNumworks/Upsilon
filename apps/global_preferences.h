@@ -37,7 +37,7 @@ public:
   bool syntaxhighlighting() const { return m_syntaxhighlighting; }
   void setSyntaxhighlighting(bool syntaxhighlight) { m_syntaxhighlighting = syntaxhighlight; }
   bool clearshift() const { return  m_clearkshift; }
-  void setclearshift(bool clearalphalockshift) {  m_clearkshift = clearalphalockshift; }
+  void setclearshift(bool clearalphashift) {  m_clearkshift = clearalphashift; }
   int brightnessLevel() const { return m_brightnessLevel; }
   void setBrightnessLevel(int brightnessLevel);
   const KDFont * font() const { return m_font; }
