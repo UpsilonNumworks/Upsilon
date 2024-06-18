@@ -250,7 +250,7 @@ bool TextArea::handleEvent(Ion::Events::Event event) {
     contentView()->resetSelection();
     contentView()->moveCursorGeo(0, event == Ion::Events::Up ? -step : step);
   } else if (event == Ion::Events::Clear) {
-    if (GlobalPreferences::sharedGlobalPreferences()->clearalphalockshift()) {
+    if (GlobalPreferences::sharedGlobalPreferences()->clearshift()){
       if (!contentView()->selectionIsEmpty()) {
         deleteSelection();
         return true;

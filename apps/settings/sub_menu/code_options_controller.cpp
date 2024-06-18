@@ -28,7 +28,7 @@ bool CodeOptionsController::handleEvent(Ion::Events::Event event) {
         m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
         break;
       case 3:
-        GlobalPreferences::sharedGlobalPreferences()->setclearalphalockshift(!GlobalPreferences::sharedGlobalPreferences()->clearalphalockshift());
+        GlobalPreferences::sharedGlobalPreferences()->setclearshift(!GlobalPreferences::sharedGlobalPreferences()->clearshift());
         m_selectableTableView.reloadCellAtLocation(m_selectableTableView.selectedColumn(), m_selectableTableView.selectedRow());
         break;
       default:
@@ -89,7 +89,7 @@ void CodeOptionsController::willDisplayCellForIndex(HighlightCell * cell, int in
   else if (thisLabel == I18n::Message::Clearshiftlock) {
     MessageTableCellWithSwitch * mySwitchCell = (MessageTableCellWithSwitch *)cell;
     SwitchView * mySwitch = (SwitchView *)mySwitchCell->accessoryView();
-    mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->clearalphalockshift());
+    mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->clearshift());
   }
 #endif
 }
