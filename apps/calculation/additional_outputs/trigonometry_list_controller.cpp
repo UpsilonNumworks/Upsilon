@@ -18,7 +18,10 @@ Poincare::Constant toConstant(Expression e) {
 }
 
 void TrigonometryListController::setExpression(Expression e) {
-  assert(e.type() == ExpressionNode::Type::Cosine || e.type() == ExpressionNode::Type::Sine);
+  assert(e.type() == ExpressionNode::Type::Cosine || e.type() == ExpressionNode::Type::Sine || e.type() == ExpressionNode::Type::Tangent);
+  bool shouldDisplayTan = e.type() == ExpressionNode::Type::Tangent;
+  m_graphCell.setShouldDisplayTan(shouldDisplayTan);
+  m_model.setShouldDisplayTan(shouldDisplayTan);
 
   Poincare::Context * context = App::app()->localContext();
   Poincare::Preferences * preferences = Poincare::Preferences::sharedPreferences();
@@ -58,6 +61,7 @@ void TrigonometryListController::setExpression(Expression e) {
   IllustratedListController::setExpression(angleExpression);
 
   // Fill calculation store
+  m_calculationStore.push("tan(θ)", context, CalculationHeight);
   m_calculationStore.push("sin(θ)", context, CalculationHeight);
   m_calculationStore.push("cos(θ)", context, CalculationHeight);
   m_calculationStore.push("θ", context, CalculationHeight);

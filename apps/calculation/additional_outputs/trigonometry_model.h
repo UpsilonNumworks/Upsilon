@@ -14,11 +14,12 @@ public:
   // CurveViewRange
   float xMin() const override { return -k_xHalfRange; }
   float xMax() const override { return k_xHalfRange; }
-  float yMin() const override { return yCenter() - yHalfRange(); }
-  float yMax() const override { return yCenter() + yHalfRange(); }
+  float yMin() const override;
+  float yMax() const override;
 
   void setAngle(float f) { m_angle = f; }
   float angle() const { return m_angle*(float)M_PI/(float)Poincare::Trigonometry::PiInAngleUnit(Poincare::Preferences::sharedPreferences()->angleUnit()); }
+  void setShouldDisplayTan(bool shouldDisplayTan) { m_shouldDisplayTan = shouldDisplayTan; }
 private:
   constexpr static float k_xHalfRange = 2.1f;
   // We center the yRange around the semi-circle where the angle is
@@ -33,6 +34,7 @@ private:
   float yHalfRange() const { return IllustratedListController::k_illustrationHeight*k_xHalfRange/(Ion::Display::Width - Metric::PopUpRightMargin - Metric::PopUpLeftMargin); }
 
   float m_angle;
+  bool m_shouldDisplayTan;
 };
 
 }

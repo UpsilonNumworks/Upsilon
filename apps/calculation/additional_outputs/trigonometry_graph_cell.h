@@ -11,13 +11,16 @@ class TrigonometryGraphView : public Shared::CurveView {
 public:
   TrigonometryGraphView(TrigonometryModel * model);
   void drawRect(KDContext * ctx, KDRect rect) const override;
+  void setShouldDisplayTan(bool shouldDisplayTan) { m_shouldDisplayTan = shouldDisplayTan; };
 private:
   TrigonometryModel * m_model;
+  bool m_shouldDisplayTan;
 };
 
 class TrigonometryGraphCell : public IllustrationCell {
 public:
   TrigonometryGraphCell(TrigonometryModel * model) : m_view(model) {}
+  void setShouldDisplayTan(bool shouldDisplayTan) { m_view.setShouldDisplayTan(shouldDisplayTan); };
 private:
   View * view() override { return &m_view; }
   TrigonometryGraphView m_view;
