@@ -19,7 +19,7 @@ private:
   MessageTableCellWithChevronAndMessage m_chevronCellFontSize;
   MessageTableCellWithSwitch m_switchCellAutoCompletion;
   MessageTableCellWithSwitch m_switchCellSyntaxHighlighting;
-  MessageTableCellWithSwitch m_switchCellClearshiftlock;
+  MessageTableCellWithSwitch m_switchCellClearshift;
 };
 
 }

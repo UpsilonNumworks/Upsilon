@@ -13,7 +13,7 @@ CodeOptionsController::CodeOptionsController(Responder * parentResponder) :
   m_chevronCellFontSize.setMessageFont(KDFont::LargeFont);
   m_switchCellAutoCompletion.setMessageFont(KDFont::LargeFont);
   m_switchCellSyntaxHighlighting.setMessageFont(KDFont::LargeFont);
-  m_switchCellClearshiftlock.setMessageFont(KDFont::LargeFont);
+  m_switchCellClearshift.setMessageFont(KDFont::LargeFont);
 }
 
 bool CodeOptionsController::handleEvent(Ion::Events::Event event) {
@@ -56,7 +56,7 @@ HighlightCell * CodeOptionsController::reusableCell(int index, int type) {
   }else if (index == 2) {
     return &m_switchCellSyntaxHighlighting;
   }
-  return &m_switchCellClearshiftlock;
+  return &m_switchCellClearshift;
 }
 
 int CodeOptionsController::reusableCellCount(int type) {
@@ -86,7 +86,7 @@ void CodeOptionsController::willDisplayCellForIndex(HighlightCell * cell, int in
     SwitchView * mySwitch = (SwitchView *)mySwitchCell->accessoryView();
     mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting());
   }
-  else if (thisLabel == I18n::Message::Clearshiftlock) {
+  else if (thisLabel == I18n::Message::Clearshift) {
     MessageTableCellWithSwitch * mySwitchCell = (MessageTableCellWithSwitch *)cell;
     SwitchView * mySwitch = (SwitchView *)mySwitchCell->accessoryView();
     mySwitch->setState(GlobalPreferences::sharedGlobalPreferences()->clearshift());
