@@ -53,7 +53,7 @@ HighlightCell * CodeOptionsController::reusableCell(int index, int type) {
   }
   else if (index == 1) {
     return &m_switchCellAutoCompletion;
-  }else if (index == 2){
+  }else if (index == 2) {
     return &m_switchCellSyntaxHighlighting;
   }
   return &m_switchCellClearshiftlock;
