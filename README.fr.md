@@ -274,7 +274,7 @@ make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Votre nom, maximum 15 caractè
 Maintenant, lancez soit:
 
 ```bash
-make MODEL=n0100 epsilon_flash
+make MODEL=n0100 epsilon.onboarding_flash
 ```
 
 pour directement flasher la calculatrice après avoir appuyé simultanément sur `reset` et `6` et avoir branché la calculatrice à l'ordinateur.
@@ -311,7 +311,7 @@ make OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 Ensuite lancez soit:
 
 ```bash
-make epsilon.A_flash
+make epsilon.onboarding.A_flash
 ```
 
 pour flasher le slot actuel ou pour flasher par le flasher du booloader avec RESET, puis 4 (flash) et 1 (flash slots) pour flasher n'importe quel slot.
@@ -341,7 +341,7 @@ make MODEL=n0110 OMEGA_USERNAME="{Votre nom, max 15 caractères}" -j4
 Ensuite lancez soit:
 
 ```bash
-make MODEL=n0110 epsilon_flash
+make MODEL=n0110 epsilon.onboarding_flash
 ```
 
 pour directement flasher la calculatrice après avoir appuyé simultanément sur `RESET` et `6` et avoir branché la calculatrice à l'ordinateur.
