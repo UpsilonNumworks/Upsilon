@@ -12,7 +12,7 @@ def fileIfPath(path) {
 
 buildscript {
   repositories {
-    jcenter()
+    mavenCentral()
     google()
   }
   dependencies {
@@ -22,7 +22,7 @@ buildscript {
 
 allprojects {
   repositories {
-    jcenter()
+    mavenCentral()
     google()
   }
   buildDir = BUILD_DIR
