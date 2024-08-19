@@ -264,7 +264,7 @@ git checkout upsilon-dev
 
 ```bash
 make MODEL=n0100 clean
-make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Your name, max 15 characters}" -j(nproc)
+make MODEL=n0100 EPSILON_I18N=en OMEGA_USERNAME="{Your name, max 15 characters}" -j$(nproc)
 ```
 
 Now, run either:
@@ -280,7 +280,7 @@ to directly flash the calculator after pressing simultaneously `reset` and `6` b
 or:
 
 ```bash
-make MODEL=n0100 OMEGA_USERNAME="" binpack -j(nproc)
+make MODEL=n0100 OMEGA_USERNAME="" binpack -j$(nproc)
 ```
 
 to make binpack which you can flash to the calculator from [TI-Planet's WebDFU](https://ti-planet.github.io/webdfu_numworks/n0100/). Binpacks are a great way to share a custom build of Upsilon to friends.
@@ -417,7 +417,7 @@ You need devkitPro and devkitARM installed and in your path (instructions [here]
 git clone --recursive https://github.com/UpsilonNumworks/Upsilon.git
 cd Upsilon
 git checkout upsilon-dev
-make PLATFORM=simulator TARGET=3ds -j(nproc)
+make PLATFORM=simulator TARGET=3ds -j$(nproc)
 ```
 
 You can then put epsilon.3dsx on a SD card to run it from the HBC or use 3dslink to launch it over the network:
