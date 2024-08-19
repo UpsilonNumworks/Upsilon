@@ -30,15 +30,15 @@ ifndef ARCH
 
 $(BUILD_DIR)/app/res/mipmap/ic_launcher.png: ion/src/simulator/assets/logo.svg | $$(@D)/.
 	$(call rule_label,CONVERT)
-	$(Q) convert -background "#b1403b" $< $@
+	$(Q) convert -background "#5c83ab" $< $@
 
 $(BUILD_DIR)/app/res/mipmap-v26/ic_launcher_foreground.png: ion/src/simulator/assets/logo.svg | $$(@D)/.
 	$(call rule_label,CONVERT)
-	$(Q) convert -background none $< -resize 1024x1024 -gravity center -background none -extent 1024x1024 $@
+	$(Q) convert -background none $< -resize 694x694 -gravity center -background none -extent 1024x1024 $@
 
 $(BUILD_DIR)/app/res/mipmap-v26/ic_launcher_monochrome.png: ion/src/simulator/assets/logo_monochrome.svg | $$(@D)/.
 	$(call rule_label,CONVERT)
-	$(Q) convert -background none $< -resize 1024x1024 -gravity center -background none -extent 1024x1024 $@
+	$(Q) convert -background none $< -resize 300x372 -gravity center -background none -extent 1024x1024 $@
 
 $(BUILD_DIR)/app/res/%.xml: ion/src/simulator/android/src/res/%.xml | $$(@D)/.
 	$(call rule_label,COPY)
@@ -68,7 +68,7 @@ apk_deps += $(addprefix $(BUILD_DIR)/app/res/,mipmap/ic_launcher.png mipmap-v26/
 
 $(BUILD_DIR)/%.apk: $(apk_deps)
 	$(call rule_label,GRADLE)
-	$(Q) ANDROID_HOME=$(ANDROID_HOME) EPSILON_VERSION=$(EPSILON_VERSION) OMEGA_VERSION=$(OMEGA_VERSION) BUILD_DIR=$(BUILD_DIR) EPSILON_VARIANT=$* ion/src/simulator/android/gradlew -p ion/src/simulator/android/ assembleRelease
+	$(Q) ANDROID_HOME=$(ANDROID_HOME) UPSILON_VERSION=$(UPSILON_VERSION) BUILD_DIR=$(BUILD_DIR) EPSILON_VARIANT=$* ion/src/simulator/android/gradlew -p ion/src/simulator/android assembleRelease
 	$(Q) cp $(BUILD_DIR)/app/outputs/apk/release/android-release*.apk $@
 
 endif

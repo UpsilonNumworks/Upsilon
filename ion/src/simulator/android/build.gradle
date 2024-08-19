@@ -16,7 +16,7 @@ buildscript {
     google()
   }
   dependencies {
-    classpath 'com.android.tools.build:gradle:8.5.1'
+    classpath 'com.android.tools.build:gradle:8.5.2'
   }
 }
 
@@ -37,11 +37,9 @@ android {
     applicationId "io.github.upsilon.simulator"
     minSdkVersion 21
     targetSdkVersion 33
-    // def (major, minor, patch) = System.getenv('OMEGA_VERSION').toLowerCase().tokenize('.').collect{it.toInteger()}
-    // versionCode major*1000000 + minor*10000 + patch * 100
-    def date = new Date()
-    versionCode date.format('yyyyMMdd').toInteger()
-    versionName "1.0.1-dev"
+    def d=new Date()
+    versionCode d.getTime().toInteger()
+    versionName d.format('yyyyMMdd')+'-'+System.getenv('UPSILON_VERSION')
   }
   signingConfigs {
     environment {

@@ -21,7 +21,7 @@ jobs:
   fxcg:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Install dependencies
@@ -36,7 +36,7 @@ jobs:
         id: get-latest-commit-hash
       - name: Cache gint/fxsdk installation
         id: cache-gint
-        uses: actions/cache@v3
+        uses: actions/cache@v4
         with:
           path: |
             ~/.local/*/*
@@ -72,7 +72,7 @@ jobs:
           path: 'output/release/simulator/fxcg/epsilon.g3a'
           destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon.g3a
           path: output/release/simulator/fxcg/epsilon.g3a
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     container: devkitpro/devkitarm:latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: true
       - run: sudo apt-get update
@@ -94,24 +94,24 @@ jobs:
       - run: echo "PATH=.:$PATH" >> $GITHUB_ENV
       - run: make -j2 PLATFORM=simulator TARGET=3ds
       - run: make -j2 PLATFORM=simulator TARGET=3ds epsilon.cia
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-3ds.3dsx
           path: output/release/simulator/3ds/epsilon.3dsx
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-3ds.cia
           path: output/release/simulator/3ds/epsilon.cia
   android:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - name: Set up JDK 17
         uses: actions/setup-java@v4
         with:
-          java-version: '17'
+          java-version: '21'
           distribution: 'temurin'
       - run: wget -nv https://dl.google.com/android/repository/android-ndk-r21e-linux-x86_64.zip
       - run: unzip -q android-ndk-r21e-linux-x86_64.zip
@@ -128,7 +128,7 @@ jobs:
           path: 'output/release/simulator/android/epsilon.apk'
           destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-android.apk
           path: output/release/simulator/android/epsilon.apk
@@ -137,7 +137,7 @@ jobs:
     steps:
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
       - uses: numworks/setup-arm-toolchain@2020-q2
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: mkdir final-output
@@ -181,7 +181,7 @@ jobs:
           path: 'final-output/'
           destination: 'upsilon-binfiles.appspot.com/dev/n100/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-binpack-n0100.tgz
           path: binpack-n0100.tgz
@@ -190,7 +190,7 @@ jobs:
     steps:
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
       - uses: numworks/setup-arm-toolchain@2020-q2
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 MODEL=n0110 epsilon.dfu
@@ -216,7 +216,7 @@ jobs:
           path: 'output/release/device/n0110/binpack/'
           destination: 'upsilon-binfiles.appspot.com/dev/n110/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-binpack-n0110.tgz
           path: output/release/device/n0110/binpack-n0110.tgz
@@ -225,7 +225,7 @@ jobs:
     steps:
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
       - uses: numworks/setup-arm-toolchain@2022-08
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 MODEL=n0110 bootloader
@@ -254,7 +254,7 @@ jobs:
           path: 'output/release/device/bootloader/binpack/'
           destination: 'upsilon-binfiles.appspot.com/dev/n110/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-binpack-bootloader.tgz
           path: output/release/device/bootloader/binpack-bootloader.tgz
@@ -265,7 +265,7 @@ jobs:
          shell: msys2 {0}
     steps:
       - uses: msys2/setup-msys2@v2
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config make mingw-w64-x86_64-python3 mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng
@@ -284,7 +284,7 @@ jobs:
           path: 'output/release/simulator/windows/epsilon.exe'
           destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-windows.exe
           path: output/release/simulator/windows/epsilon.exe
@@ -294,7 +294,7 @@ jobs:
       - uses: numworks/setup-emscripten@master
         with:
           sdk: latest
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 PLATFORM=simulator TARGET=web
@@ -312,7 +312,7 @@ jobs:
           path: 'output/release/simulator/web/epsilon.js'
           destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-web.zip
           path: output/release/simulator/web/epsilon.zip
@@ -320,7 +320,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - run: sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 PLATFORM=simulator
@@ -338,7 +338,7 @@ jobs:
           path: 'output/release/simulator/linux/epsilon.bin'
           destination: 'upsilon-binfiles.appspot.com/dev/simulator/'
           parent: false
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-linux.bin
           path: output/release/simulator/linux/epsilon.bin
@@ -347,13 +347,13 @@ jobs:
     runs-on: macOS-latest
     steps:
       - run: brew install numworks/tap/epsilon-sdk
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 PLATFORM=simulator
       - run: make -j2 PLATFORM=simulator ARCH=x86_64 test.bin
       - run: output/release/simulator/macos/x86_64/test.bin --headless
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-macos.zip
           path: output/release/simulator/macos/epsilon.app
@@ -362,12 +362,12 @@ jobs:
     runs-on: macOS-latest
     steps:
       - run: brew install numworks/tap/epsilon-sdk
-      - uses: actions/checkout@master
+      - uses: actions/checkout@v4
         with:
           submodules: 'recursive'
       - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0
       - run: make -j2 PLATFORM=simulator TARGET=ios EPSILON_TELEMETRY=0 APPLE_PLATFORM=ios-simulator
-      - uses: actions/upload-artifact@master
+      - uses: actions/upload-artifact@v4
         with:
           name: epsilon-ios.ipa
           path: output/release/simulator/ios/epsilon.ipa
