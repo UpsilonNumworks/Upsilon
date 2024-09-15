@@ -12,8 +12,17 @@ parser.add_argument('--header', help='the .h file to generate')
 parser.add_argument('--implementation', help='the .cpp file to generate')
 parser.add_argument('--apps', nargs='+', help='apps that are actually compiled')
 parser.add_argument('--layouts', help='the apps_layout.csv file')
+parser.add_argument('--apps_layout', help='the apps_layout from the make command')
 
 args = parser.parse_args()
+
+with io.open(args.layouts, "w", encoding="utf-8") as f:
+    ordered = args.apps_layout.split()
+    line1 = 'Default,'+','.join(ordered)+'\n'
+    line2 = 'HidePython,'+','.join(ordered)+'\n'
+    after = line1 + line2
+    f.truncate()
+    f.write(after)
 
 def build_permutation(apps, appsOrdered):
     res = [0] * len(apps)
@@ -29,6 +38,8 @@ def parse_config_file(layouts, apps):
     with io.open(layouts, "r", encoding="utf-8") as f:
         csvreader = csv.reader(f, delimiter=',')
         for row in csvreader:
+            for stg in row:
+                stg.strip()
             res['styles'].append(row[0])
             res['permutations'].append(build_permutation(apps, row[1:]))
     return res
