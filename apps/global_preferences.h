@@ -65,7 +65,7 @@ private:
     m_dfuUnlocked(false),
     m_autoComplete(true),
     m_syntaxhighlighting(true),
-     m_clearkshift(true),
+    m_clearkshift(true),
     m_brightnessLevel(Ion::Backlight::MaxBrightness),
     m_idleBeforeSuspendSeconds(55),
     m_idleBeforeDimmingSeconds(45),
