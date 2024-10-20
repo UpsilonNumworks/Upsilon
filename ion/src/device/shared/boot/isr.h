@@ -8,6 +8,7 @@ extern "C" {
 void start();
 void abort();
 void isr_systick();
+void recovery_start();
 
 #ifdef __cplusplus
 }

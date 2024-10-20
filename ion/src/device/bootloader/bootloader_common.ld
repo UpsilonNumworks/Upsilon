@@ -1,3 +1,4 @@
+BOOTLOADER_SHARED_OFFSET = 0x3d0;
 
 SECTIONS {
   .signed_payload_prefix ORIGIN(FLASH) : {
@@ -34,7 +35,14 @@ SECTIONS {
     _isr_vector_table_end_ram = .;
   } >SRAM
 
-  .exam_mode_buffer ORIGIN(FLASH) + SIZEOF(.signed_payload_prefix) + SIZEOF(.kernel_header) + SIZEOF(.isr_vector_table) : {
+  .bootloader_shared ORIGIN(SRAM) + BOOTLOADER_SHARED_OFFSET : AT(ORIGIN(FLASH) + SIZEOF(.signed_payload_prefix) + SIZEOF(.kernel_header) + SIZEOF(.isr_vector_table) + SIZEOF(.slot_info)) {
+    _bootloader_shared_start = .;
+    KEEP(*(.bootloader_shared))
+    KEEP(*(.bootloader_shared.*))
+    _bootloader_shared_end = .;
+  } >SRAM
+
+  .exam_mode_buffer ORIGIN(FLASH) + SIZEOF(.signed_payload_prefix) + SIZEOF(.kernel_header) + SIZEOF(.isr_vector_table) + SIZEOF(.bootloader_shared) + SIZEOF(.slot_info) : {
     . = ALIGN(4K);
     _exam_mode_buffer_start = .;
     KEEP(*(.exam_mode_buffer))
@@ -48,6 +56,13 @@ SECTIONS {
     . = ORIGIN(FLASH) + USERLAND_OFFSET;
     KEEP(*(.userland_header));
   } > FLASH
+
+  .recovery_boot : {
+    . = ALIGN(4);
+    _recovery_boot_start = .;
+    KEEP(*(.recovery_boot));
+    _recovery_boot_end = .;
+  } >FLASH
 
   .text : {
     . = ALIGN(4);
@@ -88,6 +103,17 @@ SECTIONS {
     _data_section_end_ram = .;
   } >SRAM AT> FLASH
 
+  /*
+   * We set the .static_storage right after the .data section, even if it's a bss region, because we need to fix it in memory.
+   */
+   .static_storage : {
+    . = ALIGN(4);
+    _bss_section_start_ram = .;
+    _static_storage_start = .;
+    KEEP (*(.static_storage))
+    _static_storage_end = .;
+   } > SRAM
+
   .bss : {
     /* The bss section contains data for all uninitialized variables
      * So like the .data section, it will go in RAM, but unlike the data section
@@ -96,7 +122,6 @@ SECTIONS {
      * Before execution, crt0 will erase that section of memory though, so we'll
      * need pointers to the beginning and end of this section. */
     . = ALIGN(4);
-    _bss_section_start_ram = .;
     *(.bss)
     *(.bss.*)
     /* The compiler may choose to allocate uninitialized global variables as

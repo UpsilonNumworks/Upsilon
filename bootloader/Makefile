@@ -37,6 +37,7 @@ bootloader_src += $(addprefix bootloader/interface/menus/, \
   warning.cpp \
   slot_recovery.cpp \
   crash.cpp \
+  upsilon_recovery.cpp \
 )
 
 bootloader_images = $(addprefix bootloader/, \

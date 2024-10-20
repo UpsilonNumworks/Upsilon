@@ -53,6 +53,15 @@ public:
   constexpr static const char * recoveryMessage4 = "Press Back to continue.";
   constexpr static const char * recoveryMessage5 = "(you will not be able to recover your data !)";
 
+  // Upsilon Recovery menu
+  constexpr static const char * upsilonRecoveryTitle = "Upsilon Recovery";
+
+  constexpr static const char * upsilonRecoveryMessage1 = "The bootloader has detected a crash.";
+  constexpr static const char * upsilonRecoveryMessage2 = "Because you also have an Upsilon slot,";
+  constexpr static const char * upsilonRecoveryMessage3 = "you can recover your data by booting";
+  constexpr static const char * upsilonRecoveryMessage4 = "the Upsilon slot.";
+  constexpr static const char * upsilonRecoveryMessage5 = "Press OK to continue, BACK to cancel";
+
   // Warning menu
   constexpr static const char * epsilonWarningTitle = "Epsilon Slot";
 

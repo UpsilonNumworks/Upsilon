@@ -1,6 +1,7 @@
 #include <bootloader/recovery.h>
 #include <ion.h>
 #include <ion/src/device/n0110/drivers/power.h>
+#include <ion/src/device/shared/drivers/bldata.h>
 #include <ion/src/device/shared/drivers/reset.h>
 #include <ion/src/device/shared/drivers/board.h>
 #include <assert.h>
@@ -10,6 +11,7 @@
 #include <bootloader/usb_data.h>
 #include <bootloader/interface/menus/slot_recovery.h>
 #include <bootloader/interface/menus/crash.h>
+#include <bootloader/interface/menus/upsilon_recovery.h>
 
 constexpr static uint32_t MagicStorage = 0xEE0BDDBA;
 
@@ -76,7 +78,15 @@ void Bootloader::Recovery::recoverData() {
   Ion::Display::pushRectUniform(KDRect(0,0,320,240), KDColorWhite);
   Ion::Backlight::init();
 
-  USBData udata = USBData::Recovery((uint32_t)getSlotConcerned().getStorageAddress(), (uint32_t)getSlotConcerned().getStorageSize());
+  CrashedSlot slot = getSlotConcerned();
+
+  if (Slot::hasUpsilon() && Slot::Upsilon().userlandHeader()->hasUpsilonExtras()) {
+    Ion::Device::BootloaderSharedData::sharedBootloaderData()->setRecovery((uint32_t)slot.getStorageAddress(), slot.getStorageSize());
+    UpsilonRecoveryMenu reco = UpsilonRecoveryMenu();
+    reco.open();
+  }
+
+  USBData udata = USBData::Recovery((uint32_t)slot.getStorageAddress(), (uint32_t)slot.getStorageSize());
   
   SlotRecoveryMenu menu = SlotRecoveryMenu(&udata);
   menu.open();

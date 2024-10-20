@@ -25,6 +25,8 @@ public:
   static const Slot A();
   static const Slot B();
   static const Slot Khi();
+  static const bool hasUpsilon();
+  static const Slot Upsilon();
 
   static bool isFullyValid(const Slot& slot) {
     return slot.kernelHeader()->isValid() && slot.userlandHeader()->isValid();

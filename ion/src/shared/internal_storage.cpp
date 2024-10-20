@@ -336,18 +336,14 @@ void InternalStorage::destroyRecordsWithExtension(const char * extension) {
   }
 }
 
-InternalStorage::InternalStorage() :
-  m_magicHeader(Magic),
-  m_buffer(),
-  m_magicFooter(Magic),
-  m_delegate(nullptr),
-  m_lastRecordRetrieved(nullptr),
-  m_lastRecordRetrievedPointer(nullptr)
-{
+InternalStorage::InternalStorage() {
+  m_magicHeader = Magic;
+  m_magicFooter = Magic;
+  m_delegate = nullptr;
+  m_lastRecordRetrieved = nullptr;
+  m_lastRecordRetrievedPointer = nullptr;
   assert(m_magicHeader == Magic);
   assert(m_magicFooter == Magic);
-  // Set the size of the first record to 0
-  overrideSizeAtPosition(m_buffer, 0);
 }
 
 // PRIVATE

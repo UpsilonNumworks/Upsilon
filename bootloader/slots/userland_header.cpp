@@ -40,4 +40,16 @@ const size_t UserlandHeader::storageSize() const {
   return m_storageSizeRAM;
 }
 
+const bool UserlandHeader::hasUpsilonExtras() const {
+  return m_upsilonExtraMagicHeader == UpsilonExtraMagic && m_upsilonExtraMagicFooter == UpsilonExtraMagic;
+}
+
+const uint16_t UserlandHeader::getExtraVersion() const {
+  return m_extraVersion;
+}
+
+const void (*UserlandHeader::upsilonRecoveryBootFunction() const)() {
+  return m_recoveryAddress;
+}
+
 }

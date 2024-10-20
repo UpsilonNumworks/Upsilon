@@ -1,11 +1,15 @@
 #include <stdint.h>
 #include <string.h>
 #include <ion.h>
+#include <ion/led.h>
+#include <ion/storage.h>
+#include <ion/internal_storage.h>
 #include <boot/isr.h>
 #include <drivers/board.h>
 #include <drivers/rtc.h>
 #include <drivers/reset.h>
 #include <drivers/timing.h>
+#include <drivers/bldata.h>
 
 typedef void (*cxx_constructor)();
 
@@ -14,6 +18,8 @@ extern "C" {
   extern char _data_section_start_ram;
   extern char _data_section_end_ram;
   extern char _bss_section_start_ram;
+  extern char _static_storage_start;
+  extern char _static_storage_end;
   extern char _bss_section_end_ram;
   extern cxx_constructor _init_array_start;
   extern cxx_constructor _init_array_end;
@@ -123,6 +129,45 @@ void __attribute__((noinline)) start() {
 
   /* At this point, we initialized clocks and the external flash but no other
    * peripherals. */
+
+  jump_to_external_flash();
+
+  abort();
+}
+
+void __attribute__((noinline)) __attribute__((section(".recovery_boot"))) __attribute__((used)) recovery_start() {
+  // Here we are in the recovery boot.
+  Ion::Device::Board::initFPU();
+  
+  bool is_recoverying = Ion::Device::BootloaderSharedData::sharedBootloaderData()->storageAddress() != 0;
+
+  if (is_recoverying) {
+    uint32_t address = Ion::Device::BootloaderSharedData::sharedBootloaderData()->storageAddress();
+    uint32_t size = Ion::Device::BootloaderSharedData::sharedBootloaderData()->storageSize();
+
+    size_t storageSize = (&_static_storage_end - &_static_storage_start);
+    
+    memcpy(&_static_storage_start, (void*)address, size);
+
+    size_t dataSectionLength = (&_data_section_end_ram - &_data_section_start_ram);
+    memcpy(&_data_section_start_ram, &_data_section_start_flash, dataSectionLength);
+
+    size_t bssSectionLength = (&_bss_section_end_ram - &_static_storage_end);
+    memset(&_static_storage_end, 0, bssSectionLength);
+  } else {
+    size_t dataSectionLength = (&_data_section_end_ram - &_data_section_start_ram);
+    memcpy(&_data_section_start_ram, &_data_section_start_flash, dataSectionLength);
+    size_t bssSectionLength = (&_bss_section_end_ram - &_bss_section_start_ram);
+    memset(&_bss_section_start_ram, 0, bssSectionLength);
+  }
+  
+  if (&_init_array_start != &_init_array_end) {
+    abort();
+  }
+  size_t isrSectionLength = (&_isr_vector_table_end_ram - &_isr_vector_table_start_ram);
+  memcpy(&_isr_vector_table_start_ram, &_isr_vector_table_start_flash, isrSectionLength);
+
+  Ion::Device::Board::init();
 
   jump_to_external_flash();
 

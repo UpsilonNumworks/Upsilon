@@ -63,7 +63,7 @@ bool Boot::isKernelPatched(const Slot & s) {
   return  *(uint32_t *)(origin_isr + sizeof(uint32_t) * 7) == ((uint32_t)&_fake_isr_function_start) + 1;
 }
 
-__attribute((section(".fake_isr_function"))) __attribute__((used)) void Boot::flash_interrupt() {
+__attribute__((section(".fake_isr_function"))) __attribute__((used)) void Boot::flash_interrupt() {
   // a simple function
   Ion::Device::Flash::ClearInternalFlashErrors();
   asm("bx lr");
