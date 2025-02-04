@@ -18,6 +18,7 @@ app_code_src = $(addprefix apps/code/,\
   script_name_cell.cpp \
   script_parameter_controller.cpp \
   toolbox_ion_keys.cpp \
+  brackets.c \
 )
 
 app_code_test_src = $(addprefix apps/code/,\
