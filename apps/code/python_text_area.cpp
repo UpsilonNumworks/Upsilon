@@ -341,7 +341,8 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
       bool italic = (tokenFrom <= autocompleteStart && autocompleteStart < tokenEnd) ? false : isItalic(lex->tok_kind);
       
       bool mismatched = isInStaticTable(mismatchedParenthesesPositions, currentPosition);
-      
+
+       // TODO: don't count Parentheses in a comment
       if (isOpeningBracket(lex->tok_kind)) {
         if (mismatched) color = KDColor::RGB24(0xFF0000);
         else color = matchingParenthesisColors[(bracketLineBalance + bracketBalance)% 3];
