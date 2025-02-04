@@ -6,7 +6,9 @@
 #include <escher/text_area_delegate.h>
 #include <assert.h>
 #include <string.h>
-
+extern "C" {
+  #include <apps/code/brackets.h>
+}
 // See TODO in EditableField
 
 class TextArea : public TextInput, public InputEventHandler {
@@ -112,7 +114,7 @@ protected:
     }
     void drawRect(KDContext * ctx, KDRect rect) const override;
     void drawStringAt(KDContext * ctx, int line, int column, const char * text, int length, KDColor textColor, KDColor backgroundColor, const char * selectionStart, const char * selectionEnd, KDColor backgroundHighlightColor, bool isItalic = false) const;
-    virtual void drawLine(KDContext * ctx, int line, const char * text, size_t length, int fromColumn, int toColumn, const char * selectionStart, const char * selectionEnd) const = 0;
+    virtual void drawLine(KDContext * ctx, int line, const char * text, size_t length, int fromColumn, int toColumn, const char * selectionStart, const char * selectionEnd,  StaticTable* mismatchedParenthesesPositions, int charBefore, int bracketBalance) const = 0;
     virtual void clearRect(KDContext * ctx, KDRect rect) const = 0;
     KDSize minimalSizeForOptimalDisplay() const override;
     void setText(char * textBuffer, size_t textBufferSize);
@@ -121,6 +123,7 @@ protected:
     size_t editedTextLength() const override { return m_text.textLength(); }
     const Text * getText() const { return &m_text; }
     bool isAbleToInsertTextAt(int textLength, const char * location, bool shouldRemoveLastCharacter) const override;
+    void reloadParentheses(const char * text, bool lineBreak);
     void insertTextAtLocation(const char * text, char * location, int textLength = -1) override;
     void moveCursorGeo(int deltaX, int deltaY);
     bool removePreviousGlyph() override;
