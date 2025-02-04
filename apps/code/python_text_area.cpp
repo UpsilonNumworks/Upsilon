@@ -350,7 +350,6 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
           bracketLineBalance++;
         }
       } else if (isClosingBracket(lex->tok_kind)) {
-        bracketLineBalance--;
         if (mismatched) color = KDColor::RGB24(0xFF0000);
         else {
           bracketLineBalance--;
