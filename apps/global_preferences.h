@@ -83,7 +83,7 @@ private:
   bool m_dfuUnlocked;
   bool m_autoComplete;
   bool m_syntaxhighlighting;
-  bool  m_clearkshift;
+  bool m_clearkshift;
   int m_brightnessLevel;
   int m_idleBeforeSuspendSeconds;
   int m_idleBeforeDimmingSeconds;
