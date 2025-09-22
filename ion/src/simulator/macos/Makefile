@@ -11,12 +11,29 @@ ion_src += $(addprefix ion/src/simulator/shared/, \
   dummy/keyboard_callback.cpp \
   dummy/window_callback.cpp \
   clipboard_helper.cpp \
-  collect_registers_x86_64.s \
   collect_registers.cpp \
   haptics.cpp \
   journal.cpp \
   store_script.cpp \
 )
+
+# Include architecture-specific assembly files
+# When building for a specific architecture (via ARCH variable)
+ifdef ARCH
+ifeq ($(ARCH),arm64)
+ion_src += ion/src/simulator/shared/collect_registers_arm64.s
+else
+ion_src += ion/src/simulator/shared/collect_registers_x86_64.s
+endif
+else
+# When building universal binary, include both
+ifneq ($(filter arm64,$(ARCHS)),)
+ion_src += ion/src/simulator/shared/collect_registers_arm64.s
+endif
+ifneq ($(filter x86_64,$(ARCHS)),)
+ion_src += ion/src/simulator/shared/collect_registers_x86_64.s
+endif
+endif
 
 ifeq ($(EPSILON_TELEMETRY),1)
 ion_src += ion/src/simulator/shared/dummy/telemetry_init.cpp
