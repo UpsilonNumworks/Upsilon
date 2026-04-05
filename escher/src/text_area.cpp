@@ -6,10 +6,12 @@
 #include <poincare/serialization_helper.h>
 #include <../../apps/global_preferences.h>
 
+
 #include <stddef.h>
 #include <assert.h>
 #include <limits.h>
 #include <algorithm>
+
 
 /* TextArea */
 
@@ -517,13 +519,20 @@ void TextArea::ContentView::drawRect(KDContext * ctx, KDRect rect) const {
   );
 
   int y = 0;
-
+  StaticTable mismatchedParenthesesPositions;
+  initStaticTable(&mismatchedParenthesesPositions);
+  findMismatchedParentheses(m_text.text(), &mismatchedParenthesesPositions);
+  int charBefore = 0;
+  int bracketBalance = 0;
   for (Text::Line line : m_text) {
     KDCoordinate width = line.glyphWidth(m_font);
     if (y >= topLeft.line() && y <= bottomRight.line() && topLeft.column() < (int)width) {
-      drawLine(ctx, y, line.text(), line.charLength(), topLeft.column(), bottomRight.column(), m_selectionStart, m_selectionEnd);
+      drawLine(ctx, y, line.text(), line.charLength(), topLeft.column(), bottomRight.column(), m_selectionStart, m_selectionEnd, &mismatchedParenthesesPositions, charBefore, bracketBalance);
     }
+    bracketBalance += getBracketBalance(line.text());
+    charBefore += line.charLength() + 1; // The +1 is to count the newline character
     y++;
+    
   }
 }
 
@@ -540,7 +549,6 @@ void TextArea::ContentView::drawStringAt(KDContext * ctx, int line, int column, 
   KDSize glyphSize = usedFont->glyphSize();
 
   bool drawSelection = selectionStart != nullptr && selectionEnd > text && selectionStart < text + length;
-
   KDPoint nextPoint = ctx->drawString(
       text,
       KDPoint(column*glyphSize.width(), line*glyphSize.height()),
@@ -600,6 +608,20 @@ bool TextArea::ContentView::isAbleToInsertTextAt(int textLength, const char * lo
   return m_text.textLength() + textLength - removedCharacters < m_text.bufferSize() && textLength != 0;
 }
 
+void TextArea::ContentView::reloadParentheses(const char * text, bool lineBreak) {
+  for (int i = 0; text[i] != '\0'; i++) {
+    if (
+      text[i] == '(' ||
+      text[i] == '[' ||
+      text[i] == '{' ||
+      text[i] == ')' ||
+      text[i] == ']' ||
+      text[i] == '}'
+      ) {
+        reloadRectFromPosition(&text[i], lineBreak);
+      }
+  }
+}
 void TextArea::ContentView::insertTextAtLocation(const char * text, char * location, int textLength) {
   int textLen = textLength < 0 ? strlen(text) : textLength;
   assert(textLen < 0 || textLen <= strlen(text));
@@ -612,6 +634,7 @@ void TextArea::ContentView::insertTextAtLocation(const char * text, char * locat
   // Replace System parentheses (used to keep layout tree structure) by normal parentheses
   Poincare::SerializationHelper::ReplaceSystemParenthesesByUserParentheses(location, textLen);
   reloadRectFromPosition(location, lineBreak);
+  reloadParentheses(m_text.text(), lineBreak);
 }
 
 bool TextArea::ContentView::removePreviousGlyph() {
@@ -625,14 +648,15 @@ bool TextArea::ContentView::removePreviousGlyph() {
   setCursorLocation(cursorLoc); // Update the cursor
   layoutSubviews(); // Reposition the cursor
   reloadRectFromPosition(cursorLocation(), lineBreak);
+  reloadParentheses(m_text.text(), lineBreak);
   return true;
 }
 
 bool TextArea::ContentView::removeEndOfLine() {
   size_t removedLine = m_text.removeRemainingLine(cursorLocation(), 1);
+  reloadParentheses(m_text.text(), true);
   if (removedLine > 0) {
     layoutSubviews();
-    reloadRectFromPosition(cursorLocation(), false);
     return true;
   }
   return false;
@@ -648,6 +672,7 @@ bool TextArea::ContentView::removeStartOfLine() {
     assert(cursorLocation() >= text() + removedLine);
     setCursorLocation(cursorLocation() - removedLine);
     reloadRectFromPosition(cursorLocation(), true);
+    reloadParentheses(m_text.text(), true);
     return true;
   }
   return false;

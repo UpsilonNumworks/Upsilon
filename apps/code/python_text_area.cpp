@@ -4,7 +4,7 @@
 #include <ion/unicode/utf8_helper.h>
 #include <python/port/port.h>
 #include "../global_preferences.h"
-
+#include <stdio.h>
 extern "C" {
 #include "py/nlr.h"
 #include "py/lexer.h"
@@ -23,12 +23,41 @@ constexpr KDColor StringColor = Palette::CodeString;
 constexpr KDColor BackgroundColor = Palette::CodeBackground;
 constexpr KDColor HighlightColor = Palette::CodeBackgroundSelected;
 constexpr KDColor AutocompleteColor = KDColor::RGB24(0xC6C6C6); // TODO Palette change
+constexpr KDColor matchingParenthesisColors[3] = { // TODO Palette change
+      KDColor::RGB24(0x0431FA),
+      KDColor::RGB24(0x319331), 
+      KDColor::RGB24(0x7B3814)  
+    };
 
 bool isItalic(mp_token_kind_t tokenKind) {
   if (!GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting()) {
     return false;
   }
   if (tokenKind == MP_TOKEN_STRING) {
+    return true;
+  }
+  return false;
+}
+
+bool isOpeningBracket(mp_token_kind_t tokenKind) {
+    if (!GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting()) {
+    return false;
+  }
+  if (tokenKind == MP_TOKEN_DEL_PAREN_OPEN ||
+      tokenKind == MP_TOKEN_DEL_BRACE_OPEN ||
+      tokenKind == MP_TOKEN_DEL_BRACKET_OPEN) {
+    return true;
+  }
+  return false;
+}
+
+bool isClosingBracket(mp_token_kind_t tokenKind) {
+  if (!GlobalPreferences::sharedGlobalPreferences()->syntaxhighlighting()) {
+    return false;
+  }
+  if (tokenKind == MP_TOKEN_DEL_PAREN_CLOSE ||
+      tokenKind == MP_TOKEN_DEL_BRACE_CLOSE ||
+      tokenKind == MP_TOKEN_DEL_BRACKET_CLOSE) {
     return true;
   }
   return false;
@@ -242,16 +271,17 @@ void PythonTextArea::ContentView::clearRect(KDContext * ctx, KDRect rect) const 
 #define LOG_DRAW(...)
 #endif
 
-void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char * text, size_t byteLength, int fromColumn, int toColumn, const char * selectionStart, const char * selectionEnd) const {
+void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char * text, size_t byteLength, int fromColumn, int toColumn, const char * selectionStart, const char * selectionEnd, StaticTable* mismatchedParenthesesPositions, int charBefore, int bracketBalance) const {
   LOG_DRAW("Drawing \"%.*s\"\n", byteLength, text);
-
   assert(m_pythonDelegate->isPythonUser(this));
 
   /* We're using the MicroPython lexer to do syntax highlighting on a per-line
    * basis. This can work, however the MicroPython lexer won't accept a line
    * starting with a whitespace. So we're discarding leading whitespaces
    * beforehand. */
+  
   const char * firstNonSpace = UTF8Helper::NotCodePointSearch(text, ' ');
+  int numberOfLeadingSpaces = strlen(text) - strlen(firstNonSpace);
   if (firstNonSpace != text) {
     // Color the discarded leading whitespaces
     const char * spacesStart = UTF8Helper::CodePointAtGlyphOffset(text, fromColumn);
@@ -282,6 +312,9 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
     const char * tokenFrom = firstNonSpace;
     size_t tokenLength = 0;
     const char * tokenEnd = firstNonSpace;
+
+    int bracketLineBalance = 0;
+    int currentPosition = charBefore + numberOfLeadingSpaces;
     while (lex->tok_kind != MP_TOKEN_NEWLINE && lex->tok_kind != MP_TOKEN_END && lex->tok_kind != MP_TOKEN_FSTRING_RAW) {
       tokenFrom = firstNonSpace + lex->tok_column - 1;
       if (tokenFrom != tokenEnd) {
@@ -298,6 +331,7 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
             selectionEnd,
             HighlightColor,
             false);
+        currentPosition += 1; // Add the number of space
       }
       tokenLength = TokenLength(lex, tokenFrom);
       tokenEnd = tokenFrom + tokenLength;
@@ -305,7 +339,25 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
       // If the token is being autocompleted, use DefaultColor/Font
       KDColor color = (tokenFrom <= autocompleteStart && autocompleteStart < tokenEnd) ? Palette::CodeText : TokenColor(lex->tok_kind);
       bool italic = (tokenFrom <= autocompleteStart && autocompleteStart < tokenEnd) ? false : isItalic(lex->tok_kind);
+      
+      bool mismatched = isInStaticTable(mismatchedParenthesesPositions, currentPosition);
 
+       // TODO: don't count Parentheses in a comment
+      if (isOpeningBracket(lex->tok_kind)) {
+        if (mismatched) color = KDColor::RGB24(0xFF0000);
+        else {
+          color = matchingParenthesisColors[(bracketLineBalance + bracketBalance)% 3];
+          bracketLineBalance++;
+        }
+      } else if (isClosingBracket(lex->tok_kind)) {
+        if (mismatched) color = KDColor::RGB24(0xFF0000);
+        else {
+          bracketLineBalance--;
+          color = matchingParenthesisColors[(bracketLineBalance + bracketBalance)% 3];
+        }
+      }
+      
+      
       LOG_DRAW("Draw \"%.*s\" for token %d\n", tokenLength, tokenFrom, lex->tok_kind);
       drawStringAt(ctx, line,
         UTF8Helper::GlyphOffsetAtCodePoint(text, tokenFrom),
@@ -321,8 +373,9 @@ void PythonTextArea::ContentView::drawLine(KDContext * ctx, int line, const char
 
       mp_lexer_to_next(lex);
       LOG_DRAW("Pop token %d\n", lex->tok_kind);
+      currentPosition = currentPosition + 1;
     }
-
+    
     tokenFrom += tokenLength;
 
     KDColor color = CommentColor;
