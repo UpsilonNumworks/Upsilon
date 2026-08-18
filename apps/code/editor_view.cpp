@@ -85,7 +85,7 @@ void EditorView::GutterView::drawRect(KDContext * ctx, KDRect rect) const {
       lineNumberBuffer[j] = ' ';
     }
 
-    line.serialize(lineNumberBuffer + (m_numberOfDigits - lineDigits), m_numberOfDigits + 1);
+    line.serialize(lineNumberBuffer + (m_numberOfDigits - lineDigits), m_numberOfDigits + 1 - (m_numberOfDigits - lineDigits));
 
     ctx->drawString(
       lineNumberBuffer,
