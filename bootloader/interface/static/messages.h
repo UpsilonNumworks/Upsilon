@@ -81,7 +81,7 @@ public:
   constexpr static const char * aboutMessage4 = "and select the OS";
   constexpr static const char * aboutMessage5 = "to boot.";
 
-  constexpr static const char * bootloaderVersion = "Version 1.1.2 - RECOVER.24.4";
+  constexpr static const char * bootloaderVersion = "Version 1.1.3 - RECOVER.26.4";
 
   //USB NAMES
   constexpr static const char * usbUpsilonBootloader = "NumWorks Calculator";

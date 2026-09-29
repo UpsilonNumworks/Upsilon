@@ -14,6 +14,7 @@ bootloader_src += $(addprefix bootloader/slots/, \
   slot.cpp \
   userland_header.cpp \
   kernel_header.cpp \
+  bootloader_header.cpp \
 )
 
 bootloader_src += $(addprefix bootloader/drivers/, \

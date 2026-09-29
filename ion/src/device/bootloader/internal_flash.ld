@@ -29,6 +29,7 @@ SECTIONS {
   } >INTERNAL_FLASH
 
   .header : {
+    . = ORIGIN(INTERNAL_FLASH) + 0x1C4;
     KEEP(*(.header))
   } >INTERNAL_FLASH
 
