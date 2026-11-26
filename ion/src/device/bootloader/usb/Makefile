@@ -43,7 +43,12 @@ ion_device_dfu_src += libaxx/src/cxxabi/pure_virtual.cpp
 ion_device_dfu_src += ion/src/device/bootloader/usb/boot.cpp
 ion_device_dfu_src += ion/src/device/n0110/drivers/board.cpp
 ion_device_dfu_src += ion/src/device/n0110/drivers/cache.cpp
+ifeq ($(MODEL),n0115)
+ion_device_dfu_src += ion/src/device/n0115/drivers/external_flash.cpp
+else
 ion_device_dfu_src += ion/src/device/n0110/drivers/external_flash.cpp
+endif
+
 ion_device_dfu_src += ion/src/device/n0110/drivers/reset.cpp
 ion_device_dfu_src += ion/src/device/n0110/drivers/usb.cpp
 ion_device_dfu_src += $(addprefix ion/src/device/shared/drivers/, \
