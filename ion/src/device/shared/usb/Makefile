@@ -41,11 +41,26 @@ ion_device_dfu_src += liba/src/memset.c
 ion_device_dfu_src += liba/src/memcpy.c
 ion_device_dfu_src += libaxx/src/cxxabi/pure_virtual.cpp
 ion_device_dfu_src += ion/src/device/shared/usb/boot.cpp
+ifeq ($(MODEL),n0115)
+ion_device_dfu_src += ion/src/device/n0110/drivers/board.cpp
+ion_device_dfu_src += ion/src/device/n0110/drivers/cache.cpp
+ion_device_dfu_src += ion/src/device/n0115/drivers/external_flash.cpp
+ion_device_dfu_src += ion/src/device/n0110/drivers/reset.cpp
+ion_device_dfu_src += ion/src/device/n0110/drivers/usb.cpp
+else ifeq ($(MODEL),n0115-bootloader)
+ion_device_dfu_src += ion/src/device/bootloader/drivers/board.cpp
+ion_device_dfu_src += ion/src/device/bootloader/drivers/cache.cpp
+ion_device_dfu_src += ion/src/device/n0115/drivers/external_flash.cpp
+ion_device_dfu_src += ion/src/device/bootloader/drivers/reset.cpp
+ion_device_dfu_src += ion/src/device/bootloader/drivers/usb.cpp
+else
 ion_device_dfu_src += ion/src/device/$(MODEL)/drivers/board.cpp
 ion_device_dfu_src += ion/src/device/$(MODEL)/drivers/cache.cpp
 ion_device_dfu_src += ion/src/device/$(MODEL)/drivers/external_flash.cpp
 ion_device_dfu_src += ion/src/device/$(MODEL)/drivers/reset.cpp
 ion_device_dfu_src += ion/src/device/$(MODEL)/drivers/usb.cpp
+endif
+
 ion_device_dfu_src += $(addprefix ion/src/device/shared/drivers/, \
   backlight.cpp \
   battery.cpp \
