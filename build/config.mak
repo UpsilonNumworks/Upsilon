@@ -5,8 +5,8 @@ DEBUG ?= 0
 
 HOME_DISPLAY_EXTERNALS ?= 1
 EPSILON_VERSION ?= 15.5.0
-OMEGA_VERSION ?= 2.0.2
-OMEGA_VERSION_SHORT ?= 2.0 # 3 chars max, required for compatibility
+OMEGA_VERSION ?= 2.1.0
+OMEGA_VERSION_SHORT ?= 2.1 # 3 chars max, required for compatibility
 UPSILON_VERSION ?= 1.1.2
 # OMEGA_USERNAME ?= N/A
 OMEGA_STATE ?= dev
