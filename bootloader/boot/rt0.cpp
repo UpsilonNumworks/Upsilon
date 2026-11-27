@@ -104,9 +104,40 @@ static void __attribute__((noinline)) jump_to_external_flash() {
  * thus forbid inlining to prevent executing this code from external flash
  * (just in case 'start' was to be called from the external flash). */
 
+/* Jump to the STM32 system bootloader (ROM DFU) if it was requested before the
+ * last reset (see Ion::Device::Reset::jumpToSTBootloader). This is inlined in
+ * start() so that it runs from internal flash, before anything is initialized,
+ * with the chip in the state the ROM bootloader expects. */
+static inline void __attribute__((__always_inline__)) jump_to_st_bootloader_if_requested() {
+  if (Ion::Device::Reset::STBootloaderRequest != Ion::Device::Reset::STBootloaderMagic) {
+    return;
+  }
+  Ion::Device::Reset::STBootloaderRequest = 0;
+
+  const uint32_t * romVectors = reinterpret_cast<const uint32_t *>(Ion::Device::Reset::STBootloaderAddress);
+  uint32_t stackPointer = romVectors[0];
+  uint32_t resetHandler = romVectors[1];
+  // Sanity check: initial SP must be in SRAM, reset handler in system memory
+  if ((stackPointer & 0xFFF00000) != 0x20000000 || (resetHandler & 0xFFF00000) != 0x1FF00000) {
+    return;
+  }
+
+  Ion::Device::Regs::CORTEX.VTOR()->setVTOR(reinterpret_cast<void *>(Ion::Device::Reset::STBootloaderAddress));
+  asm volatile (
+      "dsb ; isb ; msr MSP, %[stackPointer] ; bx %[resetHandler]"
+      : :
+      [stackPointer] "r" (stackPointer),
+      [resetHandler] "r" (resetHandler)
+  );
+  __builtin_unreachable();
+}
+
 void __attribute__((noinline)) start() {
   /* This is where execution starts after reset.
    * Many things are not initialized yet so the code here has to pay attention. */
+
+  /* Must stay first: it reads a .bss variable before .bss is zeroed. */
+  jump_to_st_bootloader_if_requested();
 
   /* Initialize the FPU as early as possible.
    * For example, static C++ objects are very likely to manipulate float values */
@@ -115,15 +146,15 @@ void __attribute__((noinline)) start() {
 
 
   /* Copy data section to RAM
-  * The data section is R/W but its initialization value matters. It's stored
-  * in Flash, but linked as if it were in RAM. Now's our opportunity to copy
-  * it. Note that until then the data section (e.g. global variables) contains
-  * garbage values and should not be used. */
+   * The data section is R/W but its initialization value matters. It's stored
+   * in Flash, but linked as if it were in RAM. Now's our opportunity to copy
+   * it. Note that until then the data section (e.g. global variables) contains
+   * garbage values and should not be used. */
   size_t dataSectionLength = (&_data_section_end_ram - &_data_section_start_ram);
   memcpy(&_data_section_start_ram, &_data_section_start_flash, dataSectionLength);
 
   /* Zero-out the bss section in RAM
-  * Until we do, any uninitialized global variable will be unusable. */
+   * Until we do, any uninitialized global variable will be unusable. */
   size_t bssSectionLength = (&_bss_section_end_ram - &_bss_section_start_ram);
   memset(&_bss_section_start_ram, 0, bssSectionLength);
 
@@ -148,9 +179,10 @@ void __attribute__((noinline)) start() {
   }
 #endif
 
+  Ion::Device::Board::init();
+
   /* At this point, we initialized clocks and the external flash but no other
    * peripherals. */
-  Ion::Device::Board::init();
 
   jump_to_external_flash();
 

@@ -8,8 +8,15 @@
 #include <bootloader/slots/slot_exam_mode.h>
 #include <bootloader/recovery.h>
 #include <ion/src/device/shared/drivers/flash.h>
+#include <ion/src/device/shared/drivers/reset.h>
 
 __attribute__ ((noreturn)) void ion_main(int argc, const char * const argv[]) {
+  uint64_t scan = Ion::Keyboard::scan();
+  // Reset+6 => Launch STM32 system bootloader (ROM DFU)
+  if (scan == Ion::Keyboard::State(Ion::Keyboard::Key::Six)) {
+    Ion::Device::Reset::jumpToSTBootloader();
+  }
+
   // Clear the screen
   Ion::Display::pushRectUniform(KDRect(0,0,320,240), KDColorBlack);
   // Initialize the backlight
