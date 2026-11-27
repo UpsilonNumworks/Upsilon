@@ -14,12 +14,6 @@ using namespace STM32;
 typedef void(*ISR)(void);
 extern ISR InitialisationVector[];
 
-// Public Ion methods
-
-const char * Ion::fccId() {
-  return "2ALWP-N0110";
-}
-
 // Private Ion::Device methods
 
 namespace Ion {
@@ -306,7 +300,7 @@ void initClocks() {
   ahb1lpenr.setGPIOGLPEN(true); // Enable IO port G
   ahb1lpenr.setGPIOHLPEN(true); // Enable IO port H
   ahb1lpenr.setGPIOILPEN(true); // Enable IO port I
-  ahb1lpenr.setCRCLPEN(true); 
+  ahb1lpenr.setCRCLPEN(true);
   ahb1lpenr.setFLITFLPEN(true);
   ahb1lpenr.setSRAM1LPEN(true);
   ahb1lpenr.setDMA1LPEN(true);

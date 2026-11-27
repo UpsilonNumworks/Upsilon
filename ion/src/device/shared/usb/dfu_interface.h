@@ -8,6 +8,7 @@
 #include "stack/endpoint0.h"
 #include "stack/setup_packet.h"
 #include "stack/streamable.h"
+#include <bootloader/usb_data.h>
 
 namespace Ion {
 namespace Device {
@@ -35,6 +36,9 @@ public:
   void wholeDataReceivedCallback(SetupPacket * request, uint8_t * transferBuffer, uint16_t * transferBufferLength) override;
   void wholeDataSentCallback(SetupPacket * request, uint8_t * transferBuffer, uint16_t * transferBufferLength) override;
   bool isErasingAndWriting() const { return m_isErasingAndWriting; }
+
+  void setDfuConfig(Bootloader::ProtectionState data) { m_dfuConfig = data; copyDfuData(); }
+  Bootloader::ProtectionState getDfuConfig() const { return m_dfuConfig; }
 
 protected:
   void setActiveInterfaceAlternative(uint8_t interfaceAlternativeIndex) override {
@@ -160,6 +164,8 @@ private:
    * pressing back". */
   void willErase() { m_isErasingAndWriting = true; }
 
+  void copyDfuData();
+
   Device * m_device;
   Status m_status;
   State m_state;
@@ -171,6 +177,9 @@ private:
   uint32_t m_writeAddress;
   uint8_t m_bInterfaceAlternateSetting;
   bool m_isErasingAndWriting;
+  Bootloader::ProtectionState m_dfuConfig;
+  uint32_t m_eraseAddress;
+  Bootloader::ProtectionState m_dfuData;
 };
 
 }

@@ -5,6 +5,7 @@
 
 #include "kernel_header.h"
 #include "userland_header.h"
+#include "slot_exam_mode.h"
 
 namespace Bootloader {
 
@@ -19,6 +20,7 @@ public:
 
   const KernelHeader* kernelHeader() const;
   const UserlandHeader* userlandHeader() const;
+  const UserlandHeader* userland2Header() const;
   [[ noreturn ]] void boot() const;
   const uint32_t address() const { return m_address; }
 

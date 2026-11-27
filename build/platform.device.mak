@@ -1,4 +1,4 @@
-MODEL ?= bootloader
+MODEL ?= n0110-bootloader
 USE_LIBA = 1
 EXE = elf
 

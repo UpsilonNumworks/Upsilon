@@ -85,29 +85,29 @@ bool AboutController::handleEvent(Ion::Events::Event event) {
       }
       if (childLabel == I18n::Message::MemUse) {
         MessageTableCellWithBuffer * myCell = (MessageTableCellWithBuffer *)m_selectableTableView.selectedCell();
-        
+
         char memUseBuffer[15];
-        
+
         if (strchr(myCell->accessoryText(), '%') == NULL) {
           int len = Poincare::Integer((int)((float)(Ion::Storage::k_storageSize - Ion::Storage::sharedStorage()->availableSize()) / (float)(Ion::Storage::k_storageSize) * 100.0f)).serialize(memUseBuffer, 4);
           memUseBuffer[len] = '%';
           memUseBuffer[len+1] = '\0';
-          
+
           myCell->setAccessoryText(memUseBuffer);
         } else {
           int len = Poincare::Integer((int)((float) (Ion::Storage::k_storageSize - Ion::Storage::sharedStorage()->availableSize()) / 1024.f)).serialize(memUseBuffer, 4);
           memUseBuffer[len] = 'k';
           memUseBuffer[len+1] = 'B';
           memUseBuffer[len+2] = '/';
-          
+
           len = Poincare::Integer((int)((float) Ion::Storage::k_storageSize / 1024.f)).serialize(memUseBuffer + len + 3, 4) + len + 3;
           memUseBuffer[len] = 'k';
           memUseBuffer[len+1] = 'B';
           memUseBuffer[len+2] = '\0';
-          
+
           myCell->setAccessoryText(memUseBuffer);
         }
-        
+
         return true;
       }
       if(childLabel == I18n::Message::Battery){

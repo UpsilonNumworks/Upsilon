@@ -6,7 +6,7 @@ namespace USB {
 
 void DFU(bool exitWithKeyboard, void * data) {
   Ion::updateSlotInfo();
-  Ion::Device::USB::Calculator::PollAndReset(exitWithKeyboard);
+  Ion::Device::USB::Calculator::PollAndReset(exitWithKeyboard, data);
 }
 
 }

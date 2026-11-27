@@ -2,15 +2,20 @@
 #include <ion/usb.h>
 #include <drivers/keyboard.h>
 #include <drivers/serial_number.h>
+#include <bootloader/usb_data.h>
 
 namespace Ion {
 namespace Device {
 namespace USB {
 
-void Calculator::PollAndReset(bool exitWithKeyboard) {
+void Calculator::PollAndReset(bool exitWithKeyboard, void * data) {
   char serialNumber[Ion::Device::SerialNumber::Length+1];
   Ion::Device::SerialNumber::copy(serialNumber);
-  Calculator c(serialNumber);
+
+  Calculator c(serialNumber, data == nullptr ? stringDescriptor() : static_cast<Bootloader::USBData *>(data)->stringDescriptor(), data == nullptr ? "NumWorks Calculator" : static_cast<Bootloader::USBData *>(data)->getName());
+  if (data != nullptr) {
+    c.setConfigData(static_cast<Bootloader::USBData *>(data));
+  }
 
   /* Leave DFU mode if the Back key is pressed, the calculator unplugged or the
    * USB core soft-disconnected. */

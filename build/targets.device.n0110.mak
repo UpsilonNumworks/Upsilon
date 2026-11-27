@@ -8,7 +8,7 @@ $(BUILD_DIR)/test.external_flash.write.$(EXE): $(BUILD_DIR)/quiz/src/test_ion_ex
 .PHONY: bootloader
 bootloader: $(BUILD_DIR)/bootloader.bin
 $(BUILD_DIR)/bootloader.$(EXE): $(call flavored_object_for,$(bootloader_src),usbxip)
-$(BUILD_DIR)/bootloader.$(EXE): LDSCRIPT = ion/src/device/bootloader/internal_flash.ld
+$(BUILD_DIR)/bootloader.$(EXE): LDSCRIPT = ion/src/device/n0110-bootloader/internal_flash.ld
 
 .PHONY: %_flash
 %_flash: $(BUILD_DIR)/%.dfu

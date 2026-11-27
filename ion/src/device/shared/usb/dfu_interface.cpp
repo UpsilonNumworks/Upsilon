@@ -28,10 +28,10 @@ void DFUInterface::wholeDataReceivedCallback(SetupPacket * request, uint8_t * tr
     if (request->wValue() == 0) {
       // The request is a special command
       switch (transferBuffer[0]) {
-        case (uint8_t) DFUDownloadCommand::SetAddressPointer:
+        case (uint8_t)DFUDownloadCommand::SetAddressPointer:
           setAddressPointerCommand(request, transferBuffer, *transferBufferLength);
           return;
-        case (uint8_t) DFUDownloadCommand::Erase:
+        case (uint8_t)DFUDownloadCommand::Erase:
           eraseCommand(transferBuffer, *transferBufferLength);
           return;
         default:
@@ -279,6 +279,11 @@ bool DFUInterface::dfuAbort(uint16_t * transferBufferLength) {
 void DFUInterface::leaveDFUAndReset() {
   m_device->setResetOnDisconnect(true);
   m_device->detach();
+}
+
+
+void DFUInterface::copyDfuData() {
+  m_dfuData = Bootloader::ProtectionState(!m_dfuConfig.isProtectedInternal(), !m_dfuConfig.isProtectedExternal());
 }
 
 }

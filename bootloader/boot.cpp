@@ -166,6 +166,7 @@ void Boot::bootloader() {
   }
 }
 
+
 void Boot::jumpToInternalBootloader() {
   Ion::Device::Board::jumpToInternalBootloader();
 }

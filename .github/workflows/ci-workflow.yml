@@ -285,7 +285,7 @@ jobs:
           git pull
           git commit -m "Update from CI"
           git push
-  bootloader:
+  n0110-bootloader:
     runs-on: ubuntu-24.04-arm
     steps:
       - run: |
@@ -303,15 +303,15 @@ jobs:
       - run: make -j2 epsilon.onboarding.beta.A.dfu
       - run: make -j2 epsilon.onboarding.beta.B.dfu
       - run: make -j2 binpack
-      - run: cp output/release/device/bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/bootloader/binpack-bootloader.tgz
-      - run: cp output/release/device/n0110/bootloader.bin output/release/device/bootloader/binpack/
-      - run: cp output/release/device/n0110/bootloader.bin output/release/device/bootloader/
-      - run: cd output/release/device/bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
-      - run: cd output/release/device/bootloader && tar cvfz binpack-bootloader.tgz binpack/*
+      - run: cp output/release/device/n0110-bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110-bootloader/binpack-bootloader.tgz
+      - run: cp output/release/device/n0110/bootloader.bin output/release/device/n0110-bootloader/binpack/
+      - run: cp output/release/device/n0110/bootloader.bin output/release/device/n0110-bootloader/
+      - run: cd output/release/device/n0110-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
+      - run: cd output/release/device/n0110-bootloader && tar cvfz binpack-bootloader.tgz binpack/*
       - uses: actions/upload-artifact@main
         with:
           name: epsilon-binpack-bootloader.tgz
-          path: output/release/device/bootloader/binpack-bootloader.tgz
+          path: output/release/device/n0110-bootloader/binpack-bootloader.tgz
       - if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
         uses: actions/checkout@main
         with:
@@ -323,7 +323,53 @@ jobs:
       - name: Upload binary files to website
         if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon'}}
         run: |
-          cp -r output/release/device/bootloader/binpack/* binfiles/binaries/dev/n110
+          cp -r output/release/device/n0110-bootloader/binpack/* binfiles/binaries/dev/n110
+          cd binfiles
+          git add -A
+          git config --global user.email "ci@github.com"
+          git config --global user.name "GitHub Upsilon CI"
+          git pull
+          git commit -m "Update from CI"
+          git push
+  n0115-bootloader:
+    runs-on: ubuntu-24.04-arm
+    steps:
+      - run: |
+          sudo apt-get update
+          sudo apt-get install build-essential imagemagick libfreetype6-dev libjpeg-dev libpng-dev pkg-config gcc-arm-none-eabi binutils-arm-none-eabi
+      - uses: actions/checkout@main
+        with:
+          submodules: 'recursive'
+      - run: make -j2 MODEL=n0115 bootloader
+      - run: make -j2 MODEL=n0115-bootloader epsilon.A.dfu epsilon.B.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.A.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.B.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.update.A.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.update.B.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.A.dfu
+      - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.B.dfu
+      - run: make -j2 MODEL=n0115-bootloader binpack
+      - run: cp output/release/device/n0115-bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0115-bootloader/binpack-bootloader.tgz
+      - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/binpack/
+      - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/
+      - run: cd output/release/device/n0115-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
+      - run: cd output/release/device/n0115-bootloader && tar cvfz binpack-bootloader.tgz binpack/*
+      - uses: actions/upload-artifact@main
+        with:
+          name: epsilon-binpack-bootloader.tgz
+          path: output/release/device/n0115-bootloader/binpack-bootloader.tgz
+      - if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
+        uses: actions/checkout@main
+        with:
+          repository: Yaya-Cout/Upsilon-binfiles
+          ref: 'main'
+          token:  ${{ secrets.PAT_UPSILON_BINFILES }}
+          path: 'binfiles'
+      # TODO: Handle git conflicts using rebase
+      - name: Upload binary files to website
+        if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon'}}
+        run: |
+          cp -r output/release/device/n0115-bootloader/binpack/* binfiles/binaries/dev/n115
           cd binfiles
           git add -A
           git config --global user.email "ci@github.com"

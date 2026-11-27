@@ -19,6 +19,7 @@
 #include "stack/descriptor/string_descriptor.h"
 #include "stack/descriptor/url_descriptor.h"
 #include "stack/descriptor/webusb_platform_descriptor.h"
+#include <bootloader/usb_data.h>
 
 namespace Ion {
 namespace Device {
@@ -26,11 +27,11 @@ namespace USB {
 
 class Calculator : public Device {
 public:
-  static void PollAndReset(bool exitWithKeyboard)
+  static void PollAndReset(bool exitWithKeyboard, void * data)
     __attribute__((section(".dfu_entry_point"))) // Needed to pinpoint this symbol in the linker script
     __attribute__((used)) // Make sure this symbol is not discarded at link time
     ; // Return true if reset is needed
-  Calculator(const char * serialNumber) :
+  Calculator(const char * serialNumber, const char * desc, const char * product) :
     Device(&m_dfuInterface),
     m_deviceDescriptor(
         0x0210, /* bcdUSB: USB Specification Number which the device complies
@@ -104,9 +105,9 @@ public:
         &m_webUSBPlatformDescriptor),
     m_languageStringDescriptor(),
     m_manufacturerStringDescriptor("NumWorks"),
-    m_productStringDescriptor("NumWorks Calculator"),
+    m_productStringDescriptor(product),
     m_serialNumberStringDescriptor(serialNumber),
-    m_interfaceStringDescriptor(stringDescriptor()),
+    m_interfaceStringDescriptor(desc),
     //m_interfaceStringDescriptor("@SRAM/0x20000000/01*256Ke"),
     /* Switch to this descriptor to use dfu-util to write in the SRAM.
      * FIXME Should be an alternate Interface. */
@@ -131,6 +132,9 @@ public:
   }
   uint32_t addressPointer() const { return m_dfuInterface.addressPointer(); }
   bool isErasingAndWriting() const { return m_dfuInterface.isErasingAndWriting(); }
+
+  void setConfigData(Bootloader::USBData * data) { m_usbConfig = data; m_dfuInterface.setDfuConfig(data->getData()); }
+  Bootloader::USBData * getConfigData() const { return m_usbConfig; }
 protected:
   Descriptor * descriptor(uint8_t type, uint8_t index) override;
   void setActiveConfiguration(uint8_t configurationIndex) override {
@@ -153,6 +157,7 @@ private:
   bool getExtendedCompatIDCommand(uint8_t * transferBuffer, uint16_t * transferBufferLength, uint16_t transferBufferMaxLength);
 
   // Descriptors
+  Bootloader::USBData * m_usbConfig;
   DeviceDescriptor m_deviceDescriptor;
   DFUFunctionalDescriptor m_dfuFunctionalDescriptor;
   InterfaceDescriptor m_interfaceDescriptor1;
