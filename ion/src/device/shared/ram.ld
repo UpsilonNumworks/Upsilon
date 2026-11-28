@@ -26,7 +26,7 @@ MEMORY {
  * So we put the stack to 1K so there's still space
  * for our image, if not LD will throw an error. */
 
-STACK_SIZE = 14K;
+STACK_SIZE = 13K;
 
 SECTIONS {
   .isr_vector_table ORIGIN(RAM_BUFFER) : {

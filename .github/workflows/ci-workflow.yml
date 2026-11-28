@@ -303,15 +303,15 @@ jobs:
       - run: make -j2 epsilon.onboarding.beta.A.dfu
       - run: make -j2 epsilon.onboarding.beta.B.dfu
       - run: make -j2 binpack
-      - run: cp output/release/device/n0110-bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110-bootloader/binpack-bootloader.tgz
+      - run: cp output/release/device/n0110-bootloader/binpack-n0110-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0110-bootloader/binpack-n0110-bootloader.tgz
       - run: cp output/release/device/n0110/bootloader.bin output/release/device/n0110-bootloader/binpack/
       - run: cp output/release/device/n0110/bootloader.bin output/release/device/n0110-bootloader/
       - run: cd output/release/device/n0110-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
-      - run: cd output/release/device/n0110-bootloader && tar cvfz binpack-bootloader.tgz binpack/*
+      - run: cd output/release/device/n0110-bootloader && tar cvfz binpack-n0110-bootloader.tgz binpack/*
       - uses: actions/upload-artifact@main
         with:
-          name: epsilon-binpack-bootloader.tgz
-          path: output/release/device/n0110-bootloader/binpack-bootloader.tgz
+          name: epsilon-binpack-n0110-bootloader.tgz
+          path: output/release/device/n0110-bootloader/binpack-n0110-bootloader.tgz
       - if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
         uses: actions/checkout@main
         with:
@@ -349,15 +349,20 @@ jobs:
       - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.A.dfu
       - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.B.dfu
       - run: make -j2 MODEL=n0115-bootloader binpack
-      - run: cp output/release/device/n0115-bootloader/binpack-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0115-bootloader/binpack-bootloader.tgz
+      - run: make -j2 MODEL=n0115 flasher.light.dfu
+      - run: make -j2 MODEL=n0115 flasher.verbose.dfu
+      - run: make -j2 MODEL=n0115 flasher.verbose.bin
+      - run: cp output/release/device/n0115-bootloader/binpack-n0115-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0115-bootloader/binpack-n0115-bootloader.tgz
       - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/binpack/
       - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/
+      - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/
+      - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/binpack/
       - run: cd output/release/device/n0115-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
-      - run: cd output/release/device/n0115-bootloader && tar cvfz binpack-bootloader.tgz binpack/*
+      - run: cd output/release/device/n0115-bootloader && tar cvfz binpack-n0115-bootloader.tgz binpack/*
       - uses: actions/upload-artifact@main
         with:
-          name: epsilon-binpack-bootloader.tgz
-          path: output/release/device/n0115-bootloader/binpack-bootloader.tgz
+          name: epsilon-binpack-n0115-bootloader.tgz
+          path: output/release/device/n0115-bootloader/binpack-n0115-bootloader.tgz
       - if: ${{ github.event_name == 'push' && github.ref_name == 'upsilon-dev' && github.repository == 'UpsilonNumworks/Upsilon' }}
         uses: actions/checkout@main
         with:
@@ -387,7 +392,7 @@ jobs:
       - uses: actions/checkout@main
         with:
           submodules: 'recursive'
-      - run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config make mingw-w64-x86_64-python3 mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng git
+      - run: pacman -S --noconfirm mingw-w64-x86_64-gcc mingw-w64-x86_64-freetype mingw-w64-x86_64-pkg-config make mingw-w64-x86_64-python mingw-w64-x86_64-libjpeg-turbo mingw-w64-x86_64-libpng git
       - run: make -j2 PLATFORM=simulator
       - run: make -j2 PLATFORM=simulator test.exe
       - run: cmd /c output\release\simulator\windows\test.exe --headless
