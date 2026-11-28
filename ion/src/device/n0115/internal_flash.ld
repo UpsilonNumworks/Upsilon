@@ -40,12 +40,14 @@ SECTIONS {
     *(.rodata.*)
   } >INTERNAL_FLASH
 
-  .exam_mode_buffer ORIGIN(INTERNAL_FLASH) + FLASH_SECOND_SECTOR_OFFSET (READONLY) : {
-    _exam_mode_buffer_start = ORIGIN(INTERNAL_FLASH_AXIM) + FLASH_SECOND_SECTOR_OFFSET;
+  /* This is a stub to make things build, exam mode is never used from
+   * internal-only binaries on N0115 */
+  .exam_mode_buffer (READONLY) : {
+    _exam_mode_buffer_start = 0xA0FFBEEF;
     KEEP(*(.exam_mode_buffer))
     /* Note: We don't increment "." here, we set it. */
-    . = ORIGIN(INTERNAL_FLASH) + FLASH_SECOND_SECTOR_OFFSET + FLASH_SECOND_SECTOR_SIZE;
-    _exam_mode_buffer_end = ORIGIN(INTERNAL_FLASH_AXIM) + FLASH_SECOND_SECTOR_OFFSET + FLASH_SECOND_SECTOR_SIZE;
+    . = ALIGN(4);
+    _exam_mode_buffer_end = 0xA0FFBEEF;
   } >INTERNAL_FLASH
 
   .text : {
