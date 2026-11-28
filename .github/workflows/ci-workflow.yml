@@ -358,7 +358,7 @@ jobs:
       - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/
       - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/binpack/
       - run: cp output/release/device/n0115-bootloader/epsilon.onboarding.A.bin output/release/device/n0115-bootloader/binpack/
-      - run: cp output/release/device/n0115-bootloader/epsilon.onboarding.A.bin output/release/device/n0115-bootloader/binpack/
+      - run: cp output/release/device/n0115-bootloader/epsilon.onboarding.B.bin output/release/device/n0115-bootloader/binpack/
       - run: cd output/release/device/n0115-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
       - run: cd output/release/device/n0115-bootloader && tar cvfz binpack-n0115-bootloader.tgz binpack/*
       - uses: actions/upload-artifact@main
