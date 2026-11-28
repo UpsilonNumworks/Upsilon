@@ -348,15 +348,17 @@ jobs:
       - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.update.B.dfu
       - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.A.dfu
       - run: make -j2 MODEL=n0115-bootloader epsilon.onboarding.beta.B.dfu
-      - run: make -j2 MODEL=n0115-bootloader binpack
       - run: make -j2 MODEL=n0115 flasher.light.dfu
       - run: make -j2 MODEL=n0115 flasher.verbose.dfu
       - run: make -j2 MODEL=n0115 flasher.verbose.bin
+      - run: make -j2 MODEL=n0115-bootloader binpack
       - run: cp output/release/device/n0115-bootloader/binpack-n0115-bootloader-`git rev-parse HEAD | head -c 7`.tgz output/release/device/n0115-bootloader/binpack-n0115-bootloader.tgz
       - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/binpack/
       - run: cp output/release/device/n0115/bootloader.bin output/release/device/n0115-bootloader/
       - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/
       - run: cp output/release/device/n0115/flasher.verbose.bin output/release/device/n0115-bootloader/binpack/
+      - run: cp output/release/device/n0115-bootloader/epsilon.onboarding.A.bin output/release/device/n0115-bootloader/binpack/
+      - run: cp output/release/device/n0115-bootloader/epsilon.onboarding.A.bin output/release/device/n0115-bootloader/binpack/
       - run: cd output/release/device/n0115-bootloader && for binary in *.bin; do shasum -a 256 -b binpack/${binary} > binpack/${binary}.sha256;done
       - run: cd output/release/device/n0115-bootloader && tar cvfz binpack-n0115-bootloader.tgz binpack/*
       - uses: actions/upload-artifact@main
